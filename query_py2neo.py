@@ -97,6 +97,7 @@ tr.run(cypher_build_category_labels)
 tr.commit()
 
 # TODO LIST
+# First clean up the code and make it object based
 # I need to run tests on variable search depths and search filters:
 
 # - First run a sequence of depth increasing queries.
