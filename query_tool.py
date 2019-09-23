@@ -4,48 +4,69 @@
 from SPARQLWrapper import SPARQLWrapper
 from py2neo import Database, Graph, Schema, Transaction, Cursor
 
-sparql_query = """
-SELECT ?pred1 ?pred_inv1 ?n1 ?pred2 ?pred_inv2 ?n2 ?pred3 ?pred_inv3
-WHERE {
+def sparql_query_gen(start_page, end_page, depth):
+
+	select_terms = ""
+	for i in range(depth-1):
+		i = i + 1
+		string = "?pred& ?pred_inv& ?n& "
+		select_terms = select_terms + string.replace("&", str(i))
+	final_string = "?pred& ?pred_inv&"
+	select_terms = select_terms + final_string.replace("&", str(depth))
+	
+	union_block = """
 	{ {
 		FILTER(regex(?pred1, dct:subject)
 		||regex(?pred1, skos:broader))
-		dbc:Complex_systems_theory ?pred1 ?n1
+		""" + start_page + """ ?pred1 ?n1
 	} UNION {
 		FILTER(regex(?pred_inv1, dct:subject)
 		||regex(?pred_inv1, skos:broader))
-		?n1 ?pred_inv1 dbc:Complex_systems_theory
+		?n1 ?pred_inv1 """ + start_page + """
 	} } .
-	{ {
-		FILTER(regex(?pred2, dct:subject)
-		||regex(?pred2, skos:broader))
-		?n1 ?pred2 ?n2
-	} UNION	{
-		FILTER(regex(?pred_inv2, dct:subject)
-		||regex(?pred_inv2, skos:broader))
-		?n2 ?pred_inv2 ?n1
-	} } .
-	{ {
-		FILTER(regex(?pred3, dct:subject)
-		||regex(?pred3, skos:broader))
-		?n2 ?pred3 dbr:Word_embedding
-	} UNION	{
-		FILTER(regex(?pred_inv3, dct:subject)
-		||regex(?pred_inv3, skos:broader))
-		dbr:Word_embedding ?pred_inv3 ?n2
-	} } .
-}
-"""
+	"""
 
+	for i in range(depth-2):
+		i = i + 1
+		string = """
+	{ {
+		FILTER(regex(?pred&&, dct:subject)
+		||regex(?pred&&, skos:broader))
+		?n& ?pred&& ?n&&
+	} UNION {
+		FILTER(regex(?pred_inv&&, dct:subject)
+		||regex(?pred_inv&&, skos:broader))
+		?n&& ?pred_inv&& ?n&
+	} } .
+		"""
+		union_block = union_block + string.replace("&&", str(i+1)).replace("&", str(i))
+
+	final_union_block = """
+	{ {
+		FILTER(regex(?pred&&, dct:subject)
+		||regex(?pred&&, skos:broader))
+		?n& ?pred&& """ + end_page + """
+	} UNION	{
+		FILTER(regex(?pred_inv&&, dct:subject)
+		||regex(?pred_inv&&, skos:broader))
+		""" + end_page + """ ?pred_inv&& ?n&
+	} } .
+	"""
+	union_block = union_block + final_union_block.replace("&&", str(depth)).replace("&", str(depth-1))
+
+	query = "\rSELECT " + select_terms + "\rWHERE {\r" + union_block + "\r}"
+	return query
+
+query = sparql_query_gen("dbc:Complex_systems_theory", "dbr:Word_embedding",3)
 wrapper = SPARQLWrapper("http://dbpedia.org/sparql")
-wrapper.setQuery(sparql_query)
+wrapper.setQuery(query)
 
 wrapper.setReturnFormat("csv")
 query_result = wrapper.query()
 url = query_result.geturl()
 
-db = Database("bolt://localhost:7687", auth=("neo4j","cayley"))
-g = Graph("bolt://localhost:7687", auth=("neo4j","cayley"))
+db = Database("bolt://localhost:7687", auth=("neo4j", "cayley"))
+g = Graph("bolt://localhost:7687", auth=("neo4j", "cayley"))
 sch = Schema(g)
 
 cypher_initialise = "WITH \"" + url + "\" AS url" + "\r" + """
