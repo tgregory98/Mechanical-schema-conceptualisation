@@ -1,1 +1,1 @@
-# mechanical-schema-conceptualisation
+# Mechanical-schema-conceptualisation
