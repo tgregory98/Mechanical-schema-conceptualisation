@@ -4,8 +4,7 @@
 from SPARQLWrapper import SPARQLWrapper
 from py2neo import Database, Graph, Schema, Transaction, Cursor
 
-sparql = SPARQLWrapper("http://dbpedia.org/sparql")
-sparql.setQuery("""
+sparql_query = """
 SELECT ?pred1 ?pred_inv1 ?n1 ?pred2 ?pred_inv2 ?n2 ?pred3 ?pred_inv3
 WHERE {
 	{ {
@@ -36,10 +35,13 @@ WHERE {
 		dbr:Word_embedding ?pred_inv3 ?n2
 	} } .
 }
-""")
+"""
 
-sparql.setReturnFormat("csv")
-query_result = sparql.query()
+wrapper = SPARQLWrapper("http://dbpedia.org/sparql")
+wrapper.setQuery(sparql_query)
+
+wrapper.setReturnFormat("csv")
+query_result = wrapper.query()
 url = query_result.geturl()
 
 db = Database("bolt://localhost:7687", auth=("neo4j","cayley"))
