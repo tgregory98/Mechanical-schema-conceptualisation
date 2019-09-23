@@ -35,11 +35,12 @@ WHERE {
 		dbr:Word_embedding ?pred_inv3 ?n2
 	} } .
 }
-	""")
-sparql.setReturnFormat(JSON)
-results = sparql.query().convert()
+""")
 
-print(results)
+sparql.setReturnFormat("csv")
+query_result = sparql.query()
+print(query_result.geturl()) # Returns the url of the query
+print(query_result.convert()) # Prints the result of the query
 
 # 3-depth forward-back filtered search
 # SELECT ?pred1 ?pred_inv1 ?n1 ?pred2 ?pred_inv2 ?n2 ?pred3 ?pred_inv3

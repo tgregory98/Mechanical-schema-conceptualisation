@@ -71,7 +71,7 @@ FOREACH (x IN CASE WHEN row.pred_inv3 IS NULL THEN [] ELSE [1] END | MERGE (c)-[
 RETURN a, b, c, d
 """
 
-cypher_build_ids = """
+cypher_build_node_ids = """
 MATCH (x)
 
 SET (CASE left(x.iri,28) WHEN "http://dbpedia.org/resource/" THEN x END).id = toString(replace(x.iri,"http://dbpedia.org/resource/","")), (CASE left(x.iri,28) WHEN "http://dbpedia.org/resource/" THEN x END).prefix = "http://dbpedia.org/resource/"
@@ -97,11 +97,10 @@ tr.run(cypher_build_category_labels)
 tr.commit()
 
 # TODO LIST
-# First clean up the code and make it object based
+# First clean up the code into one file
 # I need to run tests on variable search depths and search filters:
 
 # - First run a sequence of depth increasing queries.
 # - Next I must test out different search filters.
-
 
 # After all of this, populate immediate neighbours.
