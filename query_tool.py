@@ -4,31 +4,34 @@
 from SPARQLWrapper import SPARQLWrapper
 from py2neo import Database, Graph, Schema, Transaction, Cursor
 
-def sparql_query_gen(start_page, end_page, depth):
+db = Database("bolt://localhost:7687", auth=("neo4j", "cayley"))
+g = Graph("bolt://localhost:7687", auth=("neo4j", "cayley"))
+sch = Schema(g)
 
-	select_terms = ""
+def sparql_query_gen(start_page, end_page, depth):
+	query_part1 = "\rSELECT "
 	for i in range(depth-1):
 		i = i + 1
 		string = "?pred& ?pred_inv& ?n& "
-		select_terms = select_terms + string.replace("&", str(i))
-	final_string = "?pred& ?pred_inv&"
-	select_terms = select_terms + final_string.replace("&", str(depth))
+		query_part1 = query_part1 + string.replace("&", str(i))
+	final_string = "?pred& ?pred_inv&\r"
+	query_part1 = query_part1 + final_string.replace("&", str(depth))
 	
-	union_block = """
+	query_part2 = """
+WHERE {
 	{ {
 		FILTER(regex(?pred1, dct:subject)
 		||regex(?pred1, skos:broader))
-		""" + start_page + """ ?pred1 ?n1
+		<""" + start_page + """> ?pred1 ?n1
 	} UNION {
 		FILTER(regex(?pred_inv1, dct:subject)
 		||regex(?pred_inv1, skos:broader))
-		?n1 ?pred_inv1 """ + start_page + """
+		?n1 ?pred_inv1 <""" + start_page + """>
 	} } .
 	"""
-
 	for i in range(depth-2):
 		i = i + 1
-		string = """
+		block = """
 	{ {
 		FILTER(regex(?pred&&, dct:subject)
 		||regex(?pred&&, skos:broader))
@@ -39,54 +42,62 @@ def sparql_query_gen(start_page, end_page, depth):
 		?n&& ?pred_inv&& ?n&
 	} } .
 		"""
-		union_block = union_block + string.replace("&&", str(i+1)).replace("&", str(i))
+		query_part2 = query_part2 + block.replace("&&", str(i+1)).replace("&", str(i))
 
-	final_union_block = """
+	final_block = """
 	{ {
 		FILTER(regex(?pred&&, dct:subject)
 		||regex(?pred&&, skos:broader))
-		?n& ?pred&& """ + end_page + """
+		?n& ?pred&& <""" + end_page + """>
 	} UNION	{
 		FILTER(regex(?pred_inv&&, dct:subject)
 		||regex(?pred_inv&&, skos:broader))
-		""" + end_page + """ ?pred_inv&& ?n&
+		<""" + end_page + """> ?pred_inv&& ?n&
 	} } .
+}
 	"""
-	union_block = union_block + final_union_block.replace("&&", str(depth)).replace("&", str(depth-1))
+	query_part2 = query_part2 + final_block.replace("&&", str(depth)).replace("&", str(depth-1))
 
-	query = "\rSELECT " + select_terms + "\rWHERE {\r" + union_block + "\r}"
+	query = query_part1 + query_part2
 	return query
 
-query = sparql_query_gen("dbc:Complex_systems_theory", "dbr:Word_embedding",3)
-wrapper = SPARQLWrapper("http://dbpedia.org/sparql")
-wrapper.setQuery(query)
+def cypher_query_gen(start_page, end_page, depth, url):
+	query_part1 = "WITH \"" + url + "\" AS url\r\rLOAD CSV WITH HEADERS FROM url AS row\r\r"
 
+	query_part2 = "MERGE (n0:page:start_page {iri: \"" + start_page + "\"})\r"
+	for i in range(depth-1):
+		i = i + 1
+		string = "MERGE (n&:page {iri: row.n&})\r"
+		query_part2 = query_part2 + string.replace("&", str(i))
+	final_string = "MERGE (n&:page:end_page {iri: \"" + end_page + "\"})\r"
+	query_part2 = query_part2 + final_string.replace("&", str(depth))
+
+	query_part3 = ""
+	for i in range(depth):
+		block = """
+FOREACH (x IN CASE WHEN row.pred&& IS NULL THEN [] ELSE [1] END | MERGE (n&)-[p:pred {iri: row.pred&&}]->(n&&))
+FOREACH (x IN CASE WHEN row.pred_inv&& IS NULL THEN [] ELSE [1] END | MERGE (n&)<-[p:pred {iri: row.pred_inv&&}]-(n&&))
+		"""
+		query_part3 = query_part3 + block.replace("&&", str(i+1)).replace("&", str(i))
+
+	query_part4 = "\rRETURN "
+	for i in range(depth):
+		string = "n&, "
+		query_part4 = query_part4 + string.replace("&", str(i))
+	final_string = "n&"
+	query_part4 = query_part4 + final_string.replace("&", str(depth))
+
+	query = query_part1 + query_part2 + query_part3 + query_part4
+	return query
+
+sparql_query = sparql_query_gen("http://dbpedia.org/resource/Category:Complex_systems_theory", "http://dbpedia.org/resource/Word_embedding", 3)
+wrapper = SPARQLWrapper("http://dbpedia.org/sparql")
+wrapper.setQuery(sparql_query)
 wrapper.setReturnFormat("csv")
 query_result = wrapper.query()
 url = query_result.geturl()
 
-db = Database("bolt://localhost:7687", auth=("neo4j", "cayley"))
-g = Graph("bolt://localhost:7687", auth=("neo4j", "cayley"))
-sch = Schema(g)
-
-cypher_initialise = "WITH \"" + url + "\" AS url" + "\r" + """
-LOAD CSV WITH HEADERS FROM url AS row
-MERGE (a:page:start_page {iri: "http://dbpedia.org/resource/Category:Complex_systems_theory"})
-MERGE (b:page {iri: row.n1})
-MERGE (c:page {iri: row.n2})
-MERGE (d:page:end_page {iri: "http://dbpedia.org/resource/Word_embedding"})
-
-FOREACH (x IN CASE WHEN row.pred1 IS NULL THEN [] ELSE [1] END | MERGE (a)-[p:pred {iri: row.pred1}]->(b))
-FOREACH (x IN CASE WHEN row.pred_inv1 IS NULL THEN [] ELSE [1] END | MERGE (a)<-[p:pred {iri: row.pred_inv1}]-(b))
-
-FOREACH (x IN CASE WHEN row.pred2 IS NULL THEN [] ELSE [1] END | MERGE (b)-[p:pred {iri: row.pred2}]->(c))
-FOREACH (x IN CASE WHEN row.pred_inv2 IS NULL THEN [] ELSE [1] END | MERGE (b)<-[p:pred {iri: row.pred_inv2}]-(c))
-
-FOREACH (x IN CASE WHEN row.pred3 IS NULL THEN [] ELSE [1] END | MERGE (c)-[p:pred {iri: row.pred3}]->(d))
-FOREACH (x IN CASE WHEN row.pred_inv3 IS NULL THEN [] ELSE [1] END | MERGE (c)<-[p:pred {iri: row.pred_inv3}]-(d))
-
-RETURN a, b, c, d
-"""
+cypher_initialise = cypher_query_gen("http://dbpedia.org/resource/Category:Complex_systems_theory", "http://dbpedia.org/resource/Word_embedding", 3, url)
 
 cypher_build_node_ids = """
 MATCH (x)
