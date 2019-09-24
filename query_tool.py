@@ -154,3 +154,13 @@ sch = PairwiseSchemaBuilder("http://dbpedia.org/resource/Television", "http://db
 sch.build_at_depth(2)
 sch.build_at_depth(3)
 sch.build_at_depth(4)
+
+# TODO LIST
+# + Clean up the code into one file.
+# + Build a class for building schema.
+# + Run a sequence of depth increasing queries.
+# - Add a filter option to the class.
+# - Test out different search filters and optimise.
+# - Let the class populate immediate neighbours too.
+# - Optimise depth selection.
+# - Instead of using higher depths, try looking at immediate neighbours with many edges, and use them as the new start/end nodes from which to build new schema.

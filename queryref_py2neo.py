@@ -94,12 +94,3 @@ tr.run(cypher_build_ids)
 tr.run(cypher_build_article_labels)
 tr.run(cypher_build_category_labels)
 tr.commit()
-
-# TODO LIST
-# First clean up the code into one file
-# I need to run tests on variable search depths and search filters:
-
-# - First run a sequence of depth increasing queries.
-# - Next I must test out different search filters.
-
-# After all of this, populate immediate neighbours.
