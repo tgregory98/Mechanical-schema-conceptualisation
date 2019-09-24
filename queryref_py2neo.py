@@ -1,10 +1,9 @@
 # import sys
 # print(sys.executable)
 
-from py2neo import Database, Graph, Schema, Transaction, Cursor
+from py2neo import Database, Graph, Transaction, Cursor
 db = Database("bolt://localhost:7687", auth=("neo4j", "cayley"))
 g = Graph("bolt://localhost:7687", auth=("neo4j", "cayley"))
-sch = Schema(g)
 
 cypher_match_all = """
 MATCH (x)
