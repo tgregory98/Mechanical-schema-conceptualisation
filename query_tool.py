@@ -10,9 +10,10 @@ g = Graph("bolt://localhost:7687", auth=("neo4j", "cayley"))
 
 class PairwiseSchemaBuilder:
 
-    def __init__(self, start_page, end_page):
+    def __init__(self, start_page, end_page, filter_set):
         self.start_page = start_page
         self.end_page = end_page
+        self.filter_set = filter_set if filter_set is not None else []
 
     def sparql_query_gen(self, depth):
         query_part1 = "\rSELECT "
@@ -23,15 +24,33 @@ class PairwiseSchemaBuilder:
         final_string = "?pred& ?pred_inv&\r"
         query_part1 = query_part1 + final_string.replace("&", str(depth))
         
+        for i in range(len(self.filter_set)):
+            if i == 0:
+                filter_query_pred = "FILTER("
+                string = "regex(?pred&, &&)"
+                filter_query_pred = filter_query_pred + string.replace("&&", str(self.filter_set[i-1]))
+            elif i <= len(self.filter_set) - 1:
+                string = "||regex(?pred&, &&)"
+                filter_query_pred = filter_query_pred + string.replace("&&", str(self.filter_set[i-1]))
+        filter_query_pred = filter_query_pred + ")"
+
+        for i in range(len(self.filter_set)):
+            if i == 0:
+                filter_query_pred_inv = "FILTER("
+                string = "regex(?pred_inv&, &&)"
+                filter_query_pred_inv = filter_query_pred_inv + string.replace("&&", str(self.filter_set[i-1]))
+            elif i <= len(self.filter_set) - 1:
+                string = "||regex(?pred_inv&, &&)"
+                filter_query_pred_inv = filter_query_pred_inv + string.replace("&&", str(self.filter_set[i-1]))
+        filter_query_pred_inv = filter_query_pred_inv + ")"
+
         query_part2 = """
     WHERE {
         { {
-            FILTER(regex(?pred1, dct:subject)
-            ||regex(?pred1, skos:broader))
+            """ + filter_query_pred.replace("&", "1") + """
             <""" + self.start_page + """> ?pred1 ?n1
         } UNION {
-            FILTER(regex(?pred_inv1, dct:subject)
-            ||regex(?pred_inv1, skos:broader))
+            """ + filter_query_pred_inv.replace("&", "1") + """
             ?n1 ?pred_inv1 <""" + self.start_page + """>
         } } .
         """
@@ -39,12 +58,10 @@ class PairwiseSchemaBuilder:
             i = i + 1
             block = """
         { {
-            FILTER(regex(?pred&&, dct:subject)
-            ||regex(?pred&&, skos:broader))
+            """ + filter_query_pred.replace("&", str(i+1)) + """
             ?n& ?pred&& ?n&&
         } UNION {
-            FILTER(regex(?pred_inv&&, dct:subject)
-            ||regex(?pred_inv&&, skos:broader))
+            """ + filter_query_pred_inv.replace("&", str(i+1)) + """
             ?n&& ?pred_inv&& ?n&
         } } .
             """
@@ -52,17 +69,18 @@ class PairwiseSchemaBuilder:
 
         final_block = """
         { {
-            FILTER(regex(?pred&&, dct:subject)
-            ||regex(?pred&&, skos:broader))
+            """ + filter_query_pred.replace("&", str(depth)) + """
             ?n& ?pred&& <""" + self.end_page + """>
         } UNION {
-            FILTER(regex(?pred_inv&&, dct:subject)
-            ||regex(?pred_inv&&, skos:broader))
+            """ + filter_query_pred_inv.replace("&", str(depth)) + """
             <""" + self.end_page + """> ?pred_inv&& ?n&
         } } .
     }
         """
         query_part2 = query_part2 + final_block.replace("&&", str(depth)).replace("&", str(depth-1))
+
+        # Build the "FILTER()" expression first.
+        # Then write a .replace("&&&", ...) method using "&&&" as a placeholder for the "FILTER()" expression.
 
         query = query_part1 + query_part2
         return query
@@ -150,7 +168,7 @@ SET x:category
 
 
 
-sch = PairwiseSchemaBuilder("http://dbpedia.org/resource/Television", "http://dbpedia.org/resource/Netflix")
+sch = PairwiseSchemaBuilder("http://dbpedia.org/resource/Television", "http://dbpedia.org/resource/Netflix", ["dct:subject", "skos:broader"])
 sch.build_at_depth(2)
 sch.build_at_depth(3)
 sch.build_at_depth(4)
@@ -159,7 +177,7 @@ sch.build_at_depth(4)
 # + Clean up the code into one file.
 # + Build a class for building schema.
 # + Run a sequence of depth increasing queries.
-# - Add a filter option to the class.
+# + Add a filter option to the class.
 # - Test out different search filters and optimise.
 # - Let the class populate immediate neighbours too.
 # - Optimise depth selection.
