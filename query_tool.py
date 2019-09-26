@@ -16,6 +16,9 @@ def commit_cypher_code(cypher):
 
 
 class SchemaBuilder:
+    def __init__(self):
+        self.name = "SchemaBuilder"
+
     def cypher_url_gen(self, sparql_query):
         wrapper = SPARQLWrapper("http://dbpedia.org/sparql")
         wrapper.setQuery(sparql_query)
@@ -33,7 +36,7 @@ class SchemaBuilder:
         return cypher_initial
 
     def build_at_depth(self, depth):
-        print("Initiating depth " + str(depth) + " build at " + str(datetime.datetime.now().time()) + ".")
+        print("Initiating depth " + str(depth) + " build at " + str(datetime.datetime.now().time()) + " on " + self.name + " class.")
 
         cypher_build_node_ids = """
 MATCH (x)
@@ -68,11 +71,12 @@ SET x:category
             tr.run(cypher)
         tr.commit()
 
-        print("Depth " + str(depth) + " build complete at " + str(datetime.datetime.now().time()) + ".")
+        print("Depth " + str(depth) + " build complete at " + str(datetime.datetime.now().time()) + " on " + self.name + " class.\r")
 
 
 class PairwiseSchemaBuilder(SchemaBuilder):
     def __init__(self, start_page, end_page, filter_set):
+        self.name = "PairwiseSchemaBuilder between " + start_page + " and " + end_page
         self.start_page = start_page
         self.end_page = end_page
         self.filter_set = filter_set
@@ -176,6 +180,7 @@ class PairwiseSchemaBuilder(SchemaBuilder):
 
 class ParentSchemaBuilder(SchemaBuilder):
     def __init__(self, page, filter_set):
+        self.name = "ParentSchemaBuilder on " + page
         self.page = page
         self.filter_set = filter_set
 
@@ -258,8 +263,8 @@ commit_cypher_code("MATCH (x) DETACH DELETE (x)")
 sch2a = ParentSchemaBuilder("http://dbpedia.org/resource/Netflix", ["dct:subject", "skos:broader", "rdf:type"])
 sch2a.build_at_depth(2)
 
-# sch2b = ParentSchemaBuilder("http://dbpedia.org/resource/Television", ["dct:subject", "skos:broader", "rdf:type"])
-# sch2b.build_at_depth(2)
+sch2b = ParentSchemaBuilder("http://dbpedia.org/resource/Television", ["dct:subject", "skos:broader", "rdf:type"])
+sch2b.build_at_depth(2)
 
 # TODO LIST
 # + Clean up the code into one file.
