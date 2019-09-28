@@ -23,16 +23,16 @@ def commit_cypher_query_set(cypher_query_set):
 
 commit_cypher_query("MATCH (x) DETACH DELETE (x)")
 
-sch1 = builders.PairwiseSchemaBuilder("http://dbpedia.org/resource/Television", "http://dbpedia.org/resource/Netflix", filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-commit_cypher_query_set(sch1.cypher_query_set_gen(2))
-commit_cypher_query_set(sch1.cypher_query_set_gen(3))
-commit_cypher_query_set(sch1.cypher_query_set_gen(4))
+# sch1 = builders.PairwiseSchemaBuilder("http://dbpedia.org/resource/Television", "http://dbpedia.org/resource/Netflix", filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+# commit_cypher_query_set(sch1.cypher_query_set_gen(2))
+# commit_cypher_query_set(sch1.cypher_query_set_gen(3))
+# commit_cypher_query_set(sch1.cypher_query_set_gen(4))
 
-# sch2a = builders.ParentSchemaBuilder("http://dbpedia.org/resource/Netflix", filter_set_edges=["dct:subject", "skos:broader", "rdf:type"], filter_set_vertices=[])
-# commit_cypher_query_set(sch2a.cypher_query_set_gen(2))
+sch2a = builders.ParentSchemaBuilder("http://dbpedia.org/resource/Netflix", filter_set_edges=["dct:subject", "skos:broader", "rdf:type"], filter_set_vertices=[])
+commit_cypher_query_set(sch2a.cypher_query_set_gen(2))
 
-# sch2b = builders.ParentSchemaBuilder("http://dbpedia.org/resource/Television", filter_set_edges=["dct:subject", "skos:broader", "rdf:type"], filter_set_vertices=[])
-# commit_cypher_query_set(sch2b.cypher_query_set_gen(2))
+sch2b = builders.ParentSchemaBuilder("http://dbpedia.org/resource/Television", filter_set_edges=["dct:subject", "skos:broader", "rdf:type"], filter_set_vertices=[])
+commit_cypher_query_set(sch2b.cypher_query_set_gen(2))
 
 # TODO LIST
 # + Clean up the code into one file.
@@ -46,6 +46,7 @@ commit_cypher_query_set(sch1.cypher_query_set_gen(4))
 # + Add options for node/ edge specific filters.
 # + Move some node/ edge filter code to SchemaBuilder class.
 # + Split into two files, creating a builders.py module.
+# + Create cleaners.py and fetchers.py files.
 # - Create a PopulateSchemaBuilder subclass that populates all immediate neighbours.
 # - Update the cypher_query_set_gen() strings.
 # - Instead of using higher depths, try looking at immediate neighbours with many edges, and use them as the new start/end nodes from which to build new schema.

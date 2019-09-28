@@ -382,3 +382,117 @@ class PopulateSchemaBuilder(SchemaBuilder):
     def __init__(self, page):
         self.name = "PopulateSchemaBuilder on " + page
         self.page = page
+        self.filter_set_edges = filter_set_edges
+        self.filter_set_vertices = filter_set_vertices
+
+    def sparql_query_gen(self, depth):
+        query_part1 = "\rSELECT "
+        for i in range(depth):
+            string = "?pred& ?n& "
+            query_part1 = query_part1 + string.replace("&", str(i + 1))
+
+        filter_query_pred = self.filter_query_pred_gen()
+        filter_query_vertex = self.filter_query_vertex_gen()
+        filter_query_vertex_mid = filter_query_vertex + filter_query_vertex.replace("&", "&&")
+        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", "||")
+
+        query_part2_open = """
+    WHERE {
+        """
+
+        query_part2_a = """
+        { {
+            <""" + self.start_page + """> ?pred1 ?n1
+        } UNION {
+            ?n1 ?pred_inv1 <""" + self.start_page + """>
+        } } .
+        """
+        query_part2_b = """
+        { {
+            """ + filter_query_pred.replace("&", "1") + """
+            <""" + self.start_page + """> ?pred1 ?n1
+        } UNION {
+            """ + filter_query_pred_inv.replace("&", "1") + """
+            ?n1 ?pred_inv1 <""" + self.start_page + """>
+        } } .
+        """
+        query_part2_c = """
+        { {
+            """ + filter_query_vertex.replace("&", "1") + """
+            <""" + self.start_page + """> ?pred1 ?n1
+        } UNION {
+            """ + filter_query_vertex.replace("&", "1") + """
+            ?n1 ?pred_inv1 <""" + self.start_page + """>
+        } } .
+        """
+        for i in range(depth - 1):
+            block_a = """
+        { {
+            ?n& ?pred&& ?n&&
+        } UNION {
+            ?n&& ?pred_inv&& ?n&
+        } } .
+            """
+            block_b = """
+        { {
+            """ + filter_query_pred.replace("&", str(i + 2)) + """
+            ?n& ?pred&& ?n&&
+        } UNION {
+            """ + filter_query_pred_inv.replace("&", str(i + 2)) + """
+            ?n&& ?pred_inv&& ?n&
+        } } .
+            """
+            block_c = """
+        { {
+            """ + filter_query_vertex_mid + """
+            ?n& ?pred&& ?n&&
+        } UNION {
+            """ + filter_query_vertex_mid + """
+            ?n&& ?pred_inv&& ?n&
+        } } .
+            """
+            query_part2_a = query_part2_a + block_a.replace("&&", str(i + 2)).replace("&", str(i + 1))
+            query_part2_b = query_part2_b + block_b.replace("&&", str(i + 2)).replace("&", str(i + 1))
+            query_part2_c = query_part2_c + block_c.replace("&&", str(i + 2)).replace("&", str(i + 1))
+
+        query_part2_close = """
+    }
+        """
+
+        if len(self.filter_set_edges) == 0 and len(self.filter_set_vertices) == 0:
+            query_part2 = query_part2_open + query_part2_a + query_part2_close
+        elif len(self.filter_set_edges) != 0 and len(self.filter_set_vertices) != 0:
+            query_part2 = query_part2_open + query_part2_b + query_part2_c + query_part2_close
+        elif len(self.filter_set_vertices) == 0:
+            query_part2 = query_part2_open + query_part2_b + query_part2_close
+        elif len(self.filter_set_edges) == 0:
+            query_part2 = query_part2_open + query_part2_c + query_part2_close
+
+        query = query_part1 + query_part2
+        print(query)
+        return query
+
+    def cypher_query_gen(self, depth, url):
+        query_part1 = "WITH \"" + url + "\" AS url\r\rLOAD CSV WITH HEADERS FROM url AS row\r\r"
+
+        query_part2 = "MERGE (n0:page {iri: \"" + self.page + "\"})\r"
+        for i in range(depth):
+            string = "MERGE (n&:page {iri: row.n&})\r"
+            query_part2 = query_part2 + string.replace("&", str(i + 1))
+
+        query_part3 = ""
+        for i in range(depth):
+            block = """
+    FOREACH (x IN CASE WHEN row.pred&& IS NULL THEN [] ELSE [1] END | MERGE (n&)-[p:pred {iri: row.pred&&}]->(n&&))
+            """
+            query_part3 = query_part3 + block.replace("&&", str(i + 1)).replace("&", str(i))
+
+        query_part4 = "\rRETURN "
+        for i in range(depth):
+            string = "n&, "
+            query_part4 = query_part4 + string.replace("&", str(i))
+        final_string = "n&"
+        query_part4 = query_part4 + final_string.replace("&", str(depth))
+
+        query = query_part1 + query_part2 + query_part3 + query_part4
+        return query
