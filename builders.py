@@ -25,6 +25,7 @@ class SchemaBuilder:
             elif i == len(self.filter_set_edges) - 1:
                 string = "||regex(?pred&, &&))"
                 filter_query_pred = filter_query_pred + string.replace("&&", str(self.filter_set_edges[i]))
+        
         return filter_query_pred
 
     def filter_query_pred_inv_gen(self):
@@ -45,6 +46,7 @@ class SchemaBuilder:
             elif i == len(self.filter_set_edges) - 1:
                 string = "||regex(?pred_inv&, &&))"
                 filter_query_pred_inv = filter_query_pred_inv + string.replace("&&", str(self.filter_set_edges[i]))
+        
         return filter_query_pred_inv
 
     def filter_query_vertex_gen(self):
@@ -65,6 +67,7 @@ class SchemaBuilder:
             elif i == len(self.filter_set_vertices) - 1:
                 string = "||regex(?n&, &&))"
                 filter_query_vertex = filter_query_vertex + string.replace("&&", str(self.filter_set_vertices[i]))
+        
         return filter_query_vertex
 
     def cypher_url_gen(self, sparql_query):
@@ -242,7 +245,7 @@ class PairwiseSchemaBuilder(SchemaBuilder):
             query_part2 = query_part2_open + query_part2_c + query_part2_close
 
         query = query_part1 + query_part2
-        print(query)
+
         return query
 
     def cypher_query_gen(self, depth, url):
@@ -271,6 +274,7 @@ class PairwiseSchemaBuilder(SchemaBuilder):
         query_part4 = query_part4 + final_string.replace("&", str(depth))
 
         query = query_part1 + query_part2 + query_part3 + query_part4
+
         return query
 
 
@@ -349,7 +353,7 @@ class ParentSchemaBuilder(SchemaBuilder):
             query_part2 = query_part2_open + query_part2_c + query_part2_close
 
         query = query_part1 + query_part2
-        print(query)
+
         return query
 
     def cypher_query_gen(self, depth, url):
@@ -375,6 +379,7 @@ class ParentSchemaBuilder(SchemaBuilder):
         query_part4 = query_part4 + final_string.replace("&", str(depth))
 
         query = query_part1 + query_part2 + query_part3 + query_part4
+
         return query
 
 
@@ -469,7 +474,7 @@ class PopulateSchemaBuilder(SchemaBuilder):
             query_part2 = query_part2_open + query_part2_c + query_part2_close
 
         query = query_part1 + query_part2
-        print(query)
+
         return query
 
     def cypher_query_gen(self, depth, url):
@@ -495,4 +500,5 @@ class PopulateSchemaBuilder(SchemaBuilder):
         query_part4 = query_part4 + final_string.replace("&", str(depth))
 
         query = query_part1 + query_part2 + query_part3 + query_part4
+
         return query
