@@ -384,7 +384,7 @@ class ParentSchemaBuilder(SchemaBuilder):
 
 
 class PopulateSchemaBuilder(SchemaBuilder):
-    def __init__(self, page):
+    def __init__(self, page, filter_set_edges=[], filter_set_vertices=[]):
         self.name = "PopulateSchemaBuilder on " + page
         self.page = page
         self.filter_set_edges = filter_set_edges
@@ -393,10 +393,11 @@ class PopulateSchemaBuilder(SchemaBuilder):
     def sparql_query_gen(self, depth):
         query_part1 = "\rSELECT "
         for i in range(depth):
-            string = "?pred& ?n& "
+            string = "?pred& ?pred_inv& ?n& "
             query_part1 = query_part1 + string.replace("&", str(i + 1))
 
         filter_query_pred = self.filter_query_pred_gen()
+        filter_query_pred_inv = self.filter_query_pred_inv_gen()
         filter_query_vertex = self.filter_query_vertex_gen()
         filter_query_vertex_mid = filter_query_vertex + filter_query_vertex.replace("&", "&&")
         filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", "||")
@@ -407,27 +408,27 @@ class PopulateSchemaBuilder(SchemaBuilder):
 
         query_part2_a = """
         { {
-            <""" + self.start_page + """> ?pred1 ?n1
+            <""" + self.page + """> ?pred1 ?n1
         } UNION {
-            ?n1 ?pred_inv1 <""" + self.start_page + """>
+            ?n1 ?pred_inv1 <""" + self.page + """>
         } } .
         """
         query_part2_b = """
         { {
             """ + filter_query_pred.replace("&", "1") + """
-            <""" + self.start_page + """> ?pred1 ?n1
+            <""" + self.page + """> ?pred1 ?n1
         } UNION {
             """ + filter_query_pred_inv.replace("&", "1") + """
-            ?n1 ?pred_inv1 <""" + self.start_page + """>
+            ?n1 ?pred_inv1 <""" + self.page + """>
         } } .
         """
         query_part2_c = """
         { {
             """ + filter_query_vertex.replace("&", "1") + """
-            <""" + self.start_page + """> ?pred1 ?n1
+            <""" + self.page + """> ?pred1 ?n1
         } UNION {
             """ + filter_query_vertex.replace("&", "1") + """
-            ?n1 ?pred_inv1 <""" + self.start_page + """>
+            ?n1 ?pred_inv1 <""" + self.page + """>
         } } .
         """
         for i in range(depth - 1):
@@ -489,6 +490,7 @@ class PopulateSchemaBuilder(SchemaBuilder):
         for i in range(depth):
             block = """
     FOREACH (x IN CASE WHEN row.pred&& IS NULL THEN [] ELSE [1] END | MERGE (n&)-[p:pred {iri: row.pred&&}]->(n&&))
+    FOREACH (x IN CASE WHEN row.pred_inv&& IS NULL THEN [] ELSE [1] END | MERGE (n&)<-[p:pred {iri: row.pred_inv&&}]-(n&&))
             """
             query_part3 = query_part3 + block.replace("&&", str(i + 1)).replace("&", str(i))
 

@@ -28,11 +28,17 @@ commit_cypher_query("MATCH (x) DETACH DELETE (x)")
 # commit_cypher_query_set(sch1.cypher_query_set_gen(3))
 # commit_cypher_query_set(sch1.cypher_query_set_gen(4))
 
-sch2a = builders.ParentSchemaBuilder("http://dbpedia.org/resource/Netflix", filter_set_edges=["dct:subject", "skos:broader", "rdf:type"], filter_set_vertices=[])
-commit_cypher_query_set(sch2a.cypher_query_set_gen(2))
+# sch2a = builders.ParentSchemaBuilder("http://dbpedia.org/resource/Netflix", filter_set_edges=["dct:subject", "skos:broader", "rdf:type"], filter_set_vertices=[])
+# commit_cypher_query_set(sch2a.cypher_query_set_gen(2))
 
-sch2b = builders.ParentSchemaBuilder("http://dbpedia.org/resource/Television", filter_set_edges=["dct:subject", "skos:broader", "rdf:type"], filter_set_vertices=[])
-commit_cypher_query_set(sch2b.cypher_query_set_gen(2))
+# sch2b = builders.ParentSchemaBuilder("http://dbpedia.org/resource/Television", filter_set_edges=["dct:subject", "skos:broader", "rdf:type"], filter_set_vertices=[])
+# commit_cypher_query_set(sch2b.cypher_query_set_gen(2))
+
+sch3a = builders.PopulateSchemaBuilder("http://dbpedia.org/resource/Category:Complex_systems_theory", filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+commit_cypher_query_set(sch3a.cypher_query_set_gen(1))
+
+sch3b = builders.PopulateSchemaBuilder("http://dbpedia.org/resource/Category:Systems_theory", filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+commit_cypher_query_set(sch3b.cypher_query_set_gen(1))
 
 # TODO LIST
 # + Clean up the code into one file.
