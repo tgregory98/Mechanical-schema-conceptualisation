@@ -2,7 +2,7 @@
 # print(sys.executable)
 
 import builders
-from py2neo import Database, Graph, Transaction, Cursor
+from py2neo import Database, Graph, Transaction
 
 db = Database("bolt://localhost:7687", auth=("neo4j", "cayley"))
 g = Graph("bolt://localhost:7687", auth=("neo4j", "cayley"))
@@ -12,6 +12,7 @@ def commit_cypher_query(cypher_query):
     tr = Transaction(g)
     tr.run(cypher_query)
     tr.commit()
+
 
 def commit_cypher_query_set(cypher_query_set):
     tr = Transaction(g)

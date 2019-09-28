@@ -1,5 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper
 
+
 class SchemaBuilder:
     def __init__(self, filter_set_edges=[], filter_set_vertices=[]):
         self.name = "SchemaBuilder"
@@ -108,7 +109,7 @@ SET x:article
 MATCH (x {prefix: "http://dbpedia.org/resource/Category:"})
 SET x:category
 """
-        
+
         cypher_query = self.cypher_query_gen_from_depth(depth)
         cypher_query_set = [cypher_query, cypher_build_node_ids, cypher_build_edge_ids, cypher_build_article_labels, cypher_build_category_labels]
 
@@ -223,9 +224,9 @@ class PairwiseSchemaBuilder(SchemaBuilder):
             <""" + self.end_page + """> ?pred_inv&& ?n&
         } } .
         """
-        query_part2_a = query_part2_a + final_block_a.replace("&&", str(depth)).replace("&", str(depth-1))
-        query_part2_b = query_part2_b + final_block_b.replace("&&", str(depth)).replace("&", str(depth-1))
-        query_part2_c = query_part2_c + final_block_c.replace("&&", str(depth)).replace("&", str(depth-1))
+        query_part2_a = query_part2_a + final_block_a.replace("&&", str(depth)).replace("&", str(depth - 1))
+        query_part2_b = query_part2_b + final_block_b.replace("&&", str(depth)).replace("&", str(depth - 1))
+        query_part2_c = query_part2_c + final_block_c.replace("&&", str(depth)).replace("&", str(depth - 1))
 
         query_part2_close = """
     }
@@ -248,7 +249,7 @@ class PairwiseSchemaBuilder(SchemaBuilder):
         query_part1 = "WITH \"" + url + "\" AS url\r\rLOAD CSV WITH HEADERS FROM url AS row\r\r"
 
         query_part2 = "MERGE (n0:page:start_page {iri: \"" + self.start_page + "\"})\r"
-        for i in range(depth-1):
+        for i in range(depth - 1):
             string = "MERGE (n&:page {iri: row.n&})\r"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
         final_string = "MERGE (n&:page:end_page {iri: \"" + self.end_page + "\"})\r"
@@ -376,7 +377,7 @@ class ParentSchemaBuilder(SchemaBuilder):
         query = query_part1 + query_part2 + query_part3 + query_part4
         return query
 
-# WIP
+
 class PopulateSchemaBuilder(SchemaBuilder):
     def __init__(self, page):
         self.name = "PopulateSchemaBuilder on " + page
