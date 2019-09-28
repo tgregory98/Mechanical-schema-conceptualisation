@@ -75,7 +75,7 @@ class SchemaBuilder:
 
         return url
 
-    def build_cypher_query(self, depth):
+    def cypher_query_gen_from_depth(self, depth):
         sparql_query = self.sparql_query_gen(depth)
         url = self.cypher_url_gen(sparql_query)
         cypher_initial = self.cypher_query_gen(depth, url)
@@ -109,7 +109,7 @@ MATCH (x {prefix: "http://dbpedia.org/resource/Category:"})
 SET x:category
 """
         
-        cypher_query = self.build_cypher_query(depth)
+        cypher_query = self.cypher_query_gen_from_depth(depth)
         cypher_query_set = [cypher_query, cypher_build_node_ids, cypher_build_edge_ids, cypher_build_article_labels, cypher_build_category_labels]
 
         return cypher_query_set
