@@ -3,7 +3,7 @@
 run.py is the build script which ties together the whole project. **Folder structure is as follows:**
 
 ## demo_schemas
-Contains the results of some of possible approaches. The results are png images exported from the Neo4j browser.
+Contains the results of some of the possible approaches. The results are png images exported from the Neo4j browser.
 ## modules
 Contains the Python modules that were written to intelligently query the DBpedia SPARQL endpoint using SPARQL, convert this to .csv format, import this into the Neo4j database with Cypher, and build the graph representing the desired schema.
 #### builders.py
