@@ -15,6 +15,7 @@
 - [x] Build LeafSchemaCleaner class.
 - [x] Create a modules folder.
 - [ ] Build DisjointParentSchemaCleaner class.
+- [ ] Port cypher_query_set_gen to enrichers.py.
 - [ ] Build dboClassSchemaFetcher class.
 - [ ] Update the cypher_query_set_gen() strings.
 - [ ] Instead of using higher depths, try looking at immediate neighbours with many edges, and use them as the new start/end nodes from which to build new schema.
