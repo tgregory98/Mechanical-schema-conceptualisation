@@ -1,7 +1,6 @@
 # Mechanical-schema-conceptualisation
 
-run.py is the build script which ties together the whole project.
-**Folder structure is as follows:**
+run.py is the build script which ties together the whole project. **Folder structure is as follows:**
 
 ## demo_schemas
 Contains the results of some of possible approaches. The results are png images exported from the Neo4j browser.
