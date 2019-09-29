@@ -1,6 +1,6 @@
 # Mechanical-schema-conceptualisation
 
-**README IS CURRENTLY A WORK IN PROGRESS.** Firstly, run.py is the build script which ties together the whole project. Now here is a breakdown of the file and folder structure.
+**README IS CURRENTLY A WORK IN PROGRESS.** First note that run.py is the build script which ties together the whole project. Now here's a breakdown of the file and folder structure.
 
 ## demo_schemas folder
 Contains the results of some of the possible approaches. The results are png images exported from the Neo4j browser.
