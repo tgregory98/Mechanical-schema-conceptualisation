@@ -1,10 +1,18 @@
-from SPARQLWrapper import SPARQLWrapper
-
-
 class SchemaCleaner:
+    def __init__(self, essential_nodes):
+        self.essential_nodes = essential_nodes
 
-MATCH (k)
-WITH k, size((k)-[:TYPE]->()) as degree
-WHERE k.Value='30 ' AND degree > 1
-MATCH (k)-[r:TYPE]->(n:ABC)
-RETURN n,r,k,degree;
+
+class LeafSchemaCleaner(SchemaCleaner):
+    def cypher_query_set_gen(self, depth):
+        cypher_query = """
+MATCH (x)
+WITH x, size((x)--()) as degree
+WHERE degree = 1
+DETACH DELETE (x)
+        """
+        cypher_query_set = []
+        for i in range(depth):
+            cypher_query_set.append(cypher_query)
+
+        return cypher_query_set

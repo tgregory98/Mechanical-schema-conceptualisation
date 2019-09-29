@@ -1,7 +1,7 @@
 # import sys
 # print(sys.executable)
 
-import builders
+import builders, cleaners
 from py2neo import Database, Graph, Transaction
 
 db = Database("bolt://localhost:7687", auth=("neo4j", "cayley"))
@@ -21,7 +21,10 @@ def commit_cypher_query_set(cypher_query_set):
     tr.commit()
 
 
-commit_cypher_query("MATCH (x) DETACH DELETE (x)")
+commit_cypher_query("""
+	MATCH (x)
+	DETACH DELETE (x)
+	""")
 
 # sch1 = builders.PairwiseSchemaBuilder("http://dbpedia.org/resource/Television", "http://dbpedia.org/resource/Netflix", filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 # commit_cypher_query_set(sch1.cypher_query_set_gen(2))
@@ -40,7 +43,10 @@ commit_cypher_query_set(sch3a.cypher_query_set_gen(1))
 sch3b = builders.PopulateSchemaBuilder("http://dbpedia.org/resource/Category:Systems_theory", filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 commit_cypher_query_set(sch3b.cypher_query_set_gen(1))
 
-# TODO LIST
+cl1 = cleaners.LeafSchemaCleaner(["http://dbpedia.org/resource/Category:Complex_systems_theory", "http://dbpedia.org/resource/Category:Systems_theory"])
+commit_cypher_query_set(cl1.cypher_query_set_gen(1))
+
+# To-Do LIST
 # + Clean up the code into one file.
 # + Build a class for building pairwise schema.
 # + Run a sequence of depth increasing queries.
@@ -53,6 +59,7 @@ commit_cypher_query_set(sch3b.cypher_query_set_gen(1))
 # + Move some node/ edge filter code to SchemaBuilder class.
 # + Split into two files, creating a builders.py module.
 # + Create cleaners.py and fetchers.py files.
-# - Create a PopulateSchemaBuilder subclass that populates all immediate neighbours.
+# + Create a PopulateSchemaBuilder subclass that populates all immediate neighbours.
+# + Build LeafSchemaCleaner class.
 # - Update the cypher_query_set_gen() strings.
 # - Instead of using higher depths, try looking at immediate neighbours with many edges, and use them as the new start/end nodes from which to build new schema.
