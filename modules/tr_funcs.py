@@ -1,0 +1,21 @@
+from py2neo import Graph, Transaction
+
+g = Graph("bolt://localhost:7687", auth=("neo4j", "cayley"))
+
+
+def commit_cypher_query(cypher_query):
+    tr = Transaction(g)
+    tr.run(cypher_query)
+    tr.commit()
+
+def commit_cypher_query_set(cypher_query_set):
+    tr = Transaction(g)
+    for cypher_query in cypher_query_set:
+        tr.run(cypher_query)
+    tr.commit()
+
+def commit_cypher_query_output(cypher_query):
+    tr = Transaction(g)
+    dictionary = tr.run(cypher_query).data()
+
+    return dictionary

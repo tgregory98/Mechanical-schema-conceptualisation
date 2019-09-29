@@ -1,4 +1,5 @@
 from SPARQLWrapper import SPARQLWrapper
+import modules.tr_funcs
 
 
 class SchemaBuilder:
@@ -79,44 +80,15 @@ class SchemaBuilder:
 
         return url
 
-    def cypher_query_gen_from_depth(self, depth):
+    def generate(self, depth):
         sparql_query = self.sparql_query_gen(depth)
         url = self.cypher_url_gen(sparql_query)
-        cypher_initial = self.cypher_query_gen(depth, url)
+        cypher_query = self.cypher_query_gen(depth, url)
 
-        return cypher_initial
+        return cypher_query
 
-    def cypher_query_set_gen(self, depth):
-        cypher_build_node_ids = """
-MATCH (x)
-
-SET (CASE left(x.iri,28) WHEN "http://dbpedia.org/resource/" THEN x END).id = toString(replace(x.iri,"http://dbpedia.org/resource/","")), (CASE left(x.iri,28) WHEN "http://dbpedia.org/resource/" THEN x END).prefix = "http://dbpedia.org/resource/"
-
-SET (CASE left(x.iri,37) WHEN "http://dbpedia.org/resource/Category:" THEN x END).id = toString(replace(x.iri,"http://dbpedia.org/resource/Category:","")), (CASE left(x.iri,37) WHEN "http://dbpedia.org/resource/Category:" THEN x END).prefix = "http://dbpedia.org/resource/Category:"
-"""
-
-        cypher_build_edge_ids = """
-MATCH (x)-[y]->(z)
-
-SET (CASE left(y.iri,25) WHEN "http://purl.org/dc/terms/" THEN y END).id = toString(replace(y.iri,"http://purl.org/dc/terms/","")), (CASE left(y.iri,25) WHEN "http://purl.org/dc/terms/" THEN y END).prefix = "http://purl.org/dc/terms/"
-
-SET (CASE left(y.iri,36) WHEN "http://www.w3.org/2004/02/skos/core#" THEN y END).id = toString(replace(y.iri,"http://www.w3.org/2004/02/skos/core#","")), (CASE left(y.iri,36) WHEN "http://www.w3.org/2004/02/skos/core#" THEN y END).prefix = "http://www.w3.org/2004/02/skos/core#"
-"""
-
-        cypher_build_article_labels = """
-MATCH (x {prefix: "http://dbpedia.org/resource/"})
-SET x:article
-"""
-
-        cypher_build_category_labels = """
-MATCH (x {prefix: "http://dbpedia.org/resource/Category:"})
-SET x:category
-"""
-
-        cypher_query = self.cypher_query_gen_from_depth(depth)
-        cypher_query_set = [cypher_query, cypher_build_node_ids, cypher_build_edge_ids, cypher_build_article_labels, cypher_build_category_labels]
-
-        return cypher_query_set
+    def build(self, depth):
+        modules.tr_funcs.commit_cypher_query(self.generate(depth))
 
 
 class PairwiseSchemaBuilder(SchemaBuilder):
@@ -251,11 +223,11 @@ class PairwiseSchemaBuilder(SchemaBuilder):
     def cypher_query_gen(self, depth, url):
         query_part1 = "WITH \"" + url + "\" AS url\r\rLOAD CSV WITH HEADERS FROM url AS row\r\r"
 
-        query_part2 = "MERGE (n0:page:start_page {iri: \"" + self.start_page + "\"})\r"
+        query_part2 = "MERGE (n0:root_node:page {iri: \"" + self.start_page + "\"})\r"
         for i in range(depth - 1):
-            string = "MERGE (n&:page {iri: row.n&})\r"
+            string = "MERGE (n&:nonroot_node:page {iri: row.n&})\r"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
-        final_string = "MERGE (n&:page:end_page {iri: \"" + self.end_page + "\"})\r"
+        final_string = "MERGE (n&:root_node:page {iri: \"" + self.end_page + "\"})\r"
         query_part2 = query_part2 + final_string.replace("&", str(depth))
 
         query_part3 = ""
@@ -359,9 +331,9 @@ class ParentSchemaBuilder(SchemaBuilder):
     def cypher_query_gen(self, depth, url):
         query_part1 = "WITH \"" + url + "\" AS url\r\rLOAD CSV WITH HEADERS FROM url AS row\r\r"
 
-        query_part2 = "MERGE (n0:page {iri: \"" + self.page + "\"})\r"
+        query_part2 = "MERGE (n0:root_node:page {iri: \"" + self.page + "\"})\r"
         for i in range(depth):
-            string = "MERGE (n&:page {iri: row.n&})\r"
+            string = "MERGE (n&:nonroot_node:page {iri: row.n&})\r"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
 
         query_part3 = ""
@@ -481,9 +453,9 @@ class PopulateSchemaBuilder(SchemaBuilder):
     def cypher_query_gen(self, depth, url):
         query_part1 = "WITH \"" + url + "\" AS url\r\rLOAD CSV WITH HEADERS FROM url AS row\r\r"
 
-        query_part2 = "MERGE (n0:page {iri: \"" + self.page + "\"})\r"
+        query_part2 = "MERGE (n0:root_node:page {iri: \"" + self.page + "\"})\r"
         for i in range(depth):
-            string = "MERGE (n&:page {iri: row.n&})\r"
+            string = "MERGE (n&:nonroot_node:page {iri: row.n&})\r"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
 
         query_part3 = ""
