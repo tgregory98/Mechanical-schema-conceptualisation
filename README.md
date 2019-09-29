@@ -1,6 +1,6 @@
 # Mechanical-schema-conceptualisation
 
-README IS CURRENTLY A WORK IN PROGRESS!
+**README IS CURRENTLY A WORK IN PROGRESS.**
 
 run.py is the build script which ties together the whole project. **Folder structure is as follows:**
 
