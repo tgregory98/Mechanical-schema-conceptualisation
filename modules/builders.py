@@ -25,7 +25,7 @@ class SchemaBuilder:
             elif i == len(self.filter_set_edges) - 1:
                 string = "||regex(?pred&, &&))"
                 filter_query_pred = filter_query_pred + string.replace("&&", str(self.filter_set_edges[i]))
-        
+
         return filter_query_pred
 
     def filter_query_pred_inv_gen(self):
