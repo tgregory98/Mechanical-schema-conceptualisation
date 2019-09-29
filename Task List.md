@@ -1,0 +1,17 @@
+# Task List
+- [x] Clean up the code into one file.
+- [x] Build a class for building pairwise schema.
+- [x] Run a sequence of depth increasing queries.
+- [x] Add a filter option to the class.
+- [x] Test out different search filters and optimise.
+- [x] Write a class for building parent schema.
+- [x] Write an inheritance class for PairwiseSchemaBuilder and ParentSchemaBuilder.
+- [x] Clean up code.
+- [x] Add options for node/ edge specific filters.
+- [x] Move some node/ edge filter code to SchemaBuilder class.
+- [x] Split into two files, creating a builders.py module.
+- [x] Create cleaners.py and fetchers.py files.
+- [x] Create a PopulateSchemaBuilder subclass that populates all immediate neighbours.
+- [x] Build LeafSchemaCleaner class.
+- [] Update the cypher_query_set_gen() strings.
+- [] Instead of using higher depths, try looking at immediate neighbours with many edges, and use them as the new start/end nodes from which to build new schema.
