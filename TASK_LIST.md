@@ -13,5 +13,5 @@
 - [x] Create cleaners.py and fetchers.py files.
 - [x] Create a PopulateSchemaBuilder subclass that populates all immediate neighbours.
 - [x] Build LeafSchemaCleaner class.
-- [] Update the cypher_query_set_gen() strings.
-- [] Instead of using higher depths, try looking at immediate neighbours with many edges, and use them as the new start/end nodes from which to build new schema.
+- [ ] Update the cypher_query_set_gen() strings.
+- [ ] Instead of using higher depths, try looking at immediate neighbours with many edges, and use them as the new start/end nodes from which to build new schema.
