@@ -5,12 +5,12 @@ class SchemaEnricher:
     def __init__(self):
         self.name = "SchemaEnricher"
 
-    def enrich(self):
-        modules.tr_funcs.commit_cypher_query_set(self.generate())
-
 
 class IdsLabelsSchemaEnricher(SchemaEnricher):
-    def generate(self):
+    def __init__(self):
+        self.name = "IdsLabelsSchemaEnricher"
+
+    def enrich(self):
         cypher_build_node_ids = """
 MATCH (x)
 
@@ -38,5 +38,4 @@ SET x:category
 """
 
         cypher_query_set = [cypher_build_node_ids, cypher_build_edge_ids, cypher_build_article_labels, cypher_build_category_labels]
-
-        return cypher_query_set
+        modules.tr_funcs.commit_cypher_query_set(cypher_query_set)

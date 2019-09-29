@@ -13,6 +13,9 @@ url2 = "http://dbpedia.org/resource/Television"
 url3 = "http://dbpedia.org/resource/Category:Complex_systems_theory"
 url4 = "http://dbpedia.org/resource/Category:Systems_theory"
 
+
+# BUILDERS
+
 # sch1 = modules.builders.PairwiseSchemaBuilder(url1, url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 # sch1.build(2)
 # sch1.build(3)
@@ -33,9 +36,26 @@ sch2b.build(3)
 # sch3b.build(1)
 
 
+# CLEANERS
+
 cl1 = modules.cleaners.LeafSchemaCleaner()
 cl1.clean(3)
 
+cl2 = modules.cleaners.DisjointParentSchemaCleaner()
+cl2.clean()
+
+# cl2 = modules.cleaners.DisjointParentSchemaCleaner()
+# root_nodes = commit_cypher_query_output(cl2.return_root_nodes_query())
+# print(root_nodes)
+# # commit_cypher_query(cl2.cypher_query_gen(root_nodes))
+
+
+# FETCHERS
+
+# Work in progress
+
+
+# ENRICHERS
 
 en1 = modules.enrichers.IdsLabelsSchemaEnricher()
 en1.enrich()

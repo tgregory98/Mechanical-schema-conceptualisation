@@ -14,7 +14,7 @@
 - [x] Create a PopulateSchemaBuilder subclass that populates all immediate neighbours.
 - [x] Build LeafSchemaCleaner class.
 - [x] Create a modules folder.
-- [x] Move Transactions operations to module scripts and move Cypher code for transactions to seperate file too.
+- [x] Move Transactions operations to module scripts and move Cypher code for transactions to seperate module too.
 - [x] Port cypher_query_set_gen to enrichers.py.
 - [ ] Build DisjointParentSchemaCleaner class using a community detection algorithm for connected components.
 - [ ] Make PairwiseSchemaBuilder run on a set of root_nodes.

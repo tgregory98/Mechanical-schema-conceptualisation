@@ -80,15 +80,11 @@ class SchemaBuilder:
 
         return url
 
-    def generate(self, depth):
+    def build(self, depth):
         sparql_query = self.sparql_query_gen(depth)
         url = self.cypher_url_gen(sparql_query)
         cypher_query = self.cypher_query_gen(depth, url)
-
-        return cypher_query
-
-    def build(self, depth):
-        modules.tr_funcs.commit_cypher_query(self.generate(depth))
+        modules.tr_funcs.commit_cypher_query(cypher_query)
 
 
 class PairwiseSchemaBuilder(SchemaBuilder):
