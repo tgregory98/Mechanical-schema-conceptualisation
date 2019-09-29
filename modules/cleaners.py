@@ -10,7 +10,7 @@ class SchemaCleaner:
 MATCH (x:root_node)
 RETURN x.iri
         """
-        root_nodes = modules.tr_funcs.commit_cypher_query_output(cypher_query_root_nodes)
+        root_nodes = modules.tr_funcs.commit_cypher_query_data(cypher_query_root_nodes)
         self.root_nodes = [root_nodes[i]["x.iri"] for i in range(len(root_nodes))]
 
 
@@ -45,9 +45,10 @@ CALL algo.unionFind.stream(
 YIELD nodeId,setId
 
 RETURN algo.asNode(nodeId).iri AS iri, setId
-            """
+        """
+
         print("Components:")
-        print(modules.tr_funcs.commit_cypher_query_output(cypher_query))
+        print(modules.tr_funcs.commit_cypher_query_data(cypher_query))
 
         for iri in self.root_nodes:
             cypher_query = """
@@ -55,4 +56,4 @@ MATCH (x:root_node {iri: \"""" + iri + """\"})--(y:nonroot_node)
 RETURN y.iri
             """
             print("\rNeighbours of " + iri + ":")
-            print(modules.tr_funcs.commit_cypher_query_output(cypher_query))
+            print(modules.tr_funcs.commit_cypher_query_data(cypher_query))

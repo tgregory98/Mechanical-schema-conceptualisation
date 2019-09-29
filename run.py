@@ -1,7 +1,9 @@
 # import sys
 # print(sys.executable)
 
+
 import modules.tr_funcs, modules.builders, modules.cleaners, modules.enrichers
+
 
 modules.tr_funcs.commit_cypher_query("""
 MATCH (x)
@@ -43,11 +45,6 @@ cl1.clean(3)
 
 cl2 = modules.cleaners.DisjointParentSchemaCleaner()
 cl2.clean()
-
-# cl2 = modules.cleaners.DisjointParentSchemaCleaner()
-# root_nodes = commit_cypher_query_output(cl2.return_root_nodes_query())
-# print(root_nodes)
-# # commit_cypher_query(cl2.cypher_query_gen(root_nodes))
 
 
 # FETCHERS
