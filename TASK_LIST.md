@@ -1,4 +1,4 @@
-# Task List
+# A task list for personal use
 - [x] Clean up the code into one file.
 - [x] Build a class for building pairwise schema.
 - [x] Run a sequence of depth increasing queries.
