@@ -33,18 +33,19 @@ commit_cypher_query("""
 # commit_cypher_query_set(sch1.cypher_query_set_gen(4))
 
 
-# sch2a = modules.builders.ParentSchemaBuilder("http://dbpedia.org/resource/Netflix", filter_set_edges=["dct:subject", "skos:broader", "rdf:type"], filter_set_vertices=[])
-# commit_cypher_query_set(sch2a.cypher_query_set_gen(2))
+sch2a = modules.builders.ParentSchemaBuilder("http://dbpedia.org/resource/Netflix", filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+commit_cypher_query_set(sch2a.cypher_query_set_gen(3))
 
-# sch2b = modules.builders.ParentSchemaBuilder("http://dbpedia.org/resource/Television", filter_set_edges=["dct:subject", "skos:broader", "rdf:type"], filter_set_vertices=[])
-# commit_cypher_query_set(sch2b.cypher_query_set_gen(2))
+sch2b = modules.builders.ParentSchemaBuilder("http://dbpedia.org/resource/Television", filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+commit_cypher_query_set(sch2b.cypher_query_set_gen(3))
 
 
-sch3a = modules.builders.PopulateSchemaBuilder("http://dbpedia.org/resource/Category:Complex_systems_theory", filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-commit_cypher_query_set(sch3a.cypher_query_set_gen(1))
+# sch3a = modules.builders.PopulateSchemaBuilder("http://dbpedia.org/resource/Category:Complex_systems_theory", filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+# commit_cypher_query_set(sch3a.cypher_query_set_gen(1))
 
-sch3b = modules.builders.PopulateSchemaBuilder("http://dbpedia.org/resource/Category:Systems_theory", filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-commit_cypher_query_set(sch3b.cypher_query_set_gen(1))
+# sch3b = modules.builders.PopulateSchemaBuilder("http://dbpedia.org/resource/Category:Systems_theory", filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+# commit_cypher_query_set(sch3b.cypher_query_set_gen(1))
 
-cl1 = modules.cleaners.LeafSchemaCleaner(["http://dbpedia.org/resource/Category:Complex_systems_theory", "http://dbpedia.org/resource/Category:Systems_theory"])
-commit_cypher_query_set(cl1.cypher_query_set_gen(1))
+
+cl1 = modules.cleaners.LeafSchemaCleaner(["http://dbpedia.org/resource/Netflix", "http://dbpedia.org/resource/Television"])
+commit_cypher_query_set(cl1.cypher_query_set_gen(3))
