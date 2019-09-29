@@ -10,6 +10,7 @@ Contains the Python modules that were written to (in this order):
 2. Convert the output to .csv format
 3. Import the .csv into the Neo4j database with Cypher
 4. Build the graph representing the desired schema
+5. Make the graph readable, relevant and visually intuitive
 #### builders.py file
 The main script responsible for querying and building the intial graphs. This script currently also does a bit of enriching with the method cypher_query_set_gen. This enriching method should eventually be moved to enrichers.py.
 #### cleaners.py file
