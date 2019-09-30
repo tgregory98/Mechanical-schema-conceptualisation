@@ -25,38 +25,29 @@ url4 = "http://dbpedia.org/resource/Category:Systems_theory"
 
 
 sch2a = modules.builders.ParentSchemaBuilder(url1, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-sch2a.build(3)
+sch2a.run(3)
 
 sch2b = modules.builders.ParentSchemaBuilder(url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-sch2b.build(3)
+sch2b.run(3)
 
 
 # sch3a = modules.builders.PopulateSchemaBuilder(url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-# sch3a.build(1)
+# sch3a.run(1)
 
 # sch3b = modules.builders.PopulateSchemaBuilder(url4, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-# sch3b.build(1)
+# sch3b.run(1)
 
 
 # CLEANERS
 
 cl1 = modules.cleaners.LeafSchemaCleaner()
-cl1.clean(3)
+cl1.run(3)
 
-# cl2 = modules.cleaners.OutdatedDisjointParentSchemaCleaner()
 cl2 = modules.cleaners.DisjointParentSchemaCleaner()
-cl2.clean(6)
-
-# cl3 = modules.cleaners.SingleComponentSchemaCleaner()
-# cl3.clean()
-
-
-# FETCHERS
-
-# Work-in-progress
+cl2.run()
 
 
 # ENRICHERS
 
 en1 = modules.enrichers.IdsLabelsSchemaEnricher()
-en1.enrich()
+en1.run()

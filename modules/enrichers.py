@@ -10,7 +10,7 @@ class IdsLabelsSchemaEnricher(SchemaEnricher):
     def __init__(self):
         self.name = "IdsLabelsSchemaEnricher"
 
-    def enrich(self):
+    def run(self):
         cypher_build_node_ids = """
 MATCH (x)
 

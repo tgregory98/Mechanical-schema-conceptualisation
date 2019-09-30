@@ -80,7 +80,7 @@ class SchemaBuilder:
 
         return url
 
-    def build(self, depth):
+    def run(self, depth):
         sparql_query = self.sparql_query_gen(depth)
         url = self.cypher_url_gen(sparql_query)
         cypher_query = self.cypher_query_gen(depth, url)
