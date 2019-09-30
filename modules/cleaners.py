@@ -1,5 +1,6 @@
 import modules.tr_funcs
-import numpy
+import random
+import string
 
 
 class SchemaCleaner:
@@ -43,7 +44,7 @@ CALL algo.unionFind.stream(
 "MATCH (x:nonroot_node) RETURN id(x) AS id",
 "MATCH (x:nonroot_node)-->(y:nonroot_node) RETURN id(x) AS source, id(y) AS target",
 {graph: "cypher"})
-YIELD nodeId,setId
+YIELD nodeId, setId
 
 RETURN algo.asNode(nodeId).iri AS iri, setId
         """
@@ -90,3 +91,85 @@ RETURN y.iri
         DETACH DELETE (x)
         """
         modules.tr_funcs.commit_cypher_query(cypher_query)
+
+
+class DisjointParentSchemaCleaner(SchemaCleaner):
+    def __init__(self):
+        self.name = "DisjointParentSchemaCleaner"
+
+    def clean(self, depth):
+        self.stats_gen()
+
+
+class DisjointParentSchemaCleanerOLD(SchemaCleaner):
+    def __init__(self):
+        self.name = "DisjointParentSchemaCleanerOLD"
+
+    def clean(self, depth):
+        self.stats_gen()
+
+        size = int((depth - 2) * (depth - 1) / 2)
+        self.node_tags = self.random_string_set_gen(size, 3)
+        self.RETURN_statement = "RETURN "
+
+        cypher_query = ""
+
+        for i in self.combinations(self.root_nodes):
+            cypher_query = cypher_query + self.MATCH_query_gen(depth, i[0], i[1])
+
+        cypher_query = cypher_query + "\r" + self.RETURN_statement[:-2]
+        print(cypher_query)
+        modules.tr_funcs.commit_cypher_query(cypher_query)
+
+    def random_string_set_gen(self, size, item_length):
+        letters = string.ascii_lowercase
+        output_set = []
+        while len(output_set) < size:
+            item = "".join(random.choice(letters) for i in range(item_length))
+            if item in output_set:
+                continue
+            else:
+                output_set.append(item)
+
+        return output_set
+
+    def combinations(self, input_set):
+        output_set = []
+        for i in input_set:
+            for j in input_set:
+                if i == j:
+                    continue
+                elif i < j:
+                    output_set.append([i, j])
+
+        return output_set
+
+    def MATCH_query_gen(self, depth, url1, url2):
+        cypher_query = ""
+        for i in range(2, depth):
+            pattern = "MATCH "
+            for j in range(i + 1):
+                if j == 0:
+                    pattern = pattern + "($0:root_node {iri: \"" + url1 + "\"})&1"
+                elif j < i:
+                    pattern = pattern + "($" + str(j) + ":nonroot_node)&" + str(j + 1)
+                elif j == i:
+                    pattern = pattern + "($" + str(j) + ":root_node {iri: \"" + url2 + "\"})"
+            # print("\rpattern: " + str(pattern))
+            for j in range(1, i):
+                # print("\rpivot vertex: " + str(j))
+                temp_pattern = pattern
+                for k in range(0, j):
+                    # print("    right: " + str(k + 1))
+                    temp_pattern = temp_pattern.replace("&" + str(k + 1), "-->")
+                for k in range(j, i):
+                    # print("    left: " + str(k + 1))
+                    temp_pattern = temp_pattern.replace("&" + str(k + 1), "<--")
+                # print(temp_pattern)
+                cypher_query = cypher_query + temp_pattern.replace("$", self.node_tags[0]) + "\r"
+                for k in range(i + 1):
+                    self.RETURN_statement = self.RETURN_statement + self.node_tags[0] + str(k) + ", "
+                self.node_tags.pop(0)
+        # print("\rcypher_query:\r" + str(cypher_query))
+
+        return cypher_query
