@@ -101,9 +101,9 @@ class DisjointParentSchemaCleaner(SchemaCleaner):
         self.stats_gen()
 
 
-class DisjointParentSchemaCleanerOLD(SchemaCleaner):
+class OutdatedDisjointParentSchemaCleaner(SchemaCleaner):
     def __init__(self):
-        self.name = "DisjointParentSchemaCleanerOLD"
+        self.name = "OutdatedDisjointParentSchemaCleaner"
 
     def clean(self, depth):
         self.stats_gen()

@@ -18,7 +18,7 @@
 - [x] Port cypher_query_set_gen to enrichers.py.
 - [x] Build SingleComponentSchemaCleaner class using a community detection algorithm for connected components.
 - [x] Build the DisjointParentSchemaCleaner class with the right idea this time.
-- [ ] Rebuild the DisjointParentSchemaCleaner class algorithm in such a way that removes the vertices we don't want instead of selecting the ones that we do want (the query proved too long for Neo4j to handle).
+- [ ] Rebuild the DisjointParentSchemaCleaner class algorithm. The previous algorithm produced a Cypher query that was too long and so it doesn't run. There is a much simpler way of doing this.
 - [ ] Make PairwiseSchemaBuilder run on a set of root_nodes.
 - [ ] Build dboClassSchemaFetcher class.
 - [ ] Update the cypher_query_set_gen() strings.
