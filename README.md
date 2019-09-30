@@ -1,4 +1,4 @@
-# Mechanical-schema-conceptualisation
+# Schema-collect
 
 **README IS CURRENTLY A WORK IN PROGRESS.** First note that run.py is the build script which ties together the whole project. Now here's a breakdown of the file and folder structure.
 
