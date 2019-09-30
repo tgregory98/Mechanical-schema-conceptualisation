@@ -1,6 +1,4 @@
 import modules.tr_funcs
-import random
-import string
 
 
 class SchemaCleaner:
