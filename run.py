@@ -43,7 +43,7 @@ sch2b.build(3)
 cl1 = modules.cleaners.LeafSchemaCleaner()
 cl1.clean(3)
 
-cl2 = modules.cleaners.DisjointParentSchemaCleaner()
+cl2 = modules.cleaners.SingleComponentSchemaCleaner()
 cl2.clean()
 
 
