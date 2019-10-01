@@ -6,6 +6,12 @@
   text-color-internal: #FFFFFF;
   font-size: 10px;
 }
+node.* {
+  color: #ECB5C9;
+  border-color: #da7298;
+  text-color-internal: #604A0E;
+  defaultCaption: "<id>";
+}
 relationship {
   color: #A5ABB6;
   shaft-width: 1px;
@@ -59,9 +65,4 @@ node.root_node {
   defaultCaption: "<id>";
   caption: "{id}";
 }
-node.* {
-  color: #ECB5C9;
-  border-color: #da7298;
-  text-color-internal: #604A0E;
-  defaultCaption: "<id>";
-}
+

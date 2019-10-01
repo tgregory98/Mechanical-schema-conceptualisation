@@ -20,6 +20,7 @@
 - [x] Build the DisjointParentSchemaCleaner class with the right idea this time.
 - [x] Rebuild the DisjointParentSchemaCleaner class algorithm. The previous algorithm produced a Cypher query that was too long and doesn't run. There is a much simpler way of doing this.
 - [x] Finish off building the DisjointParentSchemaCleaner class by configuring the depth variable in the query generation.
-- [ ] Make DisjointParentSchemaCleaner run on a set on nodes as opposed to just the two.
+- [x] Make DisjointParentSchemaCleaner run on a set on nodes as opposed to just the two.
+- [x] Refine the querying for DisjointParentSchemaCleaner to slightly more precise patterns.
 - [ ] Start building the front-end.
 - [ ] Update the cypher_query_set_gen() strings.
