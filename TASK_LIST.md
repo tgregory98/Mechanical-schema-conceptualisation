@@ -19,7 +19,6 @@
 - [x] Build SingleComponentSchemaCleaner class using a community detection algorithm for connected components.
 - [x] Build the DisjointParentSchemaCleaner class with the right idea this time.
 - [x] Rebuild the DisjointParentSchemaCleaner class algorithm. The previous algorithm produced a Cypher query that was too long and doesn't run. There is a much simpler way of doing this.
-- [ ] Make PairwiseSchemaBuilder run on a set of root_nodes.
-- [ ] Build dboClassSchemaFetcher class.
+- [ ] Finish off building the DisjointParentSchemaCleaner class by configuring the depth variable in the query generation.
+- [ ] Make all algorithms run on a set on nodes as opposed to just the two.
 - [ ] Update the cypher_query_set_gen() strings.
-- [ ] Instead of using higher depths, try looking at immediate neighbours with many edges, and use them as the new start/end nodes from which to build new schema.
