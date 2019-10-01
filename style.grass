@@ -21,6 +21,18 @@ node.* {
   text-color-internal: #FFFFFF;
   defaultCaption: "<id>";
 }
+node.Television {
+  color: #ECB5C9;
+  border-color: #da7298;
+  text-color-internal: #604A0E;
+  defaultCaption: "<id>";
+}
+node.Netflix {
+  color: #4C8EDA;
+  border-color: #2870c2;
+  text-color-internal: #FFFFFF;
+  defaultCaption: "<id>";
+}
 node.nonroot_node {
   color: #F16667;
   border-color: #eb2728;

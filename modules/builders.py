@@ -8,6 +8,12 @@ class SchemaBuilder:
         self.filter_set_edges = filter_set_edges
         self.filter_set_vertices = filter_set_vertices
 
+    def fetch_node_id(self, page):
+        output = page.replace("http://dbpedia.org/resource/Category:", "")
+        output = page.replace("http://dbpedia.org/resource/", "")
+
+        return output
+
     def filter_query_pred_gen(self):
         filter_query_pred = ""
         for i in range(len(self.filter_set_edges)):
@@ -85,6 +91,15 @@ class SchemaBuilder:
         url = self.cypher_url_gen(sparql_query)
         cypher_query = self.cypher_query_gen(depth, url)
         modules.tr_funcs.commit_cypher_query(cypher_query)
+
+        cypher_query_combine_nodes = """
+MATCH (n1),(n2)
+WHERE n1.iri = n2.iri and id(n1) < id(n2)
+WITH [n1,n2] as ns
+CALL apoc.refactor.mergeNodes(ns) YIELD node
+RETURN node
+        """
+        modules.tr_funcs.commit_cypher_query(cypher_query_combine_nodes)
 
 
 class PairwiseSchemaBuilder(SchemaBuilder):
@@ -219,11 +234,11 @@ class PairwiseSchemaBuilder(SchemaBuilder):
     def cypher_query_gen(self, depth, url):
         query_part1 = "WITH \"" + url + "\" AS url\r\rLOAD CSV WITH HEADERS FROM url AS row\r\r"
 
-        query_part2 = "MERGE (n0:root_node:page {iri: \"" + self.start_page + "\"})\r"
+        query_part2 = "MERGE (n0:root_node {iri: \"" + self.start_page + "\"})\r"
         for i in range(depth - 1):
-            string = "MERGE (n&:nonroot_node:page {iri: row.n&})\r"
+            string = "MERGE (n&:nonroot_node {iri: row.n&})\r"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
-        final_string = "MERGE (n&:root_node:page {iri: \"" + self.end_page + "\"})\r"
+        final_string = "MERGE (n&:root_node {iri: \"" + self.end_page + "\"})\r"
         query_part2 = query_part2 + final_string.replace("&", str(depth))
 
         query_part3 = ""
@@ -327,9 +342,11 @@ class ParentSchemaBuilder(SchemaBuilder):
     def cypher_query_gen(self, depth, url):
         query_part1 = "WITH \"" + url + "\" AS url\r\rLOAD CSV WITH HEADERS FROM url AS row\r\r"
 
-        query_part2 = "MERGE (n0:root_node:page {iri: \"" + self.page + "\"})\r"
+        node_id = self.fetch_node_id(self.page)
+
+        query_part2 = "MERGE (n0:root_node:" + node_id + " {iri: \"" + self.page + "\"})\r"
         for i in range(depth):
-            string = "MERGE (n&:nonroot_node:page {iri: row.n&})\r"
+            string = "MERGE (n&:nonroot_node:" + node_id + " {iri: row.n&})\r"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
 
         query_part3 = ""
@@ -449,9 +466,11 @@ class PopulateSchemaBuilder(SchemaBuilder):
     def cypher_query_gen(self, depth, url):
         query_part1 = "WITH \"" + url + "\" AS url\r\rLOAD CSV WITH HEADERS FROM url AS row\r\r"
 
-        query_part2 = "MERGE (n0:root_node:page {iri: \"" + self.page + "\"})\r"
+        node_id = self.fetch_node_id(self.page)
+
+        query_part2 = "MERGE (n0:root_node:" + node_id + " {iri: \"" + self.page + "\"})\r"
         for i in range(depth):
-            string = "MERGE (n&:nonroot_node:page {iri: row.n&})\r"
+            string = "MERGE (n&:nonroot_node:" + node_id + " {iri: row.n&})\r"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
 
         query_part3 = ""

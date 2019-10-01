@@ -19,9 +19,9 @@ url4 = "http://dbpedia.org/resource/Category:Systems_theory"
 # BUILDERS
 
 # sch1 = modules.builders.PairwiseSchemaBuilder(url1, url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-# sch1.build(2)
-# sch1.build(3)
-# sch1.build(4)
+# sch1.run(2)
+# sch1.run(3)
+# sch1.run(4)
 
 
 sch2a = modules.builders.ParentSchemaBuilder(url1, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
@@ -40,11 +40,11 @@ sch2b.run(3)
 
 # CLEANERS
 
-cl1 = modules.cleaners.LeafSchemaCleaner()
-cl1.run(3)
+cl1 = modules.cleaners.DisjointParentSchemaCleaner()
+cl1.run()
 
-cl2 = modules.cleaners.DisjointParentSchemaCleaner()
-cl2.run()
+cl2 = modules.cleaners.LeafSchemaCleaner()
+cl2.run(3)
 
 
 # ENRICHERS
