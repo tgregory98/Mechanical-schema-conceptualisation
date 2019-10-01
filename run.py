@@ -41,7 +41,7 @@ sch2b.run(3)
 # CLEANERS
 
 cl1 = modules.cleaners.DisjointParentSchemaCleaner()
-cl1.run()
+cl1.run(3)
 
 cl2 = modules.cleaners.LeafSchemaCleaner()
 cl2.run(3)

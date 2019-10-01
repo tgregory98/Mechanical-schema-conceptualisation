@@ -35,7 +35,7 @@ RETURN DISTINCT labels(x)
         output = modules.tr_funcs.commit_cypher_query_numpy(cypher_query).tolist()
         self.root_labels = [output[i][0][1] for i in range(len(output))]
 
-    def run(self):
+    def run(self, depth):
         self.get_root_labels()
         # Currently only supports two vertices, and a depth of 3
         cypher_query_1 = """
