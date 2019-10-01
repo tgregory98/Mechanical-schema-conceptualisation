@@ -14,6 +14,7 @@ url1 = "http://dbpedia.org/resource/Netflix"
 url2 = "http://dbpedia.org/resource/Television"
 url3 = "http://dbpedia.org/resource/Category:Complex_systems_theory"
 url4 = "http://dbpedia.org/resource/Category:Systems_theory"
+url5 = "http://dbpedia.org/resource/Smart_TV"
 
 
 # BUILDERS
@@ -25,10 +26,13 @@ url4 = "http://dbpedia.org/resource/Category:Systems_theory"
 
 
 sch2a = modules.builders.ParentSchemaBuilder(url1, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-sch2a.run(3)
+sch2a.run(2)
 
 sch2b = modules.builders.ParentSchemaBuilder(url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-sch2b.run(3)
+sch2b.run(2)
+
+sch2b = modules.builders.ParentSchemaBuilder(url5, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+sch2b.run(2)
 
 
 # sch3a = modules.builders.PopulateSchemaBuilder(url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
@@ -41,10 +45,10 @@ sch2b.run(3)
 # CLEANERS
 
 cl1 = modules.cleaners.DisjointParentSchemaCleaner()
-cl1.run(3)
+cl1.run(2)
 
-cl2 = modules.cleaners.LeafSchemaCleaner()
-cl2.run(3)
+# cl2 = modules.cleaners.LeafSchemaCleaner()
+# cl2.run(3)
 
 
 # ENRICHERS

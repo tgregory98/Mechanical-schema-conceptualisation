@@ -34,6 +34,12 @@ node.Television {
   text-color-internal: #604A0E;
   defaultCaption: "<id>";
 }
+node.Smart_TV {
+  color: #4C8EDA;
+  border-color: #2870c2;
+  text-color-internal: #FFFFFF;
+  defaultCaption: "<id>";
+}
 node.category {
   color: #DA7194;
   border-color: #cc3c6c;
@@ -52,4 +58,10 @@ node.root_node {
   text-color-internal: #FFFFFF;
   defaultCaption: "<id>";
   caption: "{id}";
+}
+node.* {
+  color: #ECB5C9;
+  border-color: #da7298;
+  text-color-internal: #604A0E;
+  defaultCaption: "<id>";
 }

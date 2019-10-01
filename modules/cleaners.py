@@ -35,10 +35,19 @@ RETURN DISTINCT labels(x)
         output = modules.tr_funcs.commit_cypher_query_numpy(cypher_query).tolist()
         self.root_labels = [output[i][0][1] for i in range(len(output))]
 
+    def combinations(self, root_labels):
+        root_label_combinations = []
+        for i in root_labels:
+            for j in root_labels:
+                if i < j:
+                    root_label_combinations.append([i, j])
+
+        self.root_label_combinations = root_label_combinations
+
     def run(self, depth):
         self.get_root_labels()
+        self.combinations(self.root_labels)
 
-        # Currently only supports two vertices
         match_a = "MATCH (z&)-->"
         match_b = "(x)\r"
         pattern_statements = ""
@@ -51,9 +60,18 @@ RETURN DISTINCT labels(x)
             match_a = match_a + "()-->"
 
         cypher_query_1 = """
-MATCH (x:""" + self.root_labels[0] + """:""" + self.root_labels[1] + """)
+MATCH (x:root_1:root_2)
 MATCH (y:root_node)\r""" + pattern_statements + set_statement + return_statement
-        print(cypher_query_1)
+        
+        cypher_query_set = []
+        for i in self.root_label_combinations:
+            x = cypher_query_1.replace("root_1", i[0]).replace("root_2", i[1])
+            cypher_query_set.append(x)
+            print(i)
+
+        print(cypher_query_set[0])
+        print(cypher_query_set[1])
+        print(cypher_query_set[2])
 
         cypher_query_2 = """
 MATCH (x)
@@ -67,5 +85,5 @@ SET x.keep = NULL
 RETURN x
         """
 
-        cypher_query_set = [cypher_query_1, cypher_query_2, cypher_query_3]
+        cypher_query_set = cypher_query_set + [cypher_query_2, cypher_query_3]
         modules.tr_funcs.commit_cypher_query_set(cypher_query_set)
