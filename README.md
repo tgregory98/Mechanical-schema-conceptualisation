@@ -6,13 +6,13 @@
 ###### I took three alternative approaches, all of which are listed below in decreasing order of effectiveness. Most queries (in both SPARQL and in Cypher) are generated dynamically depending on properties such as depth, and I have also written in filter options where possible. It all runs from one file, and can go from a blank slate to a fully populated final schema in a matter of seconds.
 
 ## Showcase
-#### ParentSchemaBuilder+DisjointParentSchemaCleaner
+#### 1. ParentSchemaBuilder+DisjointParentSchemaCleaner
 ![ParentSchemaBuilder+DisjointParentSchemaCleaner image](https://github.com/tgregory98/Schema-structure/blob/master/demo_schemas/ParentSchemaBuilder%2BDisjointParentSchemaCleaner%20(3%20root%20nodes).png)
 
-#### PairwiseSchemaBuilder
+#### 2. PairwiseSchemaBuilder
 ![PairwiseSchemaBuilder image](https://github.com/tgregory98/Schema-structure/blob/master/demo_schemas/PairwiseSchemaBuilder.png)
 
-#### PopulateSchemaBuilder+LeafSchemaCleaner
+#### 3. PopulateSchemaBuilder+LeafSchemaCleaner
 ![PopulateSchemaBuilder+LeafSchemaCleaner image](https://github.com/tgregory98/Schema-structure/blob/master/demo_schemas/PopulateSchemaBuilder%2BLeafSchemaCleaner.png)
 
 ## File/ folder structure
