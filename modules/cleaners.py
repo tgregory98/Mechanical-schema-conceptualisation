@@ -53,7 +53,6 @@ RETURN DISTINCT labels(x)
 MATCH (x:root_node)
 MATCH (y:root_1:root_2)
 SET x.keep = 1, y.keep = 1
-RETURN x, y
         """
         cypher_query_1_set.append(cypher_query_1a)
         
@@ -61,20 +60,16 @@ RETURN x, y
         match_b = "(y:root_1:root_2)\r"
         pattern_statement = ""
         set_statement = "SET n1.keep = 1"
-        return_statement = "\rRETURN x, y, n1"
         if depth >= 2:
-            cypher_query_1b = match_a + match_b + set_statement + return_statement
-            print(cypher_query_1b)
+            cypher_query_1b = match_a + match_b + set_statement
             cypher_query_1_set.append(cypher_query_1b)
             
             for i in range(depth - 2):
                 match_a = match_a + "(n&)-->".replace("&", str(i + 2))
                 pattern_statement = pattern_statement + match_a + match_b
                 set_statement = set_statement + ", n" + str(i + 2) + ".keep = 1"
-                return_statement = return_statement + ", n" + str(i + 2)
 
-                cypher_query_1c = pattern_statement + set_statement + return_statement
-                print(cypher_query_1c)
+                cypher_query_1c = pattern_statement + set_statement
                 cypher_query_1_set.append(cypher_query_1c)
         
         cypher_query_set = []
@@ -92,7 +87,6 @@ DETACH DELETE x
         cypher_query_3 = """
 MATCH (x)
 SET x.keep = NULL
-RETURN x
         """
 
         cypher_query_set = cypher_query_set + [cypher_query_2, cypher_query_3]

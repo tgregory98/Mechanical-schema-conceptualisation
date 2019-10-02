@@ -249,14 +249,7 @@ class PairwiseSchemaBuilder(SchemaBuilder):
             """
             query_part3 = query_part3 + block.replace("&&", str(i + 1)).replace("&", str(i))
 
-        query_part4 = "\rRETURN "
-        for i in range(depth):
-            string = "n&, "
-            query_part4 = query_part4 + string.replace("&", str(i))
-        final_string = "n&"
-        query_part4 = query_part4 + final_string.replace("&", str(depth))
-
-        query = query_part1 + query_part2 + query_part3 + query_part4
+        query = query_part1 + query_part2 + query_part3
 
         return query
 
@@ -356,14 +349,7 @@ class ParentSchemaBuilder(SchemaBuilder):
             """
             query_part3 = query_part3 + block.replace("&&", str(i + 1)).replace("&", str(i))
 
-        query_part4 = "\rRETURN "
-        for i in range(depth):
-            string = "n&, "
-            query_part4 = query_part4 + string.replace("&", str(i))
-        final_string = "n&"
-        query_part4 = query_part4 + final_string.replace("&", str(depth))
-
-        query = query_part1 + query_part2 + query_part3 + query_part4
+        query = query_part1 + query_part2 + query_part3
 
         return query
 
@@ -481,13 +467,6 @@ class PopulateSchemaBuilder(SchemaBuilder):
             """
             query_part3 = query_part3 + block.replace("&&", str(i + 1)).replace("&", str(i))
 
-        query_part4 = "\rRETURN "
-        for i in range(depth):
-            string = "n&, "
-            query_part4 = query_part4 + string.replace("&", str(i))
-        final_string = "n&"
-        query_part4 = query_part4 + final_string.replace("&", str(depth))
-
-        query = query_part1 + query_part2 + query_part3 + query_part4
+        query = query_part1 + query_part2 + query_part3
 
         return query
