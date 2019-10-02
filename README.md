@@ -4,13 +4,13 @@
 ###### A Python program that querys DBpedia's RDF dataset, a community maintained dataset based off Wikipedia, via the SPARQL endpoint. Then it uses this data to intelligently build "schema" representing the connections between articles from across Wikipedia. These schema are built with Cypher on the Neo4j graph database platform. The main aims of this program were to successfully wrangle the data and then to find clear schema representations, without overburdening the database. This program will be the first stage of a broader project.
 
 ## Showcase
-###### ParentSchemaBuilder+DisjointParentSchemaCleaner
+#### ParentSchemaBuilder+DisjointParentSchemaCleaner
 ![ParentSchemaBuilder+DisjointParentSchemaCleaner image](https://github.com/tgregory98/Schema-structure/blob/master/demo_schemas/ParentSchemaBuilder%2BDisjointParentSchemaCleaner%20(3%20root%20nodes).png)
 
-###### PairwiseSchemaBuilder
+#### PairwiseSchemaBuilder
 ![PairwiseSchemaBuilder image](https://github.com/tgregory98/Schema-structure/blob/master/demo_schemas/PairwiseSchemaBuilder.png)
 
-###### PopulateSchemaBuilder+LeafSchemaCleaner
+#### PopulateSchemaBuilder+LeafSchemaCleaner
 ![PopulateSchemaBuilder+LeafSchemaCleaner image](https://github.com/tgregory98/Schema-structure/blob/master/demo_schemas/PopulateSchemaBuilder%2BLeafSchemaCleaner.png)
 
 ## File/ folder structure
