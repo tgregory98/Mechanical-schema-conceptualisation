@@ -3,7 +3,7 @@
 
 ###### A Python program that querys DBpedia's RDF dataset, a community maintained dataset based off Wikipedia, via the SPARQL endpoint. Then it uses this data to intelligently build "schema" representing the connections between articles from across Wikipedia. These schema are built with Cypher on the Neo4j graph database platform. The main aims of this program were to successfully wrangle the data, and then to rapidly find clear schema representations. This program will be the first stage of a broader project.
 
-###### I took three alternative approaches, all of which are listed below in decreasing order of effectiveness. Most queries (in both SPARQL and Cypher) are dynamically generated based off properties such as depth, and in addition to this, where possible I have written in filter options. It all runs from one file, and can go from a blank slate to a fully populated final schema in a matter of seconds.
+###### I took three alternative approaches, all of which are listed below in decreasing order of effectiveness. Most queries (in both SPARQL and Cypher) are dynamically generated based off properties such as depth. Where possible, I have also written built-in filter options. It all runs from one file using class instances, and can go from a blank slate to a fully populated final schema in a matter of seconds.
 
 ## Showcase
 #### 1. ParentSchemaBuilder+DisjointParentSchemaCleaner
