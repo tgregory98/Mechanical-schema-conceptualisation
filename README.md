@@ -7,21 +7,21 @@
 
 ## Showcase
 #### 1. ParentSchemaBuilder+DisjointParentSchemaCleaner
-![ParentSchemaBuilder+DisjointParentSchemaCleaner image](https://github.com/tgregory98/Schema-structure/blob/master/demo_schemas/ParentSchemaBuilder%2BDisjointParentSchemaCleaner%20(3%20root%20nodes).png)
+![ParentSchemaBuilder+DisjointParentSchemaCleaner image]()
 
 #### 2. PairwiseSchemaBuilder
-![PairwiseSchemaBuilder image](https://github.com/tgregory98/Schema-structure/blob/master/demo_schemas/PairwiseSchemaBuilder.png)
+![PairwiseSchemaBuilder image]()
 
 #### 3. PopulateSchemaBuilder+LeafSchemaCleaner
-![PopulateSchemaBuilder+LeafSchemaCleaner image](https://github.com/tgregory98/Schema-structure/blob/master/demo_schemas/PopulateSchemaBuilder%2BLeafSchemaCleaner.png)
+![PopulateSchemaBuilder+LeafSchemaCleaner image]()
 
 ## File/ folder structure
 - **demo_schemas** - contains the image results of some of the possible approaches.
 - **modules** - contains the scripts which do most of the heavylifting.
-    - builders.py - the main script responsible for querying and building the intial graphs.
+    - builders.py - the main script responsible for querying and building the initial graphs.
     - cleaners.py - this script removes unwanted information from the graph.
-    - enrichers.py - this script makes the data in the graph more readable and modifies the way the graph looks.
-    - tr_funcs.py
-- TASK_LIST.md
-- run.py
-- style.grass
+    - enrichers.py - this script makes the data in the graph more readable and modifies the way the graph gets styled.
+    - tr_funcs.py - this script provides database Transaction utilities for use across the project.
+- TASK_LIST.md - a task list for personal use.
+- run.py - the script that we 'run', and acts as a dashboard for arranging the various components of the graph we wish to build.
+- style.grass - a loose file which may be uploaded to the Neo4j browser for personalised styling.

@@ -22,5 +22,6 @@
 - [x] Finish off building the DisjointParentSchemaCleaner class by configuring the depth variable in the query generation.
 - [x] Make DisjointParentSchemaCleaner run on a set on nodes as opposed to just the two.
 - [x] Refine the querying for DisjointParentSchemaCleaner to slightly more precise patterns.
+- [x] Clean up demo images ready for first release.
 - [ ] Start building the front-end.
 - [ ] Create a module to optimise the building and cleaning processes.
