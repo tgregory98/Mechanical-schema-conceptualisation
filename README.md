@@ -5,13 +5,13 @@
 
 ## Showcase
 ###### ParentSchemaBuilder+DisjointParentSchemaCleaner
-Image.
+![ParentSchemaBuilder+DisjointParentSchemaCleaner image](https://github.com/tgregory98/Schema-structure/blob/master/demo_schemas/ParentSchemaBuilder%2BDisjointParentSchemaCleaner%20(3%20root%20nodes).png)
 
 ###### PairwiseSchemaBuilder
-Image.
+![PairwiseSchemaBuilder image](https://github.com/tgregory98/Schema-structure/blob/master/demo_schemas/PairwiseSchemaBuilder.png)
 
 ###### PopulateSchemaBuilder+LeafSchemaCleaner
-Image.
+![PopulateSchemaBuilder+LeafSchemaCleaner image](https://github.com/tgregory98/Schema-structure/blob/master/demo_schemas/PopulateSchemaBuilder%2BLeafSchemaCleaner.png)
 
 ## File/ folder structure
 - **demo_schemas** - contains the image results of some of the possible approaches.
