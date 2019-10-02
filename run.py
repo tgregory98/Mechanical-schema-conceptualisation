@@ -31,8 +31,8 @@ sch2a.run(3)
 sch2b = modules.builders.ParentSchemaBuilder(url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 sch2b.run(3)
 
-# sch2b = modules.builders.ParentSchemaBuilder(url5, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-# sch2b.run(2)
+sch2c = modules.builders.ParentSchemaBuilder(url5, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+sch2c.run(3)
 
 
 # sch3a = modules.builders.PopulateSchemaBuilder(url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])

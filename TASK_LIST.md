@@ -23,4 +23,4 @@
 - [x] Make DisjointParentSchemaCleaner run on a set on nodes as opposed to just the two.
 - [x] Refine the querying for DisjointParentSchemaCleaner to slightly more precise patterns.
 - [ ] Start building the front-end.
-- [ ] Update the cypher_query_set_gen() strings.
+- [ ] Create a module to optimise the building and cleaning processes.
