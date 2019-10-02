@@ -14,9 +14,13 @@ Image.
 Image.
 
 ## File/ folder structure
-##### demo_schemas
-##### modules
-##### old_scripts
-###### TASK_LIST.md
-###### run.py
-###### style.grass
+- **demo_schemas**
+- **modules**
+    - builders.py
+    - cleaners.py
+    - enrichers.py
+    - tr_funcs.py
+- **old_scripts**
+- TASK_LIST.md
+- run.py
+- style.grass
