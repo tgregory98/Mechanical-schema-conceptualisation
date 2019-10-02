@@ -3,14 +3,7 @@
 
 ###### A Python program that querys DBpedia's RDF dataset, a community maintained dataset based off Wikipedia, via the SPARQL endpoint. Then it uses this data to intelligently build "schema" representing the connections between articles from across Wikipedia. These schema are built with Cypher on the Neo4j graph database platform. The main aim of this program was finding clear schema representations that are not compute intensive.
 
-## **Why** was this made?
-Lorem ipsum.
-
 ## **What** is it exactly?
-### Briefly
-Lorem ipsum.
-
-### How it fits into the broader project?
 Lorem ipsum.
 
 ## Folder structure and explanation
