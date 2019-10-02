@@ -24,4 +24,6 @@
 - [x] Refine the querying for DisjointParentSchemaCleaner to slightly more precise patterns.
 - [x] Clean up demo images ready for first release.
 - [ ] Start building the front-end.
+- [ ] Add the dbo classes data to each node during the build phase.
+- [ ] Update style.grass to reflect these changes.
 - [ ] Create a module to optimise the building and cleaning processes.
