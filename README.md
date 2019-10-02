@@ -14,13 +14,12 @@ Image.
 Image.
 
 ## File/ folder structure
-- **demo_schemas**
-- **modules**
-    - builders.py
-    - cleaners.py
-    - enrichers.py
+- **demo_schemas** - contains the image results of some of the possible approaches.
+- **modules** - contains the scripts which do most of the heavylifting.
+    - builders.py - the main script responsible for querying and building the intial graphs.
+    - cleaners.py - this script removes unwanted information from the graph.
+    - enrichers.py - this script makes the data in the graph more readable and modifies the way the graph looks.
     - tr_funcs.py
-- **old_scripts**
 - TASK_LIST.md
 - run.py
 - style.grass
