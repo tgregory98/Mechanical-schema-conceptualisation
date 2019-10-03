@@ -2,7 +2,7 @@
 # Release 0.1.0. Data extraction and transformation.
 Builds, cleans and enriches "schema" diagrams, connecting articles from across Wikipedia via the RDF DBpedia dataset.
 
-###### A Python program that querys DBpedia's RDF dataset, a community maintained dataset based off Wikipedia, via the SPARQL endpoint. Then it uses this data to intelligently build "schema" representing the connections between articles from across Wikipedia. These schema are built with Cypher on the Neo4j graph database platform.
+###### A Python program which queries DBpedia's RDF dataset, a community maintained dataset based off Wikipedia, via the SPARQL endpoint. Then it uses this data to intelligently build "schema" representing the connections between articles from across Wikipedia. These schema are built with Cypher on the Neo4j graph database platform.
 
 ###### The main aims of this program were to successfully extract the data, transform it, and then to rapidly find clear schema representations. Loading into a cloud data warehouse may follow soon (to complete the ETL process). This program will be the first stage of a broader project inspired by the roots of [constructivism](https://en.wikipedia.org/wiki/Constructivism_(philosophy_of_education)) (or more specifically [schemas](https://en.wikipedia.org/wiki/Schema_(psychology)), which are *not* to be confused with database schemas).
 
