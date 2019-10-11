@@ -111,11 +111,11 @@ class PairwiseSchemaBuilder(SchemaBuilder):
         self.filter_set_vertices = filter_set_vertices
 
     def sparql_query_gen(self, depth):
-        query_part1 = "\rSELECT "
+        query_part1 = "\nSELECT "
         for i in range(depth - 1):
             string = "?pred& ?pred_inv& ?n& "
             query_part1 = query_part1 + string.replace("&", str(i + 1))
-        final_string = "?pred& ?pred_inv&\r"
+        final_string = "?pred& ?pred_inv&\n"
         query_part1 = query_part1 + final_string.replace("&", str(depth))
 
         filter_query_pred = self.filter_query_pred_gen()
@@ -229,16 +229,17 @@ class PairwiseSchemaBuilder(SchemaBuilder):
 
         query = query_part1 + query_part2
 
+        print(query)
         return query
 
     def cypher_query_gen(self, depth, url):
-        query_part1 = "WITH \"" + url + "\" AS url\r\rLOAD CSV WITH HEADERS FROM url AS row\r\r"
+        query_part1 = "WITH \"" + url + "\" AS url\n\nLOAD CSV WITH HEADERS FROM url AS row\n\n"
 
-        query_part2 = "MERGE (n0:root_node {iri: \"" + self.start_page + "\"})\r"
+        query_part2 = "MERGE (n0:root_node {iri: \"" + self.start_page + "\"})\n"
         for i in range(depth - 1):
-            string = "MERGE (n&:nonroot_node {iri: row.n&})\r"
+            string = "MERGE (n&:nonroot_node {iri: row.n&})\n"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
-        final_string = "MERGE (n&:root_node {iri: \"" + self.end_page + "\"})\r"
+        final_string = "MERGE (n&:root_node {iri: \"" + self.end_page + "\"})\n"
         query_part2 = query_part2 + final_string.replace("&", str(depth))
 
         query_part3 = ""
@@ -251,6 +252,7 @@ class PairwiseSchemaBuilder(SchemaBuilder):
 
         query = query_part1 + query_part2 + query_part3
 
+        print(query)
         return query
 
 
@@ -262,7 +264,7 @@ class ParentSchemaBuilder(SchemaBuilder):
         self.filter_set_vertices = filter_set_vertices
 
     def sparql_query_gen(self, depth):
-        query_part1 = "\rSELECT "
+        query_part1 = "\nSELECT "
         for i in range(depth):
             string = "?pred& ?n& "
             query_part1 = query_part1 + string.replace("&", str(i + 1))
@@ -330,16 +332,17 @@ class ParentSchemaBuilder(SchemaBuilder):
 
         query = query_part1 + query_part2
 
+        print(query)
         return query
 
     def cypher_query_gen(self, depth, url):
-        query_part1 = "WITH \"" + url + "\" AS url\r\rLOAD CSV WITH HEADERS FROM url AS row\r\r"
+        query_part1 = "WITH \"" + url + "\" AS url\n\nLOAD CSV WITH HEADERS FROM url AS row\n\n"
 
         node_id = self.fetch_node_id(self.page)
 
-        query_part2 = "MERGE (n0:root_node:" + node_id + " {iri: \"" + self.page + "\"})\r"
+        query_part2 = "MERGE (n0:root_node:" + node_id + " {iri: \"" + self.page + "\"})\n"
         for i in range(depth):
-            string = "MERGE (n&:nonroot_node:" + node_id + " {iri: row.n&})\r"
+            string = "MERGE (n&:nonroot_node:" + node_id + " {iri: row.n&})\n"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
 
         query_part3 = ""
@@ -351,6 +354,7 @@ class ParentSchemaBuilder(SchemaBuilder):
 
         query = query_part1 + query_part2 + query_part3
 
+        print(query)
         return query
 
 
@@ -362,7 +366,7 @@ class PopulateSchemaBuilder(SchemaBuilder):
         self.filter_set_vertices = filter_set_vertices
 
     def sparql_query_gen(self, depth):
-        query_part1 = "\rSELECT "
+        query_part1 = "\nSELECT "
         for i in range(depth):
             string = "?pred& ?pred_inv& ?n& "
             query_part1 = query_part1 + string.replace("&", str(i + 1))
@@ -447,16 +451,17 @@ class PopulateSchemaBuilder(SchemaBuilder):
 
         query = query_part1 + query_part2
 
+        print(query)
         return query
 
     def cypher_query_gen(self, depth, url):
-        query_part1 = "WITH \"" + url + "\" AS url\r\rLOAD CSV WITH HEADERS FROM url AS row\r\r"
+        query_part1 = "WITH \"" + url + "\" AS url\n\nLOAD CSV WITH HEADERS FROM url AS row\n\n"
 
         node_id = self.fetch_node_id(self.page)
 
-        query_part2 = "MERGE (n0:root_node:" + node_id + " {iri: \"" + self.page + "\"})\r"
+        query_part2 = "MERGE (n0:root_node:" + node_id + " {iri: \"" + self.page + "\"})\n"
         for i in range(depth):
-            string = "MERGE (n&:nonroot_node:" + node_id + " {iri: row.n&})\r"
+            string = "MERGE (n&:nonroot_node:" + node_id + " {iri: row.n&})\n"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
 
         query_part3 = ""
@@ -469,4 +474,5 @@ class PopulateSchemaBuilder(SchemaBuilder):
 
         query = query_part1 + query_part2 + query_part3
 
+        print(query)
         return query

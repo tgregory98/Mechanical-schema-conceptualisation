@@ -54,14 +54,16 @@ MATCH (x:root_node)
 MATCH (y:root_1:root_2)
 SET x.keep = 1, y.keep = 1
         """
+        print(cypher_query_1a)
         cypher_query_1_set.append(cypher_query_1a)
         
         match_a = "MATCH (x:root_node)-->(n1)-->"
-        match_b = "(y:root_1:root_2)\r"
+        match_b = "(y:root_1:root_2)"
         pattern_statement = ""
         set_statement = "SET n1.keep = 1"
         if depth >= 2:
-            cypher_query_1b = match_a + match_b + set_statement
+            cypher_query_1b = match_a + match_b + "\n" + set_statement + "\n"
+            print(cypher_query_1b)
             cypher_query_1_set.append(cypher_query_1b)
             
             for i in range(depth - 2):
@@ -69,7 +71,8 @@ SET x.keep = 1, y.keep = 1
                 pattern_statement = pattern_statement + match_a + match_b
                 set_statement = set_statement + ", n" + str(i + 2) + ".keep = 1"
 
-                cypher_query_1c = pattern_statement + set_statement
+                cypher_query_1c = pattern_statement + "\n" + set_statement
+                print(cypher_query_1c)
                 cypher_query_1_set.append(cypher_query_1c)
         
         cypher_query_set = []
