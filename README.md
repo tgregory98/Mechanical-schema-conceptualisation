@@ -38,6 +38,5 @@ Finally, we have the least effective approach. This is essentially what happens 
     - enrichers.py: (transform) This script makes the data in the graph more readable.
     - tr_funcs.py: This script provides database Transaction utilities for use across the project.
 - TASK_LIST.md: A task list for personal use.
-- requirements.txt: A list of required packages for this project.
 - run.py: The script that we 'run', and acts as a dashboard for arranging the various components of the graph we wish to build.
 - style.grass: A loose file which may be uploaded to the Neo4j browser for personalised styling.
