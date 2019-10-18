@@ -6,12 +6,6 @@
   text-color-internal: #FFFFFF;
   font-size: 10px;
 }
-node.* {
-  color: #ECB5C9;
-  border-color: #da7298;
-  text-color-internal: #604A0E;
-  defaultCaption: "<id>";
-}
 relationship {
   color: #A5ABB6;
   shaft-width: 1px;
@@ -21,48 +15,75 @@ relationship {
   text-color-internal: #FFFFFF;
   caption: "<type>";
 }
-node.nonroot_node {
+node.* {
   color: #C990C0;
   border-color: #b261a5;
   text-color-internal: #FFFFFF;
   defaultCaption: "<id>";
-  caption: "{id}";
 }
-node.Netflix {
-  color: #F16667;
-  border-color: #eb2728;
-  text-color-internal: #FFFFFF;
-  defaultCaption: "<id>";
-}
-node.Television {
-  color: #D9C8AE;
-  border-color: #c0a378;
-  text-color-internal: #604A0E;
-  defaultCaption: "<id>";
-}
-node.Smart_TV {
-  color: #4C8EDA;
-  border-color: #2870c2;
-  text-color-internal: #FFFFFF;
-  defaultCaption: "<id>";
-}
-node.category {
+node.depth_0 {
   color: #DA7194;
   border-color: #cc3c6c;
   text-color-internal: #FFFFFF;
   defaultCaption: "<id>";
+  diameter: 10px;
+}
+node.depth_1 {
+  color: #ECB5C9;
+  border-color: #da7298;
+  text-color-internal: #604A0E;
+  defaultCaption: "<id>";
+  diameter: 20px;
+}
+node.depth_2 {
+  color: #57C7E3;
+  border-color: #23b3d7;
+  text-color-internal: #FFFFFF;
+  defaultCaption: "<id>";
+  diameter: 30px;
+}
+node.depth_3 {
+  color: #F16667;
+  border-color: #eb2728;
+  text-color-internal: #FFFFFF;
+  defaultCaption: "<id>";
+  diameter: 40px;
+}
+node.Tea {
+  color: #D9C8AE;
+  border-color: #c0a378;
+  text-color-internal: #604A0E;
+  defaultCaption: "<id>";
+  caption: "{iri}";
+}
+node.Cup {
+  color: #8DCC93;
+  border-color: #5db665;
+  text-color-internal: #604A0E;
+  defaultCaption: "<id>";
+  caption: "{iri}";
+}
+node.Milk {
+  color: #4C8EDA;
+  border-color: #2870c2;
+  text-color-internal: #FFFFFF;
+  defaultCaption: "<id>";
+  caption: "{iri}";
 }
 node.article {
   color: #57C7E3;
   border-color: #23b3d7;
   text-color-internal: #FFFFFF;
   defaultCaption: "<id>";
+  caption: "{id}";
 }
-node.root_node {
-  color: #569480;
-  border-color: #447666;
+node.category {
+  color: #C990C0;
+  border-color: #b261a5;
   text-color-internal: #FFFFFF;
   defaultCaption: "<id>";
   caption: "{id}";
 }
-
+relationship.pred {
+  caption: "{id}";
+}
