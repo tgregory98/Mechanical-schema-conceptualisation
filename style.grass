@@ -49,6 +49,17 @@ node.depth_3 {
   defaultCaption: "<id>";
   diameter: 40px;
 }
+node.depth_4 {
+  color: #569480;
+  border-color: #447666;
+  text-color-internal: #FFFFFF;
+  defaultCaption: "<id>";
+  diameter: 50px;
+}
+node.depth_5 {
+  defaultCaption: "<id>";
+  diameter: 60px;
+}
 node.Tea {
   color: #D9C8AE;
   border-color: #c0a378;
@@ -87,3 +98,4 @@ node.category {
 relationship.pred {
   caption: "{id}";
 }
+

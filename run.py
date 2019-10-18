@@ -20,7 +20,7 @@ url3 = "http://dbpedia.org/resource/Cup"
 # -BUILDERS-
 print("\n\n-BUILDING-")
 
-depth_constant = 3
+depth_constant = 3 # Max 5
 print("depth_constant = " + str(depth_constant) + "\n")
 
 

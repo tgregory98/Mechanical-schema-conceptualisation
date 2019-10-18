@@ -69,20 +69,21 @@ SET x.keep = 1, y.keep = 1
             cypher_query_1_set.append(cypher_query_1b)
             
             for i in range(depth - 2):
+                pattern_statement = ""
                 match_a = match_a + "(n&)-->".replace("&", str(i + 2))
                 pattern_statement = pattern_statement + match_a + match_b
                 set_statement = set_statement + ", n" + str(i + 2) + ".keep = 1"
 
                 cypher_query_1c = pattern_statement + "\n" + set_statement
+                print(cypher_query_1c)
                 cypher_query_1_set.append(cypher_query_1c)
         
         cypher_query_set = []
         for i in self.root_label_combinations:
             for j in cypher_query_1_set:
                 x = j.replace("root_1", i[0]).replace("root_2", i[1])
-                print(x)
                 cypher_query_set.append(x)
-
+        print(cypher_query_set)
         cypher_query_2 = """
 MATCH (x)
 WHERE x.keep IS NULL
