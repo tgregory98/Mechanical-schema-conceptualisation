@@ -12,15 +12,15 @@ MATCH (x)
 DETACH DELETE (x)
     """)
 
-url1 = "http://dbpedia.org/resource/Netflix"
-url2 = "http://dbpedia.org/resource/Television"
-url3 = "http://dbpedia.org/resource/Smart_TV"
+url1 = "http://dbpedia.org/resource/Tea"
+url2 = "http://dbpedia.org/resource/Milk"
+url3 = "http://dbpedia.org/resource/Cup"
 
 
 # -BUILDERS-
 print("\n\n-BUILDING-")
 
-depth_constant = 2
+depth_constant = 3
 print("depth_constant = " + str(depth_constant) + "\n")
 
 
