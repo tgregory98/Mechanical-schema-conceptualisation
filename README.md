@@ -8,6 +8,8 @@ The main aims of this program were to successfully extract the data, transform i
 
 I took four alternative approaches, all of which are listed below in decreasing order of effectiveness. Most queries (in both SPARQL and Cypher) are dynamically generated based off the desired depth and the chosen root node. Where possible, I have also written built-in filter options. It all runs from one file using class instances, and it can go from a blank slate to a fully populated final schema in a matter of seconds.
 
+Currently I am working on entity resolution, and wrapping the builder classes in a class that optimises depth parameter selection.
+
 ## File/ folder structure
 - **demo_schemas**: Contains the image results of some of the possible approaches.
 - **modules**: Contains the scripts which do most of the heavylifting.
