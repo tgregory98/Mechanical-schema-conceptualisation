@@ -27,6 +27,6 @@
 - [x] Improve DisjointParentSchemaCleaner queries.
 - [x] Update style.grass.
 - [x] Create a wrapper to optimise the building processes.
-- [ ] Add the dbo classes data to each node during the build phase.
+- [ ] Add class data enrichment.
 - [ ] Work on entity resolution.
 - [ ] Start building the front-end.
