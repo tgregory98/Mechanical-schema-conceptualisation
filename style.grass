@@ -95,7 +95,20 @@ node.category {
   defaultCaption: "<id>";
   caption: "{id}";
 }
+node.owl {
+  defaultCaption: "<id>";
+  caption: "{id}";
+  color: #DA7194;
+  border-color: #cc3c6c;
+  text-color-internal: #FFFFFF;
+}
+node.ontology {
+  defaultCaption: "<id>";
+  caption: "{id}";
+  color: #ECB5C9;
+  border-color: #da7298;
+  text-color-internal: #604A0E;
+}
 relationship.pred {
   caption: "{id}";
 }
-
