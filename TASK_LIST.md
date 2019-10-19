@@ -23,7 +23,10 @@
 - [x] Make DisjointParentSchemaCleaner run on a set on nodes as opposed to just the two.
 - [x] Refine the querying for DisjointParentSchemaCleaner to slightly more precise patterns.
 - [x] Clean up demo images ready for first release.
-- [ ] Start building the front-end.
+- [x] Make node labels reflect depth.
+- [x] Improve DisjointParentSchemaCleaner queries.
+- [x] Update style.grass.
+- [x] Create a wrapper to optimise the building processes.
 - [ ] Add the dbo classes data to each node during the build phase.
-- [ ] Update style.grass to reflect these changes.
-- [ ] Create a module to optimise the building and cleaning processes.
+- [ ] Work on entity resolution.
+- [ ] Start building the front-end.
