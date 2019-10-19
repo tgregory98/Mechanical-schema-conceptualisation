@@ -97,3 +97,15 @@ SET x.keep = NULL
 
         cypher_query_set = cypher_query_set + [cypher_query_2, cypher_query_3]
         modules.tr_funcs.commit_cypher_query_set(cypher_query_set)
+
+
+class NodeSchemaCleaner(SchemaCleaner):
+    def __init__(self):
+        self.name = "NodeSchemaCleaner"
+
+    def run(self):
+        modules.tr_funcs.commit_cypher_query("""
+MATCH (x)
+WHERE x.iri STARTS WITH "http://www.w3.org/2000/01/rdf-schema#"
+DETACH DELETE (x)
+        """)
