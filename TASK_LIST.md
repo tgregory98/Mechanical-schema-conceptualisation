@@ -28,5 +28,6 @@
 - [x] Update style.grass.
 - [x] Create a wrapper to optimise the building processes.
 - [ ] Add ontology classes enrichment.
+- [ ] Add duplication edge cleaning into the builder class run method
 - [ ] Work on entity resolution.
 - [ ] Start building the front-end.
