@@ -27,7 +27,8 @@
 - [x] Improve DisjointParentSchemaCleaner queries.
 - [x] Update style.grass.
 - [x] Create a wrapper to optimise the building processes.
-- [ ] Add ontology class building.
+- [x] Add ontology class building.
+- [ ] Optimising the SPARQL queries.
 - [ ] Add duplication edge cleaning into the builder class run method
 - [ ] Work on entity resolution.
 - [ ] Start building the front-end.
