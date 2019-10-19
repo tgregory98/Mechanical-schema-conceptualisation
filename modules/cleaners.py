@@ -29,11 +29,15 @@ class DisjointParentSchemaCleaner(SchemaCleaner):
 
     def get_root_labels(self):
         cypher_query = """
-MATCH (x:root_node)
+MATCH (x:depth_0)
 RETURN DISTINCT labels(x)
         """
         output = modules.tr_funcs.commit_cypher_query_numpy(cypher_query).tolist()
-        self.root_labels = [output[i][0][1] for i in range(len(output))]
+        self.root_labels = []
+        for i in output:
+            i[0].remove("depth_0")
+            self.root_labels.append(i[0][0])
+        print(self.root_labels)
 
     def combinations(self, root_labels):
         root_label_combinations = []
@@ -50,23 +54,22 @@ RETURN DISTINCT labels(x)
         
         cypher_query_1_set = []
         cypher_query_1a = """
-MATCH (x:root_node)
+MATCH (x:depth_0)
 MATCH (y:root_1:root_2)
 SET x.keep = 1, y.keep = 1
         """
-        print(cypher_query_1a)
         cypher_query_1_set.append(cypher_query_1a)
         
-        match_a = "MATCH (x:root_node)-->(n1)-->"
+        match_a = "MATCH (x:depth_0)-->(n1)-->"
         match_b = "(y:root_1:root_2)"
         pattern_statement = ""
         set_statement = "SET n1.keep = 1"
         if depth >= 2:
             cypher_query_1b = match_a + match_b + "\n" + set_statement + "\n"
-            print(cypher_query_1b)
             cypher_query_1_set.append(cypher_query_1b)
             
             for i in range(depth - 2):
+                pattern_statement = ""
                 match_a = match_a + "(n&)-->".replace("&", str(i + 2))
                 pattern_statement = pattern_statement + match_a + match_b
                 set_statement = set_statement + ", n" + str(i + 2) + ".keep = 1"
@@ -80,7 +83,7 @@ SET x.keep = 1, y.keep = 1
             for j in cypher_query_1_set:
                 x = j.replace("root_1", i[0]).replace("root_2", i[1])
                 cypher_query_set.append(x)
-
+        print(cypher_query_set)
         cypher_query_2 = """
 MATCH (x)
 WHERE x.keep IS NULL

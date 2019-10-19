@@ -235,11 +235,11 @@ class PairwiseSchemaBuilder(SchemaBuilder):
     def cypher_query_gen(self, depth, url):
         query_part1 = "WITH \"" + url + "\" AS url\n\nLOAD CSV WITH HEADERS FROM url AS row\n\n"
 
-        query_part2 = "MERGE (n0:root_node {iri: \"" + self.start_page + "\"})\n"
+        query_part2 = "MERGE (n0:depth_0 {iri: \"" + self.start_page + "\"})\n"
         for i in range(depth - 1):
-            string = "MERGE (n&:nonroot_node {iri: row.n&})\n"
+            string = "MERGE (n&:depth_& {iri: row.n&})\n"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
-        final_string = "MERGE (n&:root_node {iri: \"" + self.end_page + "\"})\n"
+        final_string = "MERGE (n&:depth_0 {iri: \"" + self.end_page + "\"})\n"
         query_part2 = query_part2 + final_string.replace("&", str(depth))
 
         query_part3 = ""
@@ -340,9 +340,9 @@ class ParentSchemaBuilder(SchemaBuilder):
 
         node_id = self.fetch_node_id(self.page)
 
-        query_part2 = "MERGE (n0:root_node:" + node_id + " {iri: \"" + self.page + "\"})\n"
+        query_part2 = "MERGE (n0:depth_0:" + node_id + " {iri: \"" + self.page + "\"})\n"
         for i in range(depth):
-            string = "MERGE (n&:nonroot_node:" + node_id + " {iri: row.n&})\n"
+            string = "MERGE (n&:depth_&:" + node_id + " {iri: row.n&})\n"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
 
         query_part3 = ""
@@ -459,9 +459,9 @@ class PopulateSchemaBuilder(SchemaBuilder):
 
         node_id = self.fetch_node_id(self.page)
 
-        query_part2 = "MERGE (n0:root_node:" + node_id + " {iri: \"" + self.page + "\"})\n"
+        query_part2 = "MERGE (n0:depth_0:" + node_id + " {iri: \"" + self.page + "\"})\n"
         for i in range(depth):
-            string = "MERGE (n&:nonroot_node:" + node_id + " {iri: row.n&})\n"
+            string = "MERGE (n&:depth_&:" + node_id + " {iri: row.n&})\n"
             query_part2 = query_part2 + string.replace("&", str(i + 1))
 
         query_part3 = ""
