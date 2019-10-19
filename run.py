@@ -19,11 +19,12 @@ url3 = "http://dbpedia.org/resource/Cup"
 
 # -BUILDERS-
 print("\n\n-BUILDING-")
+print("\n-CATEGORIES")
 
 count = {"nodes": 0, "edges": 0}
 depth_constant_0 = 1
 while count["nodes"] < 100 and count["edges"] < 100:
-    print("depth_constant_0 = " + str(depth_constant_0) + "\n")
+    print("depth_constant_0: " + str(depth_constant_0) + "\n")
 
 
     # PairwiseSchemaBuilder
@@ -65,9 +66,14 @@ RETURN COUNT(r)
     count["edges"] = edges[0][0]
     print(count)
 
+
+print("\n-CLASSES")
+
 depth_constant_1 = 1
 nodes_added = 1
 while nodes_added > 0:
+    print("depth_constant_1: " + str(depth_constant_0) + "\n")
+
     nodes_before = modules.tr_funcs.commit_cypher_query_numpy("""
 MATCH (x)
 RETURN COUNT(x)
@@ -99,14 +105,9 @@ cl1 = modules.cleaners.DisjointParentSchemaCleaner()
 cl1.run(depth_constant_0)
 
 
-# NodeSchemaCleaner
-cl2 = modules.cleaners.NodeSchemaCleaner()
-cl2.run()
-
-
 # LeafSchemaCleaner
-# cl3 = modules.cleaners.LeafSchemaCleaner()
-# cl3.run(depth_constant_0)
+# cl2 = modules.cleaners.LeafSchemaCleaner()
+# cl2.run(depth_constant_0)
 
 
 # -ENRICHERS-

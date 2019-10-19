@@ -20,18 +20,18 @@ class SchemaBuilder:
             if len(self.filter_set_edges) == 0:
                 break
             elif len(self.filter_set_edges) == 1:
-                string = "FILTER(regex(?pred&, &&))"
-                filter_query_pred = string.replace("&&", str(self.filter_set_edges[0]))
+                string = "FILTER(regex(?pred£, ££))"
+                filter_query_pred = string.replace("££", str(self.filter_set_edges[0]))
             elif i == 0:
                 filter_query_pred = "FILTER("
-                string = "regex(?pred&, &&)"
-                filter_query_pred = filter_query_pred + string.replace("&&", str(self.filter_set_edges[i]))
+                string = "regex(?pred£, ££)"
+                filter_query_pred = filter_query_pred + string.replace("££", str(self.filter_set_edges[i]))
             elif i < len(self.filter_set_edges) - 1:
-                string = "||regex(?pred&, &&)"
-                filter_query_pred = filter_query_pred + string.replace("&&", str(self.filter_set_edges[i]))
+                string = "||regex(?pred£, ££)"
+                filter_query_pred = filter_query_pred + string.replace("££", str(self.filter_set_edges[i]))
             elif i == len(self.filter_set_edges) - 1:
-                string = "||regex(?pred&, &&))"
-                filter_query_pred = filter_query_pred + string.replace("&&", str(self.filter_set_edges[i]))
+                string = "||regex(?pred£, ££))"
+                filter_query_pred = filter_query_pred + string.replace("££", str(self.filter_set_edges[i]))
 
         return filter_query_pred
 
@@ -41,18 +41,18 @@ class SchemaBuilder:
             if len(self.filter_set_edges) == 0:
                 break
             elif len(self.filter_set_edges) == 1:
-                string = "FILTER(regex(?pred_inv&, &&))"
-                filter_query_pred_inv = string.replace("&&", str(self.filter_set_edges[0]))
+                string = "FILTER(regex(?pred_inv£, ££))"
+                filter_query_pred_inv = string.replace("££", str(self.filter_set_edges[0]))
             elif i == 0:
                 filter_query_pred_inv = "FILTER("
-                string = "regex(?pred_inv&, &&)"
-                filter_query_pred_inv = filter_query_pred_inv + string.replace("&&", str(self.filter_set_edges[i]))
+                string = "regex(?pred_inv£, ££)"
+                filter_query_pred_inv = filter_query_pred_inv + string.replace("££", str(self.filter_set_edges[i]))
             elif i < len(self.filter_set_edges) - 1:
-                string = "||regex(?pred_inv&, &&)"
-                filter_query_pred_inv = filter_query_pred_inv + string.replace("&&", str(self.filter_set_edges[i]))
+                string = "||regex(?pred_inv£, ££)"
+                filter_query_pred_inv = filter_query_pred_inv + string.replace("££", str(self.filter_set_edges[i]))
             elif i == len(self.filter_set_edges) - 1:
-                string = "||regex(?pred_inv&, &&))"
-                filter_query_pred_inv = filter_query_pred_inv + string.replace("&&", str(self.filter_set_edges[i]))
+                string = "||regex(?pred_inv£, ££))"
+                filter_query_pred_inv = filter_query_pred_inv + string.replace("££", str(self.filter_set_edges[i]))
         
         return filter_query_pred_inv
 
@@ -62,18 +62,18 @@ class SchemaBuilder:
             if len(self.filter_set_vertices) == 0:
                 break
             elif len(self.filter_set_vertices) == 1:
-                string = "FILTER(regex(?n&, &&))"
-                filter_query_vertex = string.replace("&&", str(self.filter_set_vertices[0]))
+                string = "FILTER(regex(?n£, ££))"
+                filter_query_vertex = string.replace("££", str(self.filter_set_vertices[0]))
             elif i == 0:
                 filter_query_vertex = "FILTER("
-                string = "regex(?n&, &&)"
-                filter_query_vertex = filter_query_vertex + string.replace("&&", str(self.filter_set_vertices[i]))
+                string = "regex(?n£, ££)"
+                filter_query_vertex = filter_query_vertex + string.replace("££", str(self.filter_set_vertices[i]))
             elif i < len(self.filter_set_vertices) - 1:
-                string = "||regex(?n&, &&)"
-                filter_query_vertex = filter_query_vertex + string.replace("&&", str(self.filter_set_vertices[i]))
+                string = "||regex(?n£, ££)"
+                filter_query_vertex = filter_query_vertex + string.replace("££", str(self.filter_set_vertices[i]))
             elif i == len(self.filter_set_vertices) - 1:
-                string = "||regex(?n&, &&))"
-                filter_query_vertex = filter_query_vertex + string.replace("&&", str(self.filter_set_vertices[i]))
+                string = "||regex(?n£, ££))"
+                filter_query_vertex = filter_query_vertex + string.replace("££", str(self.filter_set_vertices[i]))
         
         return filter_query_vertex
 
@@ -119,16 +119,16 @@ class PairwiseSchemaBuilder(SchemaBuilder):
     def sparql_query_gen(self, depth):
         query_part1 = "\nSELECT "
         for i in range(depth - 1):
-            string = "?pred& ?pred_inv& ?n& "
-            query_part1 = query_part1 + string.replace("&", str(i + 1))
-        final_string = "?pred& ?pred_inv&\n"
-        query_part1 = query_part1 + final_string.replace("&", str(depth))
+            string = "?pred£ ?pred_inv£ ?n£ "
+            query_part1 = query_part1 + string.replace("£", str(i + 1))
+        final_string = "?pred£ ?pred_inv£\n"
+        query_part1 = query_part1 + final_string.replace("£", str(depth))
 
         filter_query_pred = self.filter_query_pred_gen()
         filter_query_pred_inv = self.filter_query_pred_inv_gen()
         filter_query_vertex = self.filter_query_vertex_gen()
-        filter_query_vertex_mid = filter_query_vertex + filter_query_vertex.replace("&", "&&")
-        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", "||")
+        filter_query_vertex_mid = filter_query_vertex + filter_query_vertex.replace("£", "££")
+        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", "&&")
 
         query_part2_open = """
     WHERE {
@@ -143,82 +143,111 @@ class PairwiseSchemaBuilder(SchemaBuilder):
         """
         query_part2_b = """
         { {
-            """ + filter_query_pred.replace("&", "1") + """
+            """ + filter_query_pred.replace("£", "1") + """
             <""" + self.start_page + """> ?pred1 ?n1
         } UNION {
-            """ + filter_query_pred_inv.replace("&", "1") + """
+            """ + filter_query_pred_inv.replace("£", "1") + """
             ?n1 ?pred_inv1 <""" + self.start_page + """>
         } } .
         """
         query_part2_c = """
         { {
-            """ + filter_query_vertex.replace("&", "1") + """
+            """ + filter_query_vertex.replace("£", "1") + """
             <""" + self.start_page + """> ?pred1 ?n1
         } UNION {
-            """ + filter_query_vertex.replace("&", "1") + """
+            """ + filter_query_vertex.replace("£", "1") + """
+            ?n1 ?pred_inv1 <""" + self.start_page + """>
+        } } .
+        """
+        query_part2_d = """
+        { {
+            """ + filter_query_pred.replace("£", "1") + filter_query_vertex.replace("£", "1") + """
+            <""" + self.start_page + """> ?pred1 ?n1
+        } UNION {
+            """ + filter_query_pred_inv.replace("£", "1") + filter_query_vertex.replace("£", "1") + """
             ?n1 ?pred_inv1 <""" + self.start_page + """>
         } } .
         """
         for i in range(depth - 2):
             block_a = """
         { {
-            ?n& ?pred&& ?n&&
+            ?n£ ?pred££ ?n££
         } UNION {
-            ?n&& ?pred_inv&& ?n&
+            ?n££ ?pred_inv££ ?n£
         } } .
             """
             block_b = """
         { {
-            """ + filter_query_pred.replace("&", str(i + 2)) + """
-            ?n& ?pred&& ?n&&
+            """ + filter_query_pred.replace("£", str(i + 2)) + """
+            ?n£ ?pred££ ?n££
         } UNION {
-            """ + filter_query_pred_inv.replace("&", str(i + 2)) + """
-            ?n&& ?pred_inv&& ?n&
+            """ + filter_query_pred_inv.replace("£", str(i + 2)) + """
+            ?n££ ?pred_inv££ ?n£
         } } .
             """
             block_c = """
         { {
             """ + filter_query_vertex_mid + """
-            ?n& ?pred&& ?n&&
+            ?n£ ?pred££ ?n££
         } UNION {
             """ + filter_query_vertex_mid + """
-            ?n&& ?pred_inv&& ?n&
+            ?n££ ?pred_inv££ ?n£
         } } .
             """
-            query_part2_a = query_part2_a + block_a.replace("&&", str(i + 2)).replace("&", str(i + 1))
-            query_part2_b = query_part2_b + block_b.replace("&&", str(i + 2)).replace("&", str(i + 1))
-            query_part2_c = query_part2_c + block_c.replace("&&", str(i + 2)).replace("&", str(i + 1))
+            block_d = """
+        { {
+            """ + filter_query_pred.replace("£", str(i + 2)) + filter_query_vertex_mid + """
+            ?n£ ?pred££ ?n££
+        } UNION {
+            """ + filter_query_pred_inv.replace("£", str(i + 2)) + filter_query_vertex_mid + """
+            ?n££ ?pred_inv££ ?n£
+        } } .
+            """
+            query_part2_a = query_part2_a + block_a.replace("££", str(i + 2)).replace("£", str(i + 1))
+            query_part2_b = query_part2_b + block_b.replace("££", str(i + 2)).replace("£", str(i + 1))
+            query_part2_c = query_part2_c + block_c.replace("££", str(i + 2)).replace("£", str(i + 1))
+            query_part2_d = query_part2_d + block_d.replace("££", str(i + 2)).replace("£", str(i + 1))
 
         final_block_a = """
         { {
-            """ + filter_query_pred.replace("&", str(depth)) + """
-            ?n& ?pred&& <""" + self.end_page + """>
+            """ + filter_query_pred.replace("£", str(depth)) + """
+            ?n£ ?pred££ <""" + self.end_page + """>
         } UNION {
-            """ + filter_query_pred_inv.replace("&", str(depth)) + """
-            <""" + self.end_page + """> ?pred_inv&& ?n&
+            """ + filter_query_pred_inv.replace("£", str(depth)) + """
+            <""" + self.end_page + """> ?pred_inv££ ?n£
         } } .
         """
         final_block_b = """
         { {
-            """ + filter_query_pred.replace("&", str(depth)) + """
-            ?n& ?pred&& <""" + self.end_page + """>
+            """ + filter_query_pred.replace("£", str(depth)) + """
+            ?n£ ?pred££ <""" + self.end_page + """>
         } UNION {
-            """ + filter_query_pred_inv.replace("&", str(depth)) + """
-            <""" + self.end_page + """> ?pred_inv&& ?n&
+            """ + filter_query_pred_inv.replace("£", str(depth)) + """
+            <""" + self.end_page + """> ?pred_inv££ ?n£
         } } .
         """
         final_block_c = """
         { {
             """ + filter_query_vertex + """
-            ?n& ?pred&& <""" + self.end_page + """>
+            ?n£ ?pred££ <""" + self.end_page + """>
         } UNION {
             """ + filter_query_vertex + """
-            <""" + self.end_page + """> ?pred_inv&& ?n&
+            <""" + self.end_page + """> ?pred_inv££ ?n£
         } } .
         """
-        query_part2_a = query_part2_a + final_block_a.replace("&&", str(depth)).replace("&", str(depth - 1))
-        query_part2_b = query_part2_b + final_block_b.replace("&&", str(depth)).replace("&", str(depth - 1))
-        query_part2_c = query_part2_c + final_block_c.replace("&&", str(depth)).replace("&", str(depth - 1))
+        final_block_d = """
+        { {
+            """ + filter_query_pred.replace("£", str(depth)) + filter_query_vertex + """
+            ?n£ ?pred££ <""" + self.end_page + """>
+        } UNION {
+            """ + filter_query_pred_inv.replace("£", str(depth)) + filter_query_vertex + """
+            <""" + self.end_page + """> ?pred_inv££ ?n£
+        } } .
+        """
+        query_part2_a = query_part2_a + final_block_a.replace("££", str(depth)).replace("£", str(depth - 1))
+        query_part2_b = query_part2_b + final_block_b.replace("££", str(depth)).replace("£", str(depth - 1))
+        query_part2_c = query_part2_c + final_block_c.replace("££", str(depth)).replace("£", str(depth - 1))
+        query_part2_d = query_part2_d + final_block_d.replace("££", str(depth)).replace("£", str(depth - 1))
 
         query_part2_close = """
     }
@@ -226,12 +255,12 @@ class PairwiseSchemaBuilder(SchemaBuilder):
 
         if len(self.filter_set_edges) == 0 and len(self.filter_set_vertices) == 0:
             query_part2 = query_part2_open + query_part2_a + query_part2_close
-        elif len(self.filter_set_edges) != 0 and len(self.filter_set_vertices) != 0:
-            query_part2 = query_part2_open + query_part2_b + query_part2_c + query_part2_close
         elif len(self.filter_set_vertices) == 0:
             query_part2 = query_part2_open + query_part2_b + query_part2_close
         elif len(self.filter_set_edges) == 0:
             query_part2 = query_part2_open + query_part2_c + query_part2_close
+        elif len(self.filter_set_edges) != 0 and len(self.filter_set_vertices) != 0:
+            query_part2 = query_part2_open + query_part2_d + query_part2_close
 
         query = query_part1 + query_part2
 
@@ -243,18 +272,18 @@ class PairwiseSchemaBuilder(SchemaBuilder):
 
         query_part2 = "MERGE (n0:depth_0 {iri: \"" + self.start_page + "\"})\n"
         for i in range(depth - 1):
-            string = "MERGE (n&:depth_& {iri: row.n&})\n"
-            query_part2 = query_part2 + string.replace("&", str(i + 1))
-        final_string = "MERGE (n&:depth_0 {iri: \"" + self.end_page + "\"})\n"
-        query_part2 = query_part2 + final_string.replace("&", str(depth))
+            string = "MERGE (n£:depth_£ {iri: row.n£})\n"
+            query_part2 = query_part2 + string.replace("£", str(i + 1))
+        final_string = "MERGE (n£:depth_0 {iri: \"" + self.end_page + "\"})\n"
+        query_part2 = query_part2 + final_string.replace("£", str(depth))
 
         query_part3 = ""
         for i in range(depth):
             block = """
-    FOREACH (x IN CASE WHEN row.pred&& IS NULL THEN [] ELSE [1] END | MERGE (n&)-[p:pred {iri: row.pred&&}]->(n&&))
-    FOREACH (x IN CASE WHEN row.pred_inv&& IS NULL THEN [] ELSE [1] END | MERGE (n&)<-[p:pred {iri: row.pred_inv&&}]-(n&&))
+    FOREACH (x IN CASE WHEN row.pred££ IS NULL THEN [] ELSE [1] END | MERGE (n£)-[p:pred {iri: row.pred££}]->(n££))
+    FOREACH (x IN CASE WHEN row.pred_inv££ IS NULL THEN [] ELSE [1] END | MERGE (n£)<-[p:pred {iri: row.pred_inv££}]-(n££))
             """
-            query_part3 = query_part3 + block.replace("&&", str(i + 1)).replace("&", str(i))
+            query_part3 = query_part3 + block.replace("££", str(i + 1)).replace("£", str(i))
 
         query = query_part1 + query_part2 + query_part3
 
@@ -272,13 +301,13 @@ class ParentSchemaBuilder(SchemaBuilder):
     def sparql_query_gen(self, depth):
         query_part1 = "\nSELECT "
         for i in range(depth):
-            string = "?pred& ?n& "
-            query_part1 = query_part1 + string.replace("&", str(i + 1))
+            string = "?pred£ ?n£ "
+            query_part1 = query_part1 + string.replace("£", str(i + 1))
 
         filter_query_pred = self.filter_query_pred_gen()
         filter_query_vertex = self.filter_query_vertex_gen()
-        filter_query_vertex_mid = filter_query_vertex + filter_query_vertex.replace("&", "&&")
-        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", "||")
+        filter_query_vertex_mid = filter_query_vertex + filter_query_vertex.replace("£", "££")
+        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", "&&")
 
         query_part2_open = """
     WHERE {
@@ -291,50 +320,63 @@ class ParentSchemaBuilder(SchemaBuilder):
         """
         query_part2_b = """
         {
-            """ + filter_query_pred.replace("&", "1") + """
+            """ + filter_query_pred.replace("£", "1") + """
             <""" + self.page + """> ?pred1 ?n1
         } .
         """
         query_part2_c = """
         {
-            """ + filter_query_vertex.replace("&", "1") + """
+            """ + filter_query_vertex.replace("£", "1") + """
+            <""" + self.page + """> ?pred1 ?n1
+        } .
+        """
+        query_part2_d = """
+        {
+            """ + filter_query_pred.replace("£", "1") + filter_query_vertex.replace("£", "1") + """
             <""" + self.page + """> ?pred1 ?n1
         } .
         """
         for i in range(depth - 1):
             block_a = """
         {
-            ?n& ?pred&& ?n&&
+            ?n£ ?pred££ ?n££
         } .
             """
             block_b = """
         {
-            """ + filter_query_pred.replace("&", "&&") + """
-            ?n& ?pred&& ?n&&
+            """ + filter_query_pred.replace("£", "££") + """
+            ?n£ ?pred££ ?n££
         } .
             """
             block_c = """
         {
             """ + filter_query_vertex_mid + """
-            ?n& ?pred&& ?n&&
+            ?n£ ?pred££ ?n££
         } .
             """
-            query_part2_a = query_part2_a + block_a.replace("&&", str(i + 2)).replace("&", str(i + 1))
-            query_part2_b = query_part2_b + block_b.replace("&&", str(i + 2)).replace("&", str(i + 1))
-            query_part2_c = query_part2_c + block_c.replace("&&", str(i + 2)).replace("&", str(i + 1))
-
+            block_d = """
+        {
+            """ + filter_query_pred.replace("£", "££") + filter_query_vertex_mid + """
+            ?n£ ?pred££ ?n££
+        } .
+            """
+            query_part2_a = query_part2_a + block_a.replace("££", str(i + 2)).replace("£", str(i + 1))
+            query_part2_b = query_part2_b + block_b.replace("££", str(i + 2)).replace("£", str(i + 1))
+            query_part2_c = query_part2_c + block_c.replace("££", str(i + 2)).replace("£", str(i + 1))
+            query_part2_d = query_part2_d + block_d.replace("££", str(i + 2)).replace("£", str(i + 1))
+            
         query_part2_close = """
     }
         """
 
         if len(self.filter_set_edges) == 0 and len(self.filter_set_vertices) == 0:
             query_part2 = query_part2_open + query_part2_a + query_part2_close
-        elif len(self.filter_set_edges) != 0 and len(self.filter_set_vertices) != 0:
-            query_part2 = query_part2_open + query_part2_b + query_part2_c + query_part2_close
         elif len(self.filter_set_vertices) == 0:
             query_part2 = query_part2_open + query_part2_b + query_part2_close
         elif len(self.filter_set_edges) == 0:
             query_part2 = query_part2_open + query_part2_c + query_part2_close
+        elif len(self.filter_set_edges) != 0 and len(self.filter_set_vertices) != 0:
+            query_part2 = query_part2_open + query_part2_d + query_part2_close
 
         query = query_part1 + query_part2
 
@@ -348,15 +390,15 @@ class ParentSchemaBuilder(SchemaBuilder):
 
         query_part2 = "MERGE (n0:depth_0:" + node_id + " {iri: \"" + self.page + "\"})\n"
         for i in range(depth):
-            string = "MERGE (n&:depth_&:" + node_id + " {iri: row.n&})\n"
-            query_part2 = query_part2 + string.replace("&", str(i + 1))
+            string = "MERGE (n£:depth_£:" + node_id + " {iri: row.n£})\n"
+            query_part2 = query_part2 + string.replace("£", str(i + 1))
 
         query_part3 = ""
         for i in range(depth):
             block = """
-    FOREACH (x IN CASE WHEN row.pred&& IS NULL THEN [] ELSE [1] END | MERGE (n&)-[p:pred {iri: row.pred&&}]->(n&&))
+    FOREACH (x IN CASE WHEN row.pred££ IS NULL THEN [] ELSE [1] END | MERGE (n£)-[p:pred {iri: row.pred££}]->(n££))
             """
-            query_part3 = query_part3 + block.replace("&&", str(i + 1)).replace("&", str(i))
+            query_part3 = query_part3 + block.replace("££", str(i + 1)).replace("£", str(i))
 
         query = query_part1 + query_part2 + query_part3
 
@@ -374,14 +416,14 @@ class PopulateSchemaBuilder(SchemaBuilder):
     def sparql_query_gen(self, depth):
         query_part1 = "\nSELECT "
         for i in range(depth):
-            string = "?pred& ?pred_inv& ?n& "
-            query_part1 = query_part1 + string.replace("&", str(i + 1))
+            string = "?pred£ ?pred_inv£ ?n£ "
+            query_part1 = query_part1 + string.replace("£", str(i + 1))
 
         filter_query_pred = self.filter_query_pred_gen()
         filter_query_pred_inv = self.filter_query_pred_inv_gen()
         filter_query_vertex = self.filter_query_vertex_gen()
-        filter_query_vertex_mid = filter_query_vertex + filter_query_vertex.replace("&", "&&")
-        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", "||")
+        filter_query_vertex_mid = filter_query_vertex + filter_query_vertex.replace("£", "££")
+        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", "&&")
 
         query_part2_open = """
     WHERE {
@@ -396,51 +438,70 @@ class PopulateSchemaBuilder(SchemaBuilder):
         """
         query_part2_b = """
         { {
-            """ + filter_query_pred.replace("&", "1") + """
+            """ + filter_query_pred.replace("£", "1") + """
             <""" + self.page + """> ?pred1 ?n1
         } UNION {
-            """ + filter_query_pred_inv.replace("&", "1") + """
+            """ + filter_query_pred_inv.replace("£", "1") + """
             ?n1 ?pred_inv1 <""" + self.page + """>
         } } .
         """
         query_part2_c = """
         { {
-            """ + filter_query_vertex.replace("&", "1") + """
+            """ + filter_query_vertex.replace("£", "1") + """
             <""" + self.page + """> ?pred1 ?n1
         } UNION {
-            """ + filter_query_vertex.replace("&", "1") + """
+            """ + filter_query_vertex.replace("£", "1") + """
+            ?n1 ?pred_inv1 <""" + self.page + """>
+        } } .
+        """
+        query_part2_d = """
+        { {
+            """ + filter_query_pred.replace("£", "1") + filter_query_vertex.replace("£", "1") + """
+            <""" + self.page + """> ?pred1 ?n1
+        } UNION {
+            """ + filter_query_pred_inv.replace("£", "1") + filter_query_vertex.replace("£", "1") + """
             ?n1 ?pred_inv1 <""" + self.page + """>
         } } .
         """
         for i in range(depth - 1):
             block_a = """
         { {
-            ?n& ?pred&& ?n&&
+            ?n£ ?pred££ ?n££
         } UNION {
-            ?n&& ?pred_inv&& ?n&
+            ?n££ ?pred_inv££ ?n£
         } } .
             """
             block_b = """
         { {
-            """ + filter_query_pred.replace("&", str(i + 2)) + """
-            ?n& ?pred&& ?n&&
+            """ + filter_query_pred.replace("£", str(i + 2)) + """
+            ?n£ ?pred££ ?n££
         } UNION {
-            """ + filter_query_pred_inv.replace("&", str(i + 2)) + """
-            ?n&& ?pred_inv&& ?n&
+            """ + filter_query_pred_inv.replace("£", str(i + 2)) + """
+            ?n££ ?pred_inv££ ?n£
         } } .
             """
             block_c = """
         { {
             """ + filter_query_vertex_mid + """
-            ?n& ?pred&& ?n&&
+            ?n£ ?pred££ ?n££
         } UNION {
             """ + filter_query_vertex_mid + """
-            ?n&& ?pred_inv&& ?n&
+            ?n££ ?pred_inv££ ?n£
         } } .
             """
-            query_part2_a = query_part2_a + block_a.replace("&&", str(i + 2)).replace("&", str(i + 1))
-            query_part2_b = query_part2_b + block_b.replace("&&", str(i + 2)).replace("&", str(i + 1))
-            query_part2_c = query_part2_c + block_c.replace("&&", str(i + 2)).replace("&", str(i + 1))
+            block_d = """
+        { {
+            """ + filter_query_pred.replace("£", str(i + 2)) + filter_query_vertex_mid + """
+            ?n£ ?pred££ ?n££
+        } UNION {
+            """ + filter_query_pred_inv.replace("£", str(i + 2)) + filter_query_vertex_mid + """
+            ?n££ ?pred_inv££ ?n£
+        } } .
+            """
+            query_part2_a = query_part2_a + block_a.replace("££", str(i + 2)).replace("£", str(i + 1))
+            query_part2_b = query_part2_b + block_b.replace("££", str(i + 2)).replace("£", str(i + 1))
+            query_part2_c = query_part2_c + block_c.replace("££", str(i + 2)).replace("£", str(i + 1))
+            query_part2_d = query_part2_d + block_d.replace("££", str(i + 2)).replace("£", str(i + 1))
 
         query_part2_close = """
     }
@@ -448,12 +509,12 @@ class PopulateSchemaBuilder(SchemaBuilder):
 
         if len(self.filter_set_edges) == 0 and len(self.filter_set_vertices) == 0:
             query_part2 = query_part2_open + query_part2_a + query_part2_close
-        elif len(self.filter_set_edges) != 0 and len(self.filter_set_vertices) != 0:
-            query_part2 = query_part2_open + query_part2_b + query_part2_c + query_part2_close
         elif len(self.filter_set_vertices) == 0:
             query_part2 = query_part2_open + query_part2_b + query_part2_close
         elif len(self.filter_set_edges) == 0:
             query_part2 = query_part2_open + query_part2_c + query_part2_close
+        elif len(self.filter_set_edges) != 0 and len(self.filter_set_vertices) != 0:
+            query_part2 = query_part2_open + query_part2_d + query_part2_close
 
         query = query_part1 + query_part2
 
@@ -467,16 +528,16 @@ class PopulateSchemaBuilder(SchemaBuilder):
 
         query_part2 = "MERGE (n0:depth_0:" + node_id + " {iri: \"" + self.page + "\"})\n"
         for i in range(depth):
-            string = "MERGE (n&:depth_&:" + node_id + " {iri: row.n&})\n"
-            query_part2 = query_part2 + string.replace("&", str(i + 1))
+            string = "MERGE (n£:depth_£:" + node_id + " {iri: row.n£})\n"
+            query_part2 = query_part2 + string.replace("£", str(i + 1))
 
         query_part3 = ""
         for i in range(depth):
             block = """
-    FOREACH (x IN CASE WHEN row.pred&& IS NULL THEN [] ELSE [1] END | MERGE (n&)-[p:pred {iri: row.pred&&}]->(n&&))
-    FOREACH (x IN CASE WHEN row.pred_inv&& IS NULL THEN [] ELSE [1] END | MERGE (n&)<-[p:pred {iri: row.pred_inv&&}]-(n&&))
+    FOREACH (x IN CASE WHEN row.pred££ IS NULL THEN [] ELSE [1] END | MERGE (n£)-[p:pred {iri: row.pred££}]->(n££))
+    FOREACH (x IN CASE WHEN row.pred_inv££ IS NULL THEN [] ELSE [1] END | MERGE (n£)<-[p:pred {iri: row.pred_inv££}]-(n££))
             """
-            query_part3 = query_part3 + block.replace("&&", str(i + 1)).replace("&", str(i))
+            query_part3 = query_part3 + block.replace("££", str(i + 1)).replace("£", str(i))
 
         query = query_part1 + query_part2 + query_part3
 
