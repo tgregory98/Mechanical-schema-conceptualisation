@@ -27,6 +27,6 @@
 - [x] Improve DisjointParentSchemaCleaner queries.
 - [x] Update style.grass.
 - [x] Create a wrapper to optimise the building processes.
-- [ ] Add dbo class data enrichment.
+- [ ] Add ontology classes enrichment.
 - [ ] Work on entity resolution.
 - [ ] Start building the front-end.
