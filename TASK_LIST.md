@@ -30,6 +30,6 @@
 - [x] Add ontology class building.
 - [x] Fix vertex filters so that NodeSchemaCleaner may be removed.
 - [x] Optimising the SPARQL query for finite depth parent building with FiniteParentSchemaBuilder.
-- [ ] Add duplication edge cleaning into the builder class run method.
+- [x] Add duplication edge cleaning into the builder class run method.
 - [ ] Work on entity resolution.
 - [ ] Start building the front-end.

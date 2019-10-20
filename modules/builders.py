@@ -99,13 +99,13 @@ CALL apoc.refactor.mergeNodes([n1, n2]) YIELD node
 RETURN n1, n2
         """
         modules.tr_funcs.commit_cypher_query(cypher_query_combine_nodes)
-#         cypher_query_combine_edges = """
-# MATCH (n1)-[r]->(n2), (n1)-[s]->(n2)
-# WHERE r.iri = s.iri and id(r) < id(s)
-# CALL apoc.refactor.mergeRelationships([r, s]) YIELD rel
-# RETURN n1, n2
-#         """
-#         modules.tr_funcs.commit_cypher_query(cypher_query_combine_edges)        
+        
+        cypher_query_combine_edges = """
+MATCH (n1)-[r]->(n2), (n1)-[s]->(n2)
+WHERE r.iri = s.iri and id(r) < id(s)
+DELETE s
+        """
+        modules.tr_funcs.commit_cypher_query(cypher_query_combine_edges)        
 
 
 class PairwiseSchemaBuilder(SchemaBuilder):
