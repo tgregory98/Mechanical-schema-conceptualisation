@@ -23,17 +23,27 @@ url3 = "http://dbpedia.org/resource/Cup"
 print("\n\n\n\n\n----- BUILDING -----")
 print("----- BUILDING / CATEGORIES -----")
 
+
+# PairwiseSchemaBuilder
+# pairwise_depth_constant = 4
+# sch1a = modules.builders.PairwiseSchemaBuilder(url1, url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+# for i in range(pairwise_depth_constant - 1):
+#     print(i + 2)
+#     sch1a.run(i + 2)
+# sch1b = modules.builders.PairwiseSchemaBuilder(url2, url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+# for i in range(pairwise_depth_constant - 1):
+#     print(i + 2)
+#     sch1b.run(i + 2)
+# sch1c = modules.builders.PairwiseSchemaBuilder(url1, url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+# for i in range(pairwise_depth_constant - 1):
+#     print(i + 2)
+#     sch1c.run(i + 2)
+
+
 count = {"nodes": 0, "edges": 0}
 depth_constant = 1
 while count["nodes"] < 100 and count["edges"] < 100:
     print("depth_constant: " + str(depth_constant) + "\n")
-
-
-    # PairwiseSchemaBuilder
-    # sch1 = modules.builders.PairwiseSchemaBuilder(url1, url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-    # for i in range(depth_constant - 1):
-    #   sch1.run(i + 2)
-
 
     # ParentSchemaBuilder
     sch2a = modules.builders.ParentSchemaBuilder(url1, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])

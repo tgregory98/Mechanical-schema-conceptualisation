@@ -23,13 +23,14 @@
 - [x] Make DisjointParentSchemaCleaner run on a set on nodes as opposed to just the two.
 - [x] Refine the querying for DisjointParentSchemaCleaner to slightly more precise patterns.
 - [x] Clean up demo images ready for first release.
-- [x] Make node labels reflect depth.
+- [x] Make node labels reflect depth which will influence node size.
 - [x] Improve DisjointParentSchemaCleaner queries.
 - [x] Update style.grass.
 - [x] Create a wrapper to optimise the building processes.
 - [x] Add ontology class building.
 - [x] Fix vertex filters so that NodeSchemaCleaner may be removed.
 - [x] Optimising the SPARQL query for finite depth parent building with FiniteParentSchemaBuilder.
-- [x] Add duplication edge cleaning into the builder class run method.
+- [x] Add duplicate edge cleaning into the builder class run method.
+- [ ] Add NLP.
 - [ ] Work on entity resolution.
 - [ ] Start building the front-end.
