@@ -48,4 +48,5 @@ SET x:owl
 """
 
         cypher_query_set = [cypher_build_node_ids, cypher_build_edge_ids, cypher_build_article_labels, cypher_build_category_labels, cypher_build_ontology_labels, cypher_build_owl_labels]
+        print(cypher_query_set)
         modules.tr_funcs.commit_cypher_query_set(cypher_query_set)

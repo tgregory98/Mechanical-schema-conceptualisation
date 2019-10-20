@@ -128,7 +128,7 @@ class PairwiseSchemaBuilder(SchemaBuilder):
         filter_query_pred_inv = self.filter_query_pred_inv_gen()
         filter_query_vertex = self.filter_query_vertex_gen()
         filter_query_vertex_mid = filter_query_vertex + filter_query_vertex.replace("£", "££")
-        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", "&&")
+        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", ")&&(").replace("FILTER(", "FILTER((") + ")"
 
         query_part2_open = """
     WHERE {
@@ -307,7 +307,7 @@ class ParentSchemaBuilder(SchemaBuilder):
         filter_query_pred = self.filter_query_pred_gen()
         filter_query_vertex = self.filter_query_vertex_gen()
         filter_query_vertex_mid = filter_query_vertex + filter_query_vertex.replace("£", "££")
-        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", "&&")
+        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", ")&&(").replace("FILTER(", "FILTER((") + ")"
 
         query_part2_open = """
     WHERE {
@@ -406,6 +406,144 @@ class ParentSchemaBuilder(SchemaBuilder):
         return query
 
 
+class FiniteParentSchemaBuilder(SchemaBuilder):
+    def __init__(self, page, filter_set_edges=[], filter_set_vertices=[]):
+        self.name = "FiniteParentSchemaBuilder on " + page
+        self.page = page
+        self.filter_set_edges = filter_set_edges
+        self.filter_set_vertices = filter_set_vertices
+
+    def sparql_query_gen(self, depth):
+        query_part1 = "\nSELECT "
+        for i in range(depth):
+            string = "?pred£ ?n£ "
+            query_part1 = query_part1 + string.replace("£", str(i + 1))
+
+        filter_query_pred = self.filter_query_pred_gen()
+        filter_query_vertex = self.filter_query_vertex_gen()
+        filter_query_vertex_mid = filter_query_vertex + filter_query_vertex.replace("£", "££")
+        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", ")&&(").replace("FILTER(", "FILTER((") + ")"
+
+        query_part2_open = """
+    WHERE {
+        """
+
+        query_part2_a = """
+        {
+            <""" + self.page + """> ?pred1 ?n1
+        } .
+        """
+        query_part2_b = """
+        {
+            """ + filter_query_pred.replace("£", "1") + """
+            <""" + self.page + """> ?pred1 ?n1
+        } .
+        """
+        query_part2_c = """
+        {
+            """ + filter_query_vertex.replace("£", "1") + """
+            <""" + self.page + """> ?pred1 ?n1
+        } .
+        """
+        query_part2_d = """
+        {
+            """ + filter_query_pred.replace("£", "1") + filter_query_vertex.replace("£", "1") + """
+            <""" + self.page + """> ?pred1 ?n1
+        } .
+        """
+
+        temp_a = ""
+        temp_b = ""
+        temp_c = ""
+        temp_d = ""
+        final_a = ""
+        final_b = ""
+        final_c = ""
+        final_d = ""
+
+        for i in range(depth - 1):
+            block_a = """
+        {
+            ?n£ ?pred££ ?n££
+        } ."""
+            block_b = """
+        {
+            """ + filter_query_pred.replace("£", "££") + """
+            ?n£ ?pred££ ?n££
+        } ."""
+            block_c = """
+        {
+            """ + filter_query_vertex_mid + """
+            ?n£ ?pred££ ?n££
+        } ."""
+            block_d = """
+        {
+            """ + filter_query_pred.replace("£", "££") + filter_query_vertex_mid + """
+            ?n£ ?pred££ ?n££
+        } ."""
+
+            temp_a = temp_a + block_a.replace("££", str(i + 2)).replace("£", str(i + 1))
+            temp_b = temp_b + block_b.replace("££", str(i + 2)).replace("£", str(i + 1))
+            temp_c = temp_c + block_c.replace("££", str(i + 2)).replace("£", str(i + 1))
+            temp_d = temp_d + block_d.replace("££", str(i + 2)).replace("£", str(i + 1))
+
+            final_a = final_a + """
+    OPTIONAL {""" + temp_a + """
+    } .
+            """
+            final_b = final_b + """
+    OPTIONAL {""" + temp_b + """
+    } .
+            """
+            final_c = final_c + """
+    OPTIONAL {""" + temp_c + """
+    } .
+            """
+            final_d = final_d + """
+    OPTIONAL {""" + temp_d + """
+    } .
+            """
+
+        query_part2_close = """
+    }
+        """
+
+        if len(self.filter_set_edges) == 0 and len(self.filter_set_vertices) == 0:
+            query_part2 = query_part2_open + query_part2_a + final_a + query_part2_close
+        elif len(self.filter_set_vertices) == 0:
+            query_part2 = query_part2_open + query_part2_b + final_b + query_part2_close
+        elif len(self.filter_set_edges) == 0:
+            query_part2 = query_part2_open + query_part2_c + final_c + query_part2_close
+        elif len(self.filter_set_edges) != 0 and len(self.filter_set_vertices) != 0:
+            query_part2 = query_part2_open + query_part2_d + final_d + query_part2_close
+
+        query = query_part1 + query_part2
+
+        print(query)
+        return query
+
+    def cypher_query_gen(self, depth, url):
+        query_part1 = "WITH \"" + url + "\" AS url\n\nLOAD CSV WITH HEADERS FROM url AS row\n\n"
+
+        node_id = self.fetch_node_id(self.page)
+
+        query_part2 = """
+    FOREACH (x IN CASE WHEN row.pred££ IS NULL THEN [] ELSE [1] END | MERGE (n0:depth_0:""" + node_id + """ {iri: \"""" + self.page + """\"}) MERGE (n££:depth_££:""" + node_id + """ {iri: row.n££}) MERGE (n£)-[p:pred {iri: row.pred££}]->(n££))
+            """
+        query_part2 = query_part2.replace("££", str(0 + 1)).replace("£", str(0))
+
+        for i in range(depth - 1):
+            block = """
+    FOREACH (x IN CASE WHEN row.pred££ IS NULL THEN [] ELSE [1] END | MERGE (n£:depth_£:""" + node_id + """ {iri: row.n£}) MERGE (n££:depth_££:""" + node_id + """ {iri: row.n££}) MERGE (n£)-[p:pred {iri: row.pred££}]->(n££))
+            """
+            query_part2 = query_part2 + block.replace("££", str(i + 2)).replace("£", str(i + 1))
+
+        query = query_part1 + query_part2
+
+        print(query)
+        return query
+
+
 class PopulateSchemaBuilder(SchemaBuilder):
     def __init__(self, page, filter_set_edges=[], filter_set_vertices=[]):
         self.name = "PopulateSchemaBuilder on " + page
@@ -423,7 +561,7 @@ class PopulateSchemaBuilder(SchemaBuilder):
         filter_query_pred_inv = self.filter_query_pred_inv_gen()
         filter_query_vertex = self.filter_query_vertex_gen()
         filter_query_vertex_mid = filter_query_vertex + filter_query_vertex.replace("£", "££")
-        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", "&&")
+        filter_query_vertex_mid = filter_query_vertex_mid.replace(")FILTER(", ")&&(").replace("FILTER(", "FILTER((") + ")"
 
         query_part2_open = """
     WHERE {
