@@ -31,6 +31,7 @@
 - [x] Fix vertex filters so that NodeSchemaCleaner may be removed.
 - [x] Optimising the SPARQL query for finite depth parent building with FiniteParentSchemaBuilder.
 - [x] Add duplicate edge cleaning into the builder class run method.
+- [ ] Work on concurrency.
 - [ ] Add NLP.
 - [ ] Work on entity resolution.
 - [ ] Start building the front-end.
