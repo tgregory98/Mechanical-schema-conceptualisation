@@ -3,7 +3,7 @@
 
 
 import time
-import modules.tr_funcs, modules.build, modules.clean, modules.enrich
+import modules.tr_funcs, modules.etl
 
 
 start_time = time.time()
@@ -26,15 +26,15 @@ print("----- BUILDING / CATEGORIES -----")
 
 # Pairwise
 # pairwise_depth_constant = 4
-# sch1a = modules.build.Pairwise(url1, url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+# sch1a = modules.etl.Pairwise(url1, url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 # for i in range(pairwise_depth_constant - 1):
 #     print(i + 2)
 #     sch1a.run(i + 2)
-# sch1b = modules.build.Pairwise(url2, url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+# sch1b = modules.etl.Pairwise(url2, url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 # for i in range(pairwise_depth_constant - 1):
 #     print(i + 2)
 #     sch1b.run(i + 2)
-# sch1c = modules.build.Pairwise(url1, url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+# sch1c = modules.etl.Pairwise(url1, url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 # for i in range(pairwise_depth_constant - 1):
 #     print(i + 2)
 #     sch1c.run(i + 2)
@@ -46,9 +46,9 @@ while count["nodes"] < 100 and count["edges"] < 100:
     print("depth_constant: " + str(depth_constant) + "\n")
 
     # Parent
-    sch2a = modules.build.Parent(url1, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-    sch2b = modules.build.Parent(url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-    sch2c = modules.build.Parent(url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+    sch2a = modules.etl.Parent(url1, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+    sch2b = modules.etl.Parent(url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+    sch2c = modules.etl.Parent(url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 
     sch2a.run(depth_constant)
     sch2b.run(depth_constant)
@@ -56,9 +56,9 @@ while count["nodes"] < 100 and count["edges"] < 100:
 
 
     # Populate
-    # sch3a = modules.build.Populate(url1, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-    # sch3b = modules.build.Populate(url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
-    # sch3c = modules.build.Populate(url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+    # sch3a = modules.etl.Populate(url1, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+    # sch3b = modules.etl.Populate(url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
+    # sch3c = modules.etl.Populate(url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 
     # sch3a.run(depth_constant)
     # sch3b.run(depth_constant)
@@ -81,9 +81,9 @@ RETURN COUNT(r)
 
 print("\n\n\n\n\n----- BUILDING / CLASSES -----")
 
-sch4a = modules.build.FiniteParent(url1, filter_set_edges=["rdf:type", "rdfs:subClassOf", "rdfs:domain"], filter_set_vertices=["dbo:", "owl:"])
-sch4b = modules.build.FiniteParent(url2, filter_set_edges=["rdf:type", "rdfs:subClassOf", "rdfs:domain"], filter_set_vertices=["dbo:", "owl:"])
-sch4c = modules.build.FiniteParent(url3, filter_set_edges=["rdf:type", "rdfs:subClassOf", "rdfs:domain"], filter_set_vertices=["dbo:", "owl:"])
+sch4a = modules.etl.FiniteParent(url1, filter_set_edges=["rdf:type", "rdfs:subClassOf", "rdfs:domain"], filter_set_vertices=["dbo:", "owl:"])
+sch4b = modules.etl.FiniteParent(url2, filter_set_edges=["rdf:type", "rdfs:subClassOf", "rdfs:domain"], filter_set_vertices=["dbo:", "owl:"])
+sch4c = modules.etl.FiniteParent(url3, filter_set_edges=["rdf:type", "rdfs:subClassOf", "rdfs:domain"], filter_set_vertices=["dbo:", "owl:"])
 
 sch4a.run(6)
 sch4b.run(6)
@@ -94,12 +94,12 @@ sch4c.run(6)
 print("\n\n\n\n\n----- CLEANING -----")
 
 # DisjointParent
-cl1 = modules.clean.DisjointParent()
+cl1 = modules.etl.DisjointParent()
 cl1.run(depth_constant)
 
 
 # Leaf
-# cl2 = modules.clean.Leaf()
+# cl2 = modules.etl.Leaf()
 # cl2.run(depth_constant)
 
 
@@ -107,7 +107,7 @@ cl1.run(depth_constant)
 print("\n\n\n\n\n----- ENRICHING -----")
 
 # IdsLabelsEnrich
-en1 = modules.enrich.IdsLabelsEnrich()
+en1 = modules.etl.IdsLabels()
 en1.run()
 
 

@@ -4,7 +4,7 @@ import modules.tr_funcs
 
 class Build:
     def __init__(self, filter_set_edges=[], filter_set_vertices=[]):
-        self.name = "Build"
+        self.name = "Build class"
         self.filter_set_edges = filter_set_edges
         self.filter_set_vertices = filter_set_vertices
 
@@ -110,7 +110,7 @@ DELETE s
 
 class Pairwise(Build):
     def __init__(self, start_page, end_page, filter_set_edges=[], filter_set_vertices=[]):
-        self.name = "Pairwise between " + start_page + " and " + end_page
+        self.name = "Pairwise build between " + start_page + " and " + end_page
         self.start_page = start_page
         self.end_page = end_page
         self.filter_set_edges = filter_set_edges
@@ -293,7 +293,7 @@ class Pairwise(Build):
 
 class Parent(Build):
     def __init__(self, page, filter_set_edges=[], filter_set_vertices=[]):
-        self.name = "Parent on " + page
+        self.name = "Parent build on " + page
         self.page = page
         self.filter_set_edges = filter_set_edges
         self.filter_set_vertices = filter_set_vertices
@@ -408,7 +408,7 @@ class Parent(Build):
 
 class FiniteParent(Build):
     def __init__(self, page, filter_set_edges=[], filter_set_vertices=[]):
-        self.name = "FiniteParent on " + page
+        self.name = "FiniteParent build on " + page
         self.page = page
         self.filter_set_edges = filter_set_edges
         self.filter_set_vertices = filter_set_vertices
@@ -546,7 +546,7 @@ class FiniteParent(Build):
 
 class Populate(Build):
     def __init__(self, page, filter_set_edges=[], filter_set_vertices=[]):
-        self.name = "Populate on " + page
+        self.name = "Populate build on " + page
         self.page = page
         self.filter_set_edges = filter_set_edges
         self.filter_set_vertices = filter_set_vertices
@@ -681,3 +681,152 @@ class Populate(Build):
 
         print(query)
         return query
+
+
+class Clean:
+    def __init__(self):
+        self.name = "Clean class"
+
+
+class Leaf(Clean):
+    def __init__(self):
+        self.name = "Leaf clean"
+
+    def run(self, depth):
+        cypher_query = """
+MATCH (x)
+WITH x, size((x)--()) as degree
+WHERE degree = 1
+DETACH DELETE (x)
+        """
+        cypher_query_set = []
+        for i in range(depth):
+            cypher_query_set.append(cypher_query)
+        modules.tr_funcs.commit_cypher_query_set(cypher_query_set)
+
+
+class DisjointParent(Clean):
+    def __init__(self):
+        self.name = "DisjointParent clean"
+
+    def get_root_labels(self):
+        cypher_query = """
+MATCH (x:depth_0)
+RETURN DISTINCT labels(x)
+        """
+        output = modules.tr_funcs.commit_cypher_query_numpy(cypher_query).tolist()
+        self.root_labels = []
+        for i in output:
+            i[0].remove("depth_0")
+            self.root_labels.append(i[0][0])
+        print(self.root_labels)
+
+    def combinations(self, root_labels):
+        root_label_combinations = []
+        for i in root_labels:
+            for j in root_labels:
+                if i < j:
+                    root_label_combinations.append([i, j])
+
+        self.root_label_combinations = root_label_combinations
+
+    def run(self, depth):
+        self.get_root_labels()
+        self.combinations(self.root_labels)
+        
+        cypher_query_1_set = []
+        cypher_query_1a = """
+MATCH (x:depth_0)
+MATCH (y:root_1:root_2)
+SET x.keep = 1, y.keep = 1
+        """
+        cypher_query_1_set.append(cypher_query_1a)
+        
+        match_a = "MATCH (x:depth_0)-->(n1)-->"
+        match_b = "(y:root_1:root_2)"
+        pattern_statement = ""
+        set_statement = "SET n1.keep = 1"
+        if depth >= 2:
+            cypher_query_1b = match_a + match_b + "\n" + set_statement + "\n"
+            cypher_query_1_set.append(cypher_query_1b)
+            
+            for i in range(depth - 2):
+                pattern_statement = ""
+                match_a = match_a + "(n&)-->".replace("&", str(i + 2))
+                pattern_statement = pattern_statement + match_a + match_b
+                set_statement = set_statement + ", n" + str(i + 2) + ".keep = 1"
+
+                cypher_query_1c = pattern_statement + "\n" + set_statement
+                print(cypher_query_1c)
+                cypher_query_1_set.append(cypher_query_1c)
+        
+        cypher_query_set = []
+        for i in self.root_label_combinations:
+            for j in cypher_query_1_set:
+                x = j.replace("root_1", i[0]).replace("root_2", i[1])
+                cypher_query_set.append(x)
+        print(cypher_query_set)
+        cypher_query_2 = """
+MATCH (x)
+WHERE x.keep IS NULL
+DETACH DELETE x
+        """
+
+        cypher_query_3 = """
+MATCH (x)
+SET x.keep = NULL
+        """
+
+        cypher_query_set = cypher_query_set + [cypher_query_2, cypher_query_3]
+        modules.tr_funcs.commit_cypher_query_set(cypher_query_set)
+
+
+class Enrich:
+    def __init__(self):
+        self.name = "Enrich class"
+
+
+class IdsLabels(Enrich):
+    def __init__(self):
+        self.name = "IdsLabels enrich"
+
+    def run(self):
+        cypher_build_node_ids = """
+MATCH (x)
+SET (CASE left(x.iri,28) WHEN "http://dbpedia.org/resource/" THEN x END).id = toString(replace(x.iri,"http://dbpedia.org/resource/","")), (CASE left(x.iri,28) WHEN "http://dbpedia.org/resource/" THEN x END).prefix = "http://dbpedia.org/resource/"
+SET (CASE left(x.iri,37) WHEN "http://dbpedia.org/resource/Category:" THEN x END).id = toString(replace(x.iri,"http://dbpedia.org/resource/Category:","")), (CASE left(x.iri,37) WHEN "http://dbpedia.org/resource/Category:" THEN x END).prefix = "http://dbpedia.org/resource/Category:"
+SET (CASE left(x.iri,28) WHEN "http://dbpedia.org/ontology/" THEN x END).id = toString(replace(x.iri,"http://dbpedia.org/ontology/","")), (CASE left(x.iri,28) WHEN "http://dbpedia.org/ontology/" THEN x END).prefix = "http://dbpedia.org/ontology/"
+SET (CASE left(x.iri,30) WHEN "http://www.w3.org/2002/07/owl#" THEN x END).id = toString(replace(x.iri,"http://www.w3.org/2002/07/owl#","")), (CASE left(x.iri,30) WHEN "http://www.w3.org/2002/07/owl#" THEN x END).prefix = "http://www.w3.org/2002/07/owl#"
+"""
+
+        cypher_build_edge_ids = """
+MATCH (x)-[y]->(z)
+SET (CASE left(y.iri,25) WHEN "http://purl.org/dc/terms/" THEN y END).id = toString(replace(y.iri,"http://purl.org/dc/terms/","")), (CASE left(y.iri,25) WHEN "http://purl.org/dc/terms/" THEN y END).prefix = "http://purl.org/dc/terms/"
+SET (CASE left(y.iri,36) WHEN "http://www.w3.org/2004/02/skos/core#" THEN y END).id = toString(replace(y.iri,"http://www.w3.org/2004/02/skos/core#","")), (CASE left(y.iri,36) WHEN "http://www.w3.org/2004/02/skos/core#" THEN y END).prefix = "http://www.w3.org/2004/02/skos/core#"
+SET (CASE left(y.iri,43) WHEN "http://www.w3.org/1999/02/22-rdf-syntax-ns#" THEN y END).id = toString(replace(y.iri,"http://www.w3.org/1999/02/22-rdf-syntax-ns#","")), (CASE left(y.iri,43) WHEN "http://www.w3.org/1999/02/22-rdf-syntax-ns#" THEN y END).prefix = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+SET (CASE left(y.iri,37) WHEN "http://www.w3.org/2000/01/rdf-schema#" THEN y END).id = toString(replace(y.iri,"http://www.w3.org/2000/01/rdf-schema#","")), (CASE left(y.iri,37) WHEN "http://www.w3.org/2000/01/rdf-schema#" THEN y END).prefix = "http://www.w3.org/2000/01/rdf-schema#"
+"""
+
+        cypher_build_article_labels = """
+MATCH (x {prefix: "http://dbpedia.org/resource/"})
+SET x:article
+"""
+
+        cypher_build_category_labels = """
+MATCH (x {prefix: "http://dbpedia.org/resource/Category:"})
+SET x:category
+"""
+
+        cypher_build_ontology_labels = """
+MATCH (x {prefix: "http://dbpedia.org/ontology/"})
+SET x:ontology
+"""
+
+        cypher_build_owl_labels = """
+MATCH (x {prefix: "http://www.w3.org/2002/07/owl#"})
+SET x:owl
+"""
+
+        cypher_query_set = [cypher_build_node_ids, cypher_build_edge_ids, cypher_build_article_labels, cypher_build_category_labels, cypher_build_ontology_labels, cypher_build_owl_labels]
+        print(cypher_query_set)
+        modules.tr_funcs.commit_cypher_query_set(cypher_query_set)
