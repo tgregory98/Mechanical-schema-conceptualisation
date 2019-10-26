@@ -17,13 +17,6 @@ def commit_cypher_query_set(cypher_query_set):
     tr.commit()
 
 
-def commit_cypher_query_data(cypher_query):
-    tr = Transaction(g)
-    dictionary = tr.run(cypher_query).data()
-
-    return dictionary
-
-
 def commit_cypher_query_numpy(cypher_query):
     tr = Transaction(g)
     array = tr.run(cypher_query).to_ndarray()

@@ -2,9 +2,9 @@ from SPARQLWrapper import SPARQLWrapper
 import modules.tr_funcs
 
 
-class SchemaBuilder:
+class Build:
     def __init__(self, filter_set_edges=[], filter_set_vertices=[]):
-        self.name = "SchemaBuilder"
+        self.name = "Build"
         self.filter_set_edges = filter_set_edges
         self.filter_set_vertices = filter_set_vertices
 
@@ -108,9 +108,9 @@ DELETE s
         modules.tr_funcs.commit_cypher_query(cypher_query_combine_edges)        
 
 
-class PairwiseSchemaBuilder(SchemaBuilder):
+class Pairwise(Build):
     def __init__(self, start_page, end_page, filter_set_edges=[], filter_set_vertices=[]):
-        self.name = "PairwiseSchemaBuilder between " + start_page + " and " + end_page
+        self.name = "Pairwise between " + start_page + " and " + end_page
         self.start_page = start_page
         self.end_page = end_page
         self.filter_set_edges = filter_set_edges
@@ -291,9 +291,9 @@ class PairwiseSchemaBuilder(SchemaBuilder):
         return query
 
 
-class ParentSchemaBuilder(SchemaBuilder):
+class Parent(Build):
     def __init__(self, page, filter_set_edges=[], filter_set_vertices=[]):
-        self.name = "ParentSchemaBuilder on " + page
+        self.name = "Parent on " + page
         self.page = page
         self.filter_set_edges = filter_set_edges
         self.filter_set_vertices = filter_set_vertices
@@ -406,9 +406,9 @@ class ParentSchemaBuilder(SchemaBuilder):
         return query
 
 
-class FiniteParentSchemaBuilder(SchemaBuilder):
+class FiniteParent(Build):
     def __init__(self, page, filter_set_edges=[], filter_set_vertices=[]):
-        self.name = "FiniteParentSchemaBuilder on " + page
+        self.name = "FiniteParent on " + page
         self.page = page
         self.filter_set_edges = filter_set_edges
         self.filter_set_vertices = filter_set_vertices
@@ -544,9 +544,9 @@ class FiniteParentSchemaBuilder(SchemaBuilder):
         return query
 
 
-class PopulateSchemaBuilder(SchemaBuilder):
+class Populate(Build):
     def __init__(self, page, filter_set_edges=[], filter_set_vertices=[]):
-        self.name = "PopulateSchemaBuilder on " + page
+        self.name = "Populate on " + page
         self.page = page
         self.filter_set_edges = filter_set_edges
         self.filter_set_vertices = filter_set_vertices

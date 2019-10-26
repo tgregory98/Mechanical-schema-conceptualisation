@@ -1,14 +1,14 @@
 import modules.tr_funcs
 
 
-class SchemaEnricher:
+class Enrich:
     def __init__(self):
-        self.name = "SchemaEnricher"
+        self.name = "Enrich"
 
 
-class IdsLabelsSchemaEnricher(SchemaEnricher):
+class IdsLabelsEnrich(Enrich):
     def __init__(self):
-        self.name = "IdsLabelsSchemaEnricher"
+        self.name = "IdsLabelsEnrich"
 
     def run(self):
         cypher_build_node_ids = """

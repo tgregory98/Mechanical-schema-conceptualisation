@@ -1,14 +1,14 @@
 import modules.tr_funcs
 
 
-class SchemaCleaner:
+class Clean:
     def __init__(self):
-        self.name = "SchemaCleaner"
+        self.name = "Clean"
 
 
-class LeafSchemaCleaner(SchemaCleaner):
+class Leaf(Clean):
     def __init__(self):
-        self.name = "LeafSchemaCleaner"
+        self.name = "Leaf"
 
     def run(self, depth):
         cypher_query = """
@@ -23,9 +23,9 @@ DETACH DELETE (x)
         modules.tr_funcs.commit_cypher_query_set(cypher_query_set)
 
 
-class DisjointParentSchemaCleaner(SchemaCleaner):
+class DisjointParent(Clean):
     def __init__(self):
-        self.name = "DisjointParentSchemaCleaner"
+        self.name = "DisjointParent"
 
     def get_root_labels(self):
         cypher_query = """
