@@ -13,9 +13,9 @@ At this stage I am working on adding NLP, entity resolution and concurrency.
 ## File/ folder structure
 - **demo_schemas**: Contains the image results of some of the possible approaches.
 - **modules**: Contains the scripts which do most of the heavylifting.
-    - builders.py: (extract) The main script responsible for querying and building the initial graphs.
-    - cleaners.py: (transform) This script removes unwanted information from the graph.
-    - enrichers.py: (transform) This script makes the data in the graph more readable.
+    - build.py: (extract) The main script responsible for querying and building the initial graphs.
+    - clean.py: (transform) This script removes unwanted information from the graph.
+    - enrich.py: (transform) This script makes the data in the graph more readable.
     - tr_funcs.py: This script provides database Transaction utilities for use across the project.
 - TASK_LIST.md: A task list for personal use.
 - run.py: The script that we 'run', and acts as a dashboard for arranging the various components of the graph we wish to build.
