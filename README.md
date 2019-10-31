@@ -32,7 +32,9 @@ At this stage I am working on adding NLP, entity resolution and concurrency. Rel
    
    ![](https://latex.codecogs.com/gif.latex?%5Cinline%20%5C%5C%20%5Ctext%7BThis%20yields%20the%20similarity%20matrix%20%24S%3D%28S%28n_1%2Cn_2%29%29_%7Bn_1%2Cn_2%5Cin%20N%7D%24%20as%20required.%7D)
    
-   For the inherant similarity matrix, I will probably use an affine gap distance metric with the `dedupe` package.
+   For the inherant similarity matrix, I will probably use an affine gap distance metric. To aggregate these two matrices into one, I may use a meta-learning algorithm to decide on an optimal linear combination.
+   
+   Finally, to perform abstraction, I will figure out a valid metric to represent how context invariant each node is, and then I will use a one-tailed significance test to determine which nodes must be omitted.
 
 3. Work-in-progress.
 
