@@ -30,7 +30,7 @@ At this stage I am working on adding NLP, entity resolution and concurrency. Rel
    
    ![](https://latex.codecogs.com/gif.latex?%5Cinline%20%5C%5C%20%5Ctext%7BFor%20each%20%24n_1%2Cn_2%5Cin%20N%24%3A%7D%5C%5C%20%5Chspace*%7B1cm%7D%5Ctext%7Blet%20%7DM%27_%7Bn_1%2Cn_2%7D%3D%5C%7Bm%5Cin%20M%3An_1m%5Cin%20E%28G%29%5Ctext%7B%20and%20%7Dn_2m%5Cin%20E%28G%29%5C%7D%5C%5C%20%5Chspace*%7B1cm%7D%5Ctext%7Bthen%20%7DS%28n_1%2Cn_2%29%3D%5Csum_%7Bm%5Cin%20M%27%7D%5Cfrac%7B1%7D%7B%5Calpha_m%7D)
    
-   ![](https://latex.codecogs.com/gif.latex?%5Cinline%20%5C%5C%20%5Ctext%7BThis%20yields%20the%20similarity%20matrix%20%24S%3D%28S%28n_1%2Cn_2%29%29_%7Bn_1%2Cn_2%5Cin%20N%7D%24%20as%20required.%7D)
+   ![](https://latex.codecogs.com/gif.latex?%5Cinline%20%5C%5C%20%5Ctext%7BThis%20yields%20the%20structural%20similarity%20matrix%20%24S%3D%28S%28n_1%2Cn_2%29%29_%7Bn_1%2Cn_2%5Cin%20N%7D%24%20as%20required.%7D)
    
    For the inherant similarity matrix, I will probably use an affine gap distance metric. To aggregate these two matrices into one, I may use a meta-learning algorithm to decide on an optimal linear combination.
    
