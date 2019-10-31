@@ -60,6 +60,12 @@ node.depth_5 {
   defaultCaption: "<id>";
   diameter: 60px;
 }
+node.meta {
+  caption: "{iri}";
+}
+node.etl {
+  defaultCaption: "<id>";
+}
 node.Tea {
   color: #D9C8AE;
   border-color: #c0a378;
