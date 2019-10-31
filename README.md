@@ -13,10 +13,9 @@ At this stage I am working on adding NLP, entity resolution and concurrency.
 ## File/ folder structure
 - **demo_schemas**: Contains the image results of some of the possible approaches.
 - **modules**: Contains the scripts which do most of the heavylifting.
-    - build.py: (extract) The main script responsible for querying and building the initial graphs.
-    - clean.py: (transform) This script removes unwanted information from the graph.
-    - enrich.py: (transform) This script makes the data in the graph more readable.
-    - tr_funcs.py: This script provides database Transaction utilities for use across the project.
+    - etl.py: The script responsible for querying and building the initial graph, and cleaning unwanted nodes. This is the ETL stage.
+    - schema.py: The next stage of the process, which populates the graph with metadata, computes similarity scores, performs entity recognition, and finally abstracts the structure.
+    - misc.py: This script provides database Transaction utilities and enrichment objects for use across the entire project.
 - TASK_LIST.md: A task list for personal use.
 - run.py: The script that we 'run', and acts as a dashboard for arranging the various components of the graph we wish to build.
 - style.grass: A loose file which may be uploaded to the Neo4j browser for personalised styling.
