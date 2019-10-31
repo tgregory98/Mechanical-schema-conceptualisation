@@ -2,18 +2,32 @@
 # Release 0.2.1. Schema setup
 **Builds, cleans and enriches "schema" diagrams, connecting articles from across Wikipedia via the RDF DBpedia dataset.**
 
-A Python program which queries DBpedia's massive RDF dataset, a community maintained dataset based off Wikipedia, via the SPARQL endpoint. Then it uses this data to intelligently build "schema" representing the connections between articles from across Wikipedia. These schema are built with Cypher on the Neo4j graph database platform.
+A Python program which queries DBpedia's massive RDF dataset, a community maintained dataset based off Wikipedia, via the SPARQL endpoint. Then it uses this data to intelligently build "schema" representing the connections between articles from across Wikipedia. These schema are built with Cypher on the Neo4j graph database platform. It all runs from one file using class instances, and it can go from a blank slate to a fully populated final schema in a matter of seconds.
 
 The main aims of this program were to successfully extract the data, transform it, load it into the Neo4j platform and then to rapidly find clear schema representations. This program will be the first stage of a broader project inspired by the roots of [constructivism](https://en.wikipedia.org/wiki/Constructivism_(philosophy_of_education)) (or more specifically [schemas](https://en.wikipedia.org/wiki/Schema_(psychology)), which are *not* to be confused with database schemas).
 
-I took four alternative approaches for each ETL release, all of which are listed below in decreasing order of effectiveness. Most queries (in both SPARQL and Cypher) are dynamically generated based off the desired depth and the chosen root node. Where possible, I have also written built-in filter options. It all runs from one file using class instances, and it can go from a blank slate to a fully populated final schema in a matter of seconds.
+At this stage I am working on adding NLP, entity resolution and concurrency. Release 0.2.1 is focusing on setting up for these features. What follows is a breakdown of each stage of the project, in chronological order:
 
-At this stage I am working on adding NLP, entity resolution and concurrency. Release 0.2.1 is focusing on setting up for these features.
+1. **ETL:** This stage involves querying and building the initial graph, and cleaning unwanted nodes. I took four alternative compound approaches for each ETL release, all of which are listed and fully explained in in 0.1.0 and 0.2.0 showcases, in decreasing order of effectiveness. Most queries (in both SPARQL and Cypher) are dynamically generated based off the desired depth and the chosen root node. I have also written built-in filter options.
+	- Querying from SPARQL endpoint
+	- Building graph
+	- Cleaning unwanted nodes
+
+2. **SCHEMA:** The next stage of the process, which populates the graph with metadata, computes similarity scores, performs entity recognition, and finally abstracts the structure.
+
+	- Populating `etl` nodes from previous stage with `meta` nodes
+	- Computing a pairwise similarity score matrix based of the `meta` nodes
+	- Deduplication of `etl` nodes
+	- Abstracting the graph by removing very contextual nodes
+
+   The interesting maths comes in with the computation of the similarity matrix, so I I will explain the reasoning behind it here.
+
+3.
 
 ## File/ folder structure
 - **demo_schemas**: Contains the image results of some of the possible approaches.
 - **modules**: Contains the scripts which do most of the heavylifting.
-    - etl.py: The script responsible for querying and building the initial graph, and cleaning unwanted nodes. This is the ETL stage.
+    - etl.py: The script responsible for querying and building the initial graph, and cleaning unwanted nodes.
     - schema.py: The next stage of the process, which populates the graph with metadata, computes similarity scores, performs entity recognition, and finally abstracts the structure.
     - misc.py: This script provides database Transaction utilities and enrichment objects for use across the entire project.
 - TASK_LIST.md: A task list for personal use.
