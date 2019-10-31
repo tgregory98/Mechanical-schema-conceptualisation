@@ -1,5 +1,5 @@
 # **Schema-dreamer**
-# Release 0.2.0. Improved ETL
+# Release 0.2.1. Schema setup
 **Builds, cleans and enriches "schema" diagrams, connecting articles from across Wikipedia via the RDF DBpedia dataset.**
 
 A Python program which queries DBpedia's massive RDF dataset, a community maintained dataset based off Wikipedia, via the SPARQL endpoint. Then it uses this data to intelligently build "schema" representing the connections between articles from across Wikipedia. These schema are built with Cypher on the Neo4j graph database platform.
@@ -8,7 +8,7 @@ The main aims of this program were to successfully extract the data, transform i
 
 I took four alternative approaches for each ETL release, all of which are listed below in decreasing order of effectiveness. Most queries (in both SPARQL and Cypher) are dynamically generated based off the desired depth and the chosen root node. Where possible, I have also written built-in filter options. It all runs from one file using class instances, and it can go from a blank slate to a fully populated final schema in a matter of seconds.
 
-At this stage I am working on adding NLP, entity resolution and concurrency.
+At this stage I am working on adding NLP, entity resolution and concurrency. Release 0.2.1 is focusing on setting up for these features.
 
 ## File/ folder structure
 - **demo_schemas**: Contains the image results of some of the possible approaches.
