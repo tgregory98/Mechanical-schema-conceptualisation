@@ -20,7 +20,7 @@ At this stage I am working on adding NLP, entity resolution and concurrency. Rel
 	- Deduplication of `etl` nodes
 	- Abstracting the graph by removing very contextual nodes
 
-   The interesting maths comes in with the computation of the similarity matrix, so I will explain the reasoning behind it here.
+   The interesting maths comes in with the computation of the similarity matrix, so I will explain it here.
 
 3. Work-in-progress.
 
