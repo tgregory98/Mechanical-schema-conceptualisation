@@ -13,14 +13,14 @@ At this stage I am working on adding NLP, entity resolution and concurrency. Rel
 	- Building graph
 	- Cleaning unwanted nodes
 
-2. **SCHEMA:** (Work-in-progress) The next stage of the process, which populates the graph with metadata, computes similarity scores, performs entity recognition, and finally abstracts the structure.
+2. **SCHEMA:** The next stage of the process, which populates the graph with metadata, computes similarity scores, performs entity recognition, and finally abstracts the structure.
 
 	- Populating `etl` nodes from previous stage with `meta` nodes
-	- Computing an pairwise similarity score matrix based of the `meta` nodes, aggregated from:
+	- (Work-in-progress) Computing an pairwise similarity score matrix based of the `meta` nodes, aggregated from:
 		- a structural similarity matrix (taking a very contextual approach)
 		- a inherant similarity matrix (a standard approach)
-	- Deduplication of `etl` nodes
-	- Abstracting the graph by removing very contextual nodes
+	- (Work-in-progress) Deduplication of `etl` nodes
+	- (Work-in-progress) Abstracting the graph by removing very contextual nodes
 
    The interesting maths comes in with the computation of the structural similarity matrix, so I will explain it here. Once this is complete and working with arbitrary hyperparameters, I may train this with a machine learning model.
    
