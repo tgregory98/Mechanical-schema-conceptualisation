@@ -13,7 +13,7 @@ At this stage I am working on adding NLP, entity resolution and concurrency. Rel
 	- Building graph
 	- Cleaning unwanted nodes
 
-2. **SCHEMA:** The next stage of the process, which populates the graph with metadata, computes similarity scores, performs entity recognition, and finally abstracts the structure.
+2. **SCHEMA:** (Work-in-progress) The next stage of the process, which populates the graph with metadata, computes similarity scores, performs entity recognition, and finally abstracts the structure.
 
 	- Populating `etl` nodes from previous stage with `meta` nodes
 	- Computing an pairwise similarity score matrix based of the `meta` nodes, aggregated from:
@@ -36,7 +36,7 @@ At this stage I am working on adding NLP, entity resolution and concurrency. Rel
    
    Finally, to perform abstraction, I will figure out a valid metric to represent how context invariant each node is, and then I will use a one-tailed significance test to determine which nodes must be omitted.
 
-3. Work-in-progress.
+3. (Work-in-progress).
 
 ## File/ folder structure
 - **demo_schemas**: Contains the image results of some of the possible approaches.
