@@ -18,7 +18,7 @@ At this stage I am working on adding NLP, entity resolution and concurrency. Rel
 	- Populating `etl` nodes from previous stage with `meta` nodes
 	- (Work-in-progress) Computing an pairwise similarity score matrix based of the `meta` nodes, aggregated from:
 		- a structural similarity matrix (taking a very contextual approach)
-		- a inherant similarity matrix (a standard approach)
+		- a inherent similarity matrix (a standard approach)
 	- (Work-in-progress) Deduplication of `etl` nodes
 	- (Work-in-progress) Abstracting the graph by removing very contextual nodes
 
@@ -32,7 +32,7 @@ At this stage I am working on adding NLP, entity resolution and concurrency. Rel
    
    ![](https://latex.codecogs.com/gif.latex?%5Cinline%20%5C%5C%20%5Ctext%7BThis%20yields%20the%20structural%20similarity%20matrix%20%24S%3D%28S%28n_1%2Cn_2%29%29_%7Bn_1%2Cn_2%5Cin%20N%7D%24%20or%20in%20full%3A%7D%5C%5C%20%5Chspace*%7B1cm%7DS%3D%5Cleft%28%5Csum_%7Bm%5Cin%5C%7Bm%5Cin%20M%3An_1m%5Cin%20E%28G%29%5Ctext%7B%20and%20%7Dn_2m%5Cin%20E%28G%29%5C%7D%7D%5Cfrac%7Bn%7D%7B%5Clambda_pp_m&plus;%5Clambda_cc_m%7D%5Cright%29_%7Bn_1%2Cn_2%5Cin%20N%7D%5C%5C%20%5Chspace*%7B1cm%7D%5Ctext%7Bwhere%20%7DG%3D%28N%5Ccup%20M%2CE%28G%29%29%2C%5Cquad%5Clambda_p%2C%5Clambda_c%5Cin%5Cmathbb%7BR%7D)
    
-   For the inherant similarity matrix, I will probably use an affine gap distance metric. To aggregate these two matrices into one, I may use a meta-learning algorithm to decide on an optimal linear combination.
+   For the inherent similarity matrix, I will probably use an affine gap distance metric. To aggregate these two matrices into one, I may use a meta-learning algorithm to decide on an optimal linear combination.
    
    Finally, to perform abstraction, I will figure out a valid metric to represent how context invariant each node is, and then I will use a one-tailed significance test to determine which nodes must be omitted.
 
