@@ -254,7 +254,6 @@ MATCH (x:etl)--(y:meta)--(z:etl)
 WHERE x.id <> z.id
 WITH x, z, SUM(1 / y.alpha) AS sim
 MERGE (x)-[r:similarity {struc_sim: sim}]-(z)
-RETURN x, r, z
             """
         print(query)
         modules.misc.commit_cypher_query(query)
