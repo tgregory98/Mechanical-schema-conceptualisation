@@ -125,8 +125,14 @@ SET x:etl
 start_schema = time.time()
 print("----- SCHEMA START -----\n\n\n\n\n")
 
+
 fet1 = modules.schema.Meta(filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 fet1.run()
+
+
+com1 = modules.schema.Structural([1, 1])
+com1.run()
+
 
 print("\n\n\n\n\n----- SCHEMA COMPLETE -----")
 print(str(round(time.time() - start_schema, 1)) + " seconds.")

@@ -11,12 +11,14 @@ $p_m=(\text{\# etl nodes parent to $m$}),c_m=(\text{\# etl nodes child to $m$}),
 \\
 \text{For each $m\in M$:}\\
 \hspace*{1cm}\text{find \% coverage of $m$ given by }\alpha_m:=\frac{\lambda_pp_m+\lambda_cc_m}{n}\\
-\hspace*{1cm}\text{then take the reciprocal }\frac{1}{\alpha_m}
+\hspace*{1cm}\text{then take the reciprocal, representing the uniqueness }\frac{1}{\alpha_m}
 
 \\
 \text{For each $n_1,n_2\in N$:}\\
 \hspace*{1cm}\text{let }M'_{n_1,n_2}=\{m\in M:n_1m\in E(G)\text{ and }n_2m\in E(G)\}\\
-\hspace*{1cm}\text{then }S(n_1,n_2)=\sum_{m\in M'}\frac{1}{\alpha_m}
+\hspace*{1cm}\text{then }S(n_1,n_2)=\sum_{m\in M'_{n_1,n_2}}\frac{1}{\alpha_m}
 
 \\
-\text{This yields the structural similarity matrix $S=(S(n_1,n_2))_{n_1,n_2\in N}$ as required.}
+\text{This yields the structural similarity matrix $S=(S(n_1,n_2))_{n_1,n_2\in N}$ or in full:}\\
+\hspace*{1cm}S=\left(\sum_{m\in\{m\in M:n_1m\in E(G)\text{ and }n_2m\in E(G)\}}\frac{n}{\lambda_pp_m+\lambda_cc_m}\right)_{n_1,n_2\in N}\\
+\hspace*{1cm}\text{where }G=(N\cup M,E(G)),\quad\lambda_p,\lambda_c\in\mathbb{R}

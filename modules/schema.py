@@ -175,7 +175,89 @@ FOREACH (x IN CASE WHEN row.pred_inv1 IS NULL THEN [] ELSE [1] END | MERGE (n0)<
         return query
 
 
-# class Compute:
+class Compute:
+    def __init__(self):
+        self.name = "Compute class"
+
+
+class Structural(Compute):
+    def __init__(self, lambdas):
+        self.name = "Structural compute"
+        self.lambda_p = lambdas[0]
+        self.lambda_c = lambdas[1]
+        self.count_dict = {}
+        self.alphas = {}
+
+    def count(self):
+        n = modules.misc.commit_cypher_query_numpy("""
+MATCH (x:etl)
+RETURN COUNT(x)
+        """)[0][0]
+
+        p_output = modules.misc.commit_cypher_query_numpy("""
+MATCH (x:meta)-->(y:etl)
+RETURN x.iri, COUNT(DISTINCT y) AS p
+ORDER BY p DESC
+        """)
+        p_dict = {}
+        for i in p_output:
+            p_dict[i[0]] = i[1]
+
+        c_output = modules.misc.commit_cypher_query_numpy("""
+MATCH (x:meta)<--(y:etl)
+RETURN x.iri, COUNT(DISTINCT y) AS c
+ORDER BY c DESC
+        """)
+        c_dict = {}
+        for i in c_output:
+            c_dict[i[0]] = i[1]
+
+        self.count_dict = {"n": n, "p_output": p_dict, "c_output": c_dict}
+
+    def compute_alphas(self):
+        meta_node_iris = modules.misc.commit_cypher_query_numpy("""
+MATCH (x:meta)
+RETURN DISTINCT x.iri
+        """)
+        meta_node_iris = [i[0] for i in meta_node_iris]
+
+        for i in meta_node_iris:
+            if i in self.count_dict["p_output"]:
+                p_m = int(self.count_dict["p_output"][i])
+            else:
+                p_m = 0
+
+            if i in self.count_dict["c_output"]:
+                c_m = int(self.count_dict["c_output"][i])
+            else:
+                c_m = 0
+
+            alpha = (self.lambda_p * p_m + self.lambda_c * c_m) / self.count_dict["n"]
+            self.alphas[i] = alpha
+
+    def set_alphas(self):
+        for key, value in self.alphas.items():
+            query = """
+MATCH (x:meta {iri: \"""" + key + """\"})
+SET x.alpha = """ + str(value) + """
+            """
+            print(query)
+            modules.misc.commit_cypher_query(query)
+
+    def run(self):
+        self.count()
+        self.compute_alphas()
+        self.set_alphas() # This needs speeding up
+
+        query = """
+MATCH (x:etl)--(y:meta)--(z:etl)
+WHERE x.id <> z.id
+WITH x, z, SUM(1 / y.alpha) AS sim
+MERGE (x)-[r:similarity {struc_sim: sim}]-(z)
+RETURN x, r, z
+            """
+        print(query)
+        modules.misc.commit_cypher_query(query)
 
 
 # class EntityRecognition:
