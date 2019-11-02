@@ -17,12 +17,12 @@ At this stage I am working on adding NLP, entity resolution and concurrency. Rel
 
 2. **SCHEMA:** The next stage of the process, which populates the graph with metadata, computes similarity scores, performs entity recognition, and finally abstracts the structure.
 
-	- Populating `etl` nodes from previous stage with `meta` nodes
+	- Populating the `etl` nodes from previous stage with `meta` nodes
 	- (Work-in-progress) Entity resolution
 		- Computing an pairwise similarity score matrix based of the `meta` nodes, aggregated from:
 			- a structural similarity matrix (taking a very contextual approach)
 			- a inherent similarity matrix (a standard approach)
-		- Multidimensional scaling (MDS) of `etl` nodes
+		- Multidimensional scaling (MDS) of the `etl` nodes
 		- Unsupervised K-means clustering based off this MDS embedding
 		- Deduplication based off similarity matrix and clustering
 	- (Work-in-progress) Abstracting the graph by removing very contextual nodes
