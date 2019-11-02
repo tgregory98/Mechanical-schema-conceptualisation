@@ -1,5 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper
 import modules.misc
+import logging
 
 
 class Meta:
@@ -154,7 +155,7 @@ SELECT ?pred1 ?pred_inv1 ?n1
         elif len(self.filter_set_edges) != 0 and len(self.filter_set_vertices) != 0:
             query = query_open + query_d + query_close
 
-        print(query)
+        logging.info(query)
         return query
 
     def cypher_query_gen(self, url, node_iri):
@@ -171,7 +172,7 @@ FOREACH (x IN CASE WHEN row.pred_inv1 IS NULL THEN [] ELSE [1] END | MERGE (n0)<
 
         query = query_part1 + query_part2
 
-        print(query)
+        logging.info(query)
         return query
 
 
@@ -241,7 +242,7 @@ RETURN DISTINCT x.iri
 MATCH (x:meta {iri: \"""" + key + """\"})
 SET x.alpha = """ + str(value) + """
             """
-            print(query)
+            logging.info(query)
             modules.misc.commit_cypher_query(query)
 
     def run(self):
@@ -255,7 +256,7 @@ WHERE x.id <> z.id
 WITH x, z, SUM(1 / y.alpha) AS sim
 MERGE (x)-[r:similarity {struc_sim: sim}]-(z)
             """
-        print(query)
+        logging.info(query)
         modules.misc.commit_cypher_query(query)
 
 

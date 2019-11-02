@@ -1,5 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper
 import modules.misc
+import logging
 
 
 class Build:
@@ -264,7 +265,7 @@ class Pairwise(Build):
 
         query = query_part1 + query_part2
 
-        print(query)
+        logging.info(query)
         return query
 
     def cypher_query_gen(self, depth, url):
@@ -287,7 +288,7 @@ class Pairwise(Build):
 
         query = query_part1 + query_part2 + query_part3
 
-        print(query)
+        logging.info(query)
         return query
 
 
@@ -380,7 +381,7 @@ class Parent(Build):
 
         query = query_part1 + query_part2
 
-        print(query)
+        logging.info(query)
         return query
 
     def cypher_query_gen(self, depth, url):
@@ -402,7 +403,7 @@ class Parent(Build):
 
         query = query_part1 + query_part2 + query_part3
 
-        print(query)
+        logging.info(query)
         return query
 
 
@@ -519,7 +520,7 @@ class FiniteParent(Build):
 
         query = query_part1 + query_part2
 
-        print(query)
+        logging.info(query)
         return query
 
     def cypher_query_gen(self, depth, url):
@@ -540,7 +541,7 @@ class FiniteParent(Build):
 
         query = query_part1 + query_part2
 
-        print(query)
+        logging.info(query)
         return query
 
 
@@ -656,7 +657,7 @@ class Populate(Build):
 
         query = query_part1 + query_part2
 
-        print(query)
+        logging.info(query)
         return query
 
     def cypher_query_gen(self, depth, url):
@@ -679,7 +680,7 @@ class Populate(Build):
 
         query = query_part1 + query_part2 + query_part3
 
-        print(query)
+        logging.info(query)
         return query
 
 
@@ -719,7 +720,7 @@ RETURN DISTINCT labels(x)
         for i in output:
             i[0].remove("depth_0")
             self.root_labels.append(i[0][0])
-        print(self.root_labels)
+        logging.info(self.root_labels)
 
     def combinations(self, root_labels):
         root_label_combinations = []
@@ -777,6 +778,6 @@ SET x.keep = NULL
         """
 
         cypher_query_set = cypher_query_set + [cypher_query_2, cypher_query_3]
-        print(cypher_query_set)
+        logging.info(cypher_query_set)
         modules.misc.commit_cypher_query_set(cypher_query_set)
 

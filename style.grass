@@ -26,39 +26,39 @@ node.depth_0 {
   border-color: #cc3c6c;
   text-color-internal: #FFFFFF;
   defaultCaption: "<id>";
-  diameter: 10px;
+  diameter: 50px;
 }
 node.depth_1 {
   color: #ECB5C9;
   border-color: #da7298;
   text-color-internal: #604A0E;
   defaultCaption: "<id>";
-  diameter: 20px;
+  diameter: 60px;
 }
 node.depth_2 {
   color: #57C7E3;
   border-color: #23b3d7;
   text-color-internal: #FFFFFF;
   defaultCaption: "<id>";
-  diameter: 30px;
+  diameter: 70px;
 }
 node.depth_3 {
   color: #F16667;
   border-color: #eb2728;
   text-color-internal: #FFFFFF;
   defaultCaption: "<id>";
-  diameter: 40px;
+  diameter: 80px;
 }
 node.depth_4 {
   color: #569480;
   border-color: #447666;
   text-color-internal: #FFFFFF;
   defaultCaption: "<id>";
-  diameter: 50px;
+  diameter: 90px;
 }
 node.depth_5 {
   defaultCaption: "<id>";
-  diameter: 60px;
+  diameter: 100px;
 }
 node.meta {
   caption: "{iri}";

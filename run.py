@@ -1,13 +1,16 @@
 # import sys
-# print(sys.executable)
+# logging.info(sys.executable)
 
 
-import time
 import modules.misc, modules.etl, modules.schema
+import time
+import logging
 
+
+logging.basicConfig(filename='run.log', level=logging.DEBUG)
 
 start_etl = time.time()
-print("----- ETL START -----\n\n\n\n\n")
+logging.info("----- ETL START -----\n\n\n\n\n")
 
 modules.misc.commit_cypher_query("""
 MATCH (x)
@@ -20,30 +23,30 @@ url3 = "http://dbpedia.org/resource/Cup"
 
 
 # -BUILDING-
-print("\n\n\n\n\n----- BUILDING -----")
-print("----- BUILDING / CATEGORIES -----\n\n\n\n\n")
+logging.info("\n\n\n\n\n----- BUILDING -----")
+logging.info("----- BUILDING / CATEGORIES -----\n\n\n\n\n")
 
 
 # Pairwise
 # pairwise_depth_constant = 4
 # bui1a = modules.etl.Pairwise(url1, url2, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 # for i in range(pairwise_depth_constant - 1):
-#     print(i + 2)
+#     logging.info(i + 2)
 #     bui1a.run(i + 2)
 # bui1b = modules.etl.Pairwise(url2, url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 # for i in range(pairwise_depth_constant - 1):
-#     print(i + 2)
+#     logging.info(i + 2)
 #     bui1b.run(i + 2)
 # bui1c = modules.etl.Pairwise(url1, url3, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
 # for i in range(pairwise_depth_constant - 1):
-#     print(i + 2)
+#     logging.info(i + 2)
 #     bui1c.run(i + 2)
 
 
 count = {"nodes": 0, "edges": 0}
 depth_constant = 1
 while count["nodes"] < 100 and count["edges"] < 100:
-    print("depth_constant: " + str(depth_constant) + "\n")
+    logging.info("depth_constant: " + str(depth_constant) + "\n")
 
     # Parent
     bui2a = modules.etl.Parent(url1, filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
@@ -76,10 +79,10 @@ RETURN COUNT(r)
     """)
     count["nodes"] = nodes[0][0]
     count["edges"] = edges[0][0]
-    print(count)
+    logging.info(count)
 
 
-# print("\n\n\n\n\n----- BUILDING / CLASSES -----\n\n\n\n\n")
+# logging.info("\n\n\n\n\n----- BUILDING / CLASSES -----\n\n\n\n\n")
 
 # bui4a = modules.etl.FiniteParent(url1, filter_set_edges=["rdf:type", "rdfs:subClassOf", "rdfs:domain"], filter_set_vertices=["dbo:", "owl:"])
 # bui4b = modules.etl.FiniteParent(url2, filter_set_edges=["rdf:type", "rdfs:subClassOf", "rdfs:domain"], filter_set_vertices=["dbo:", "owl:"])
@@ -91,7 +94,7 @@ RETURN COUNT(r)
 
 
 # -CLEANERS-
-print("\n\n\n\n\n----- CLEANING -----\n\n\n\n\n")
+logging.info("\n\n\n\n\n----- CLEANING -----\n\n\n\n\n")
 
 # DisjointParent
 cle1 = modules.etl.DisjointParent()
@@ -103,8 +106,8 @@ cle1.run(depth_constant)
 # cle2.run(depth_constant)
 
 
-print("\n\n\n\n\n----- ETL COMPLETE -----")
-print(str(round(time.time() - start_etl, 1)) + " seconds.")
+logging.info("\n\n\n\n\n----- ETL COMPLETE -----")
+logging.info(str(round(time.time() - start_etl, 1)) + " seconds.")
 
 # -BENCHMARKING-
 modules.misc.commit_cypher_query("""
@@ -123,7 +126,7 @@ SET x:etl
 
 
 start_schema = time.time()
-print("----- SCHEMA START -----\n\n\n\n\n")
+logging.info("----- SCHEMA START -----\n\n\n\n\n")
 
 
 fet1 = modules.schema.Meta(filter_set_edges=["dct:subject", "skos:broader"], filter_set_vertices=[])
@@ -134,17 +137,17 @@ com1 = modules.schema.Structural([1, 1])
 com1.run()
 
 
-print("\n\n\n\n\n----- SCHEMA COMPLETE -----")
-print(str(round(time.time() - start_schema, 1)) + " seconds.")
+logging.info("\n\n\n\n\n----- SCHEMA COMPLETE -----")
+logging.info(str(round(time.time() - start_schema, 1)) + " seconds.")
 
 
 
 
 start_enrich = time.time()
-print("----- ENRICH START -----\n\n\n\n\n")
+logging.info("----- ENRICH START -----\n\n\n\n\n")
 
 enr1 = modules.misc.Enrich()
 enr1.run()
 
-print("\n\n\n\n\n----- ENRICH COMPLETE -----")
-print(str(round(time.time() - start_enrich, 1)) + " seconds.")
+logging.info("\n\n\n\n\n----- ENRICH COMPLETE -----")
+logging.info(str(round(time.time() - start_enrich, 1)) + " seconds.")

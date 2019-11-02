@@ -1,4 +1,5 @@
 from py2neo import Graph, Transaction
+import logging
 
 
 g = Graph("bolt://localhost:7687", auth=("neo4j", "cayley"))
@@ -66,5 +67,5 @@ SET x:owl
 """
 
         cypher_query_set = [cypher_build_node_ids, cypher_build_edge_ids, cypher_build_article_labels, cypher_build_category_labels, cypher_build_ontology_labels, cypher_build_owl_labels]
-        print(cypher_query_set)
+        logging.info(cypher_query_set)
         commit_cypher_query_set(cypher_query_set)
