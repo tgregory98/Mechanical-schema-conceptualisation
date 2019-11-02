@@ -21,7 +21,9 @@ At this stage I am working on adding NLP, entity resolution and concurrency. Rel
 	- (Work-in-progress) Computing an pairwise similarity score matrix based of the `meta` nodes, aggregated from:
 		- a structural similarity matrix (taking a very contextual approach)
 		- a inherent similarity matrix (a standard approach)
-	- (Work-in-progress) Deduplication of `etl` nodes
+	- (Work-in-progress) Multidimensional scaling (MDS) of `etl' nodes
+	- (Work-in-progress) Unsupervised K-means clustering based off this MDS embedding
+	- (Work-in-progress) Deduplication based off similarity matrix and clustering
 	- (Work-in-progress) Abstracting the graph by removing very contextual nodes
 
    The interesting maths comes in with the computation of the structural similarity matrix, so I will explain it here. Once this is complete and working with arbitrary hyperparameters, I may train this with a machine learning model.
