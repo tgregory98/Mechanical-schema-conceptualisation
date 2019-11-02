@@ -4,9 +4,11 @@
 
 A Python program which queries DBpedia's massive RDF dataset, a community maintained dataset based off Wikipedia, via the SPARQL endpoint. Then it uses this data to intelligently build "schema" representing the connections between articles from across Wikipedia. These schema are built with Cypher on the Neo4j graph database platform. It all runs from one file using class instances, and it can go from a blank slate to a fully populated final schema in a matter of seconds.
 
-The main aims of this program were to successfully extract the data, transform it, load it into the Neo4j platform and then to rapidly find clear schema representations. This program will be the first stage of a broader project inspired by the roots of [constructivism](https://en.wikipedia.org/wiki/Constructivism_(philosophy_of_education)) (or more specifically [schemas](https://en.wikipedia.org/wiki/Schema_(psychology)), which are *not* to be confused with database schemas).
+The main aims of this program were to successfully extract the data, transform it, load it into the Neo4j platform and then to rapidly find clear schema representations. This program will be the first stage of a broader project inspired by the roots of [constructivism](https://en.wikipedia.org/wiki/Constructivism_(philosophy_of_education)) (or more specifically [schemas](https://en.wikipedia.org/wiki/Schema_(psychology)), which are *not* to be confused with database schemas). Here is a preview of what can be currently achieved.
 
-At this stage I am working on adding NLP, entity resolution and concurrency. Release 0.2.1 is focusing on setting up for these features. What follows is a breakdown of each stage of the project, in chronological order:
+![image](https://github.com/tgregory98/Schema-dreamer/blob/master/demo_schemas/preview)
+
+At this stage I am working on adding NLP, entity resolution and concurrency. Release 0.2.1 is focusing on setting up for these features. What follows is a breakdown of each stage of the project, in chronological order.
 
 1. **ETL:** This stage involves querying and building the initial graph, and cleaning unwanted nodes. I took four alternative compound approaches for each ETL release, all of which are listed and fully explained in in 0.1.0 and 0.2.0 showcases, in decreasing order of effectiveness. Most queries (in both SPARQL and Cypher) are dynamically generated based off the desired depth and the chosen root node. I have also written built-in filter options.
 	- Querying from SPARQL endpoint
