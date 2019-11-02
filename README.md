@@ -18,15 +18,16 @@ At this stage I am working on adding NLP, entity resolution and concurrency. Rel
 2. **SCHEMA:** The next stage of the process, which populates the graph with metadata, computes similarity scores, performs entity recognition, and finally abstracts the structure.
 
 	- Populating `etl` nodes from previous stage with `meta` nodes
-	- (Work-in-progress) Computing an pairwise similarity score matrix based of the `meta` nodes, aggregated from:
-		- a structural similarity matrix (taking a very contextual approach)
-		- a inherent similarity matrix (a standard approach)
-	- (Work-in-progress) Multidimensional scaling (MDS) of `etl' nodes
-	- (Work-in-progress) Unsupervised K-means clustering based off this MDS embedding
-	- (Work-in-progress) Deduplication based off similarity matrix and clustering
+	- (Work-in-progress) Entity resolution
+		- Computing an pairwise similarity score matrix based of the `meta` nodes, aggregated from:
+			- a structural similarity matrix (taking a very contextual approach)
+			- a inherent similarity matrix (a standard approach)
+		- Multidimensional scaling (MDS) of `etl' nodes
+		- Unsupervised K-means clustering based off this MDS embedding
+		- Deduplication based off similarity matrix and clustering
 	- (Work-in-progress) Abstracting the graph by removing very contextual nodes
 
-   The interesting maths comes in with the computation of the structural similarity matrix, so I will explain it here. Once this is complete and working with arbitrary hyperparameters, I may train this with a machine learning model.
+   The interesting maths comes in with the computation of the structural similarity matrix as part of the entity resolution, so I will explain it here. Once this is complete and working with arbitrary hyperparameters, I may train this with a machine learning model.
    
    > ![](https://latex.codecogs.com/gif.latex?%5Cinline%20%5C%5C%20%5Ctext%7BLet%20%24G%3D%28V%2CE%29%24%20be%20a%20graph%20where%20%24V%3DV%28G%29%2CE%3DE%28G%29%24%2C%7D%5C%5C%20%5Ctext%7B%24N%2CM%24%20be%20the%20sets%20of%20%27etl%27%20and%20%27meta%27%20nodes%20respectively%2C%20where%20%24N%5Ccup%20M%3DV%28G%29%24%7D%5C%5C%20%5Ctext%7B%28%24N%24%20stands%20for%20%5Cunderline%7Bnewly%7D%20generated%20nodes%2C%20and%20%24M%24%20stands%20for%20%5Cunderline%7Bmeta%7D%20nodes%29.%7D%5C%5C%20%5Ctext%7BLet%20%24n%5Cin%20N%2Cm%5Cin%20M%24%20be%20singular%20%27etl%27%20and%20%27meta%27%20nodes%20respectively%2C%7D%5C%5C%20%24p_m%3D%28%5Ctext%7B%5C%23%20etl%20nodes%20parent%20to%20%24m%24%7D%29%2Cc_m%3D%28%5Ctext%7B%5C%23%20etl%20nodes%20child%20to%20%24m%24%7D%29%2Cn%3D%5Ctext%7B%28%5C%23%20etl%20nodes%20in%20total%29%7D.%5C%5C%20%5Ctext%7BFinally%20let%20%24%5Clambda_p%2C%5Clambda_c%5Cin%5Cmathbb%7BR%7D%24%20be%20hyperparameters.%7D)
    
@@ -37,6 +38,8 @@ At this stage I am working on adding NLP, entity resolution and concurrency. Rel
    > ![](https://latex.codecogs.com/gif.latex?%5Cinline%20%5C%5C%20%5Ctext%7BThis%20yields%20the%20structural%20similarity%20matrix%20%24S%3D%28S%28n_1%2Cn_2%29%29_%7Bn_1%2Cn_2%5Cin%20N%7D%24%20or%20in%20full%3A%7D%5C%5C%20%5Chspace*%7B1cm%7DS%3D%5Cleft%28%5Csum_%7Bm%5Cin%5C%7Bm%5Cin%20M%3An_1m%5Cin%20E%28G%29%5Ctext%7B%20and%20%7Dn_2m%5Cin%20E%28G%29%5C%7D%7D%5Cfrac%7Bn%7D%7B%5Clambda_pp_m&plus;%5Clambda_cc_m%7D%5Cright%29_%7Bn_1%2Cn_2%5Cin%20N%7D%5C%5C%20%5Chspace*%7B1cm%7D%5Ctext%7Bwhere%20%7DG%3D%28N%5Ccup%20M%2CE%28G%29%29%2C%5Cquad%5Clambda_p%2C%5Clambda_c%5Cin%5Cmathbb%7BR%7D)
    
    For the inherent similarity matrix, I will probably use an affine gap distance metric. To aggregate these two matrices into one, I may use a meta-learning algorithm to decide on an optimal linear combination.
+   
+   After this, the multidimensional scaling and unsupervised K-means clustering will give us the information required for the deduplication of the `etl` nodes.
    
    Finally, to perform abstraction, I will figure out a valid metric to represent how context invariant each node is, and then I will use a one-tailed significance test to determine which nodes must be omitted.
 
