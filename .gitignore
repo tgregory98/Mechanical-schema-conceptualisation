@@ -1,0 +1,4 @@
+env/
+modules/__pycache__/
+queries.txt
+run.log
