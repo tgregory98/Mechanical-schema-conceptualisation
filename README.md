@@ -1,4 +1,4 @@
-# **Schema-dreamer**
+# schema-dreamer
 # Release 0.2.1. Schema setup
 **Builds, cleans and enriches "schema" diagrams, connecting articles from across Wikipedia via the RDF DBpedia dataset.**
 
