@@ -4,7 +4,7 @@
 
 A Python program which queries DBpedia's massive RDF dataset, a community maintained dataset based off Wikipedia, via the SPARQL endpoint. Then it uses this data to intelligently build "schema" representing the connections between articles from across Wikipedia. These schema are built with Cypher on the Neo4j graph database platform. It all runs from one file using class instances, and it can go from a blank slate to a fully populated final schema in a matter of seconds.
 
-The main aims of this program were to successfully extract the data, transform it, load it into the Neo4j platform and then to rapidly find clear schema representations. This program will be the first stage of a broader project inspired by the roots of [constructivism](https://en.wikipedia.org/wiki/Constructivism_(philosophy_of_education)) (or more specifically [schemas](https://en.wikipedia.org/wiki/Schema_(psychology)), which are *not* to be confused with database schemas). Here is a preview of what can be currently achieved after the first stage, ETL.
+The main aims of this program were to successfully extract the data, transform it, load it into the Neo4j platform and then to rapidly find clear schema representations. This program will be the first stage of a broader project inspired by [schema theory](https://en.wikipedia.org/wiki/Schema_(psychology)). Here is a preview of what can be currently achieved after the first stage, ETL.
 
 ![image](https://github.com/tgregory98/Schema-dreamer/blob/master/demo_schemas/preview)
 
