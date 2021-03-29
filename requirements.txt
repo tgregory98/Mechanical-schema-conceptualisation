@@ -7,7 +7,7 @@ neotime==1.7.4
 numpy==1.17.2
 prompt-toolkit==2.0.9
 py2neo==4.3.0
-Pygments==2.3.1
+Pygments==2.7.4
 pyparsing==2.4.2
 pytz==2019.2
 rdflib==4.2.2
